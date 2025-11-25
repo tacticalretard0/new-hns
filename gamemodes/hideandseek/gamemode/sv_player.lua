@@ -111,9 +111,7 @@ end
 
 function GM:PlayerCanPickupWeapon(ply, weapon)
     -- Allow pickup after round
-    if ply:Team() == TEAM_SPECTATOR or (weapon:GetClass() ~= "has_hands" and self.RoundState == ROUND_ACTIVE) then return false end
-
-    return true
+    return ply:Team() ~= TEAM_SPECTATOR and (weapon:GetClass() == "has_hands" or self.RoundState ~= ROUND_ACTIVE)
 end
 
 function GM:PlayerDisconnected(ply)
