@@ -100,6 +100,7 @@ function GM:InitPostEntity()
     self.BlurMaterial = Material("pp/blurscreen")
 end
 
+local specCams = {}
 function GM:Tick()
     local ply = LocalPlayer()
     if not IsValid(ply) or not ply.KeyDown then return end
@@ -111,6 +112,32 @@ function GM:Tick()
     end
 
     self:StaminaPrediction(ply, ply:KeyDown(IN_SPEED))
+
+
+    -- Spectator camera models
+    for i, cam in ipairs(specCams) do
+        local shouldHave = IsValid(cam.player) and cam.player:Team() == TEAM_SPECTATOR
+
+        if not shouldHave then
+            cam:Remove()
+            table.remove(specCams, i)
+        end
+    end
+
+    for _, ply in ipairs(team.GetPlayers(TEAM_SPECTATOR)) do
+        if ply == LocalPlayer() then continue end
+
+        if not IsValid(ply.SpecCamera) then
+            ply.SpecCamera = ClientsideModel("models/dav0r/camera.mdl")
+            ply.SpecCamera:Spawn()
+
+            ply.SpecCamera.player = ply
+            table.insert(specCams, ply.SpecCamera)
+        end
+
+        ply.SpecCamera:SetPos(ply:EyePos())
+        ply.SpecCamera:SetAngles(ply:EyeAngles())
+    end
 end
 
 function GM:PostDrawOpaqueRenderables()
