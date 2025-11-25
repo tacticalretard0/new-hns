@@ -368,18 +368,6 @@ function GM:RenderScreenspaceEffects()
     end
 end
 
-function GM:DrawCrosshair(x, y, ch)
-    surface.SetDrawColor(ch.Color)
-    -- Top
-    surface.DrawRect(x - ch.Thick / 2, y - ch.Size - ch.Gap, ch.Thick, ch.Size)
-    -- Bottom
-    surface.DrawRect(x - ch.Thick / 2, y + ch.Gap, ch.Thick, ch.Size)
-    -- Right
-    surface.DrawRect(x + ch.Gap, y - ch.Thick / 2, ch.Size, ch.Thick)
-    -- Left
-    surface.DrawRect(x - ch.Gap - ch.Size, y - ch.Thick / 2, ch.Size, ch.Thick)
-end
-
 -- Update avatars
 cvars.AddChangeCallback("has_hud_scale", function()
     local hud = GAMEMODE.HUDs[GAMEMODE.CVars.HUD:GetInt()]
