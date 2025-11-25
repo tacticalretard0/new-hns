@@ -88,6 +88,15 @@ function GM:PlayerSpawn(ply)
     ply:SetCrouchedWalkSpeed(0.4)
     ply:GodEnable()
 
+    -- Map winner
+    --
+    -- These are also set in sh_winner.lua
+    if ply.winner then
+        ply:SetJumpPower(630)
+        ply:SetWalkSpeed(350)
+        ply:SetRunSpeed(550)
+    end
+
     self:RoundCheck()
 end
 

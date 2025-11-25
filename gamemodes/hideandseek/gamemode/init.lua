@@ -21,6 +21,7 @@ util.AddNetworkString("HNS.PlayerColorUpdate")
 util.AddNetworkString("HNS.PlayerEvent")
 util.AddNetworkString("HNS.PlayerNetReady")
 util.AddNetworkString("HNS.RoundInfo")
+util.AddNetworkString("HNS.Winner")
 
 -- Sends a table to be unpacked on chat.AddText
 function GM:SendChat(ply, ...)

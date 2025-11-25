@@ -245,6 +245,17 @@ function GM:HUDPaint()
     -- Draw HUD
     self.SelectedHUD:Draw(ply, GetDrawColor(ply), ply:GetStamina(), self:StringToMinutesSeconds(self.TimeLeft), GetRoundText(), self.TimeLeft - self.RoundLength, scale)
 
+    -- Map winner
+    if self.winner ~= nil then
+        local backcol = Color(0, 0, 0, 200)
+
+        draw.RoundedBoxEx(8 * scale, ScrW()/2 - 100 * scale, 0, 200 * scale, 36 * scale, backcol, false, false, true, true)
+
+        draw.SimpleTextOutlined(GAMEMODE.winner.name, "HNSHUD.RobotoLarge", ScrW()/2, 12 * scale, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, Color(10,10,10,100))
+
+        draw.SimpleTextOutlined("had the most points with " .. GAMEMODE.winner.frags .. "!", "HNSHUD.TahomaSmall", ScrW()/2, 24 * scale, Color(255,255,255,255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 2, Color(10,10,10,100))
+    end
+
     -- Stuck prevention
     if ply:GetCollisionGroup() == COLLISION_GROUP_WEAPON then
         draw.SimpleTextOutlined("Stuck Prevention Enabled", "HNSHUD.VerdanaMedium", ScrW() / 2, ScrH() / 2 + 60 * scale, COLOR_WHITE, TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER, 1, COLOR_SHADOW)
