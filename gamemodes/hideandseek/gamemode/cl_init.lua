@@ -275,7 +275,7 @@ hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
     -- HUD - Interface section
     if text == "!hnshud" or text == "!hnsmenu" then
         if ply == LocalPlayer() then
-            vgui.Create("HNS.Prefs.Derma")
+            vgui.Create("HNS.Preferences")
         end
 
         return true
@@ -284,9 +284,10 @@ hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
     -- Playercolors
     if text == "!hnscolors" or text == "!hnscolours" then
         if ply == LocalPlayer() then
-            vgui.Create("HNS.Prefs.Derma").Tabs:SwitchToName("Player Model")
+            local panel = vgui.Create("HNS.Preferences")
+            panel.TabsP:GetChildren()[2]:DoClick()
         end
 
         return true
     end
-end, HOOK_HIGH)
+end)
