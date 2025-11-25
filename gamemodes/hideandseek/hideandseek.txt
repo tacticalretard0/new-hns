@@ -1,7 +1,7 @@
-"Light Hide and Seek"
+"New Hide and Seek"
 {
 	"base"			"base"
-	"title"			"Light Hide and Seek"
+	"title"			"New Hide and Seek"
 	"maps"			"^hns_"
 	"menusystem"	"1"
 	"workshopid"	"1852720956"
