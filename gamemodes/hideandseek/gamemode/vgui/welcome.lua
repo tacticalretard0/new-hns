@@ -68,21 +68,6 @@ function PANEL:Init()
 		self:Close()
 		vgui.Create("HNS.Preferences")
 	end
-
-	self.Achs = self:Add("DButton")
-	self.Achs:SetPos(10, 237)
-	self.Achs:SetSize(130, 30)
-	self.Achs:SetText("")
-	self.Achs.Paint = function(this, w, h)
-		GAMEMODE.DUtils.Outline(0, 0, w, h, 2, self:GetTint())
-		surface.SetDrawColor(self:GetTint())
-		surface.DrawRect(GAMEMODE.DUtils.LerpNumber(this, 1, -w, 0), 0, w, h, 8)
-		self:ShadowedText("ACHIEVEMENTS", "HNS.RobotoSmall", w / 2, h / 2, self:GetTheme(3), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
-	end
-	self.Achs.DoClick = function()
-		self:Close()
-		hook.Run("HASAchievementsMenu")
-	end
 end
 
 function PANEL:Paint(w, h)
