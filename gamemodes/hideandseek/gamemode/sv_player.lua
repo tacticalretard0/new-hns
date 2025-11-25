@@ -183,7 +183,7 @@ function GM:GetFallDamage(ply, speed)
         -- Restore jump power
         timer.Create("HNS.FallRestore." .. ply:EntIndex(), time, 1, function()
             if IsValid(ply) and ply:Team() ~= TEAM_SPECTATOR then
-                ply:SetJumpPower(GAMEMODE.CVars.JumpPower:GetInt())
+                ply:SetJumpPower(ply.winner and 630 or GAMEMODE.CVars.JumpPower:GetInt())
             end
         end)
 
