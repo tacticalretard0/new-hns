@@ -16,7 +16,6 @@ else
 end
 
 if SERVER then
-    util.AddNetworkString("HNS.RoundInfo")
 
     function GM:RoundCheck()
         timer.Simple(0.1, function()

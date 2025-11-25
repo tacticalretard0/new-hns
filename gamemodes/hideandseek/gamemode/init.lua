@@ -12,6 +12,7 @@ AddCSLuaFile("vgui/voice.lua")
 AddCSLuaFile("vgui/avatar.lua")
 AddCSLuaFile("vgui/avatar_frame.lua")
 include("sv_player.lua")
+
 util.AddNetworkString("HNS.Say")
 util.AddNetworkString("HNS.PlaySound")
 util.AddNetworkString("HNS.JoinPlaying")
@@ -19,6 +20,7 @@ util.AddNetworkString("HNS.JoinSpectating")
 util.AddNetworkString("HNS.PlayerColorUpdate")
 util.AddNetworkString("HNS.PlayerEvent")
 util.AddNetworkString("HNS.PlayerNetReady")
+util.AddNetworkString("HNS.RoundInfo")
 
 -- Sends a table to be unpacked on chat.AddText
 function GM:SendChat(ply, ...)
