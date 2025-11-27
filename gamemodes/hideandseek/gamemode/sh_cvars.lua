@@ -30,6 +30,7 @@ GM.CVars.MinPlayers = CreateConVar("has_minplayers", 2, {FCVAR_ARCHIVE, FCVAR_NO
 
 -- Create local cvars for customization
 if SERVER then return end
+-- name, default, shouldSave, userinfo
 GM.CVars.HUD = CreateClientConVar("has_hud", 2, true, false)
 GM.CVars.HiderColor = CreateClientConVar("has_hidercolor", "Default", true, true)
 GM.CVars.SeekerColor = CreateClientConVar("has_seekercolor", "Default", true, true)
@@ -44,6 +45,7 @@ GM.CVars.HUDScale = CreateClientConVar("has_hud_scale", 2, true, false)
 GM.CVars.SortReversed = CreateClientConVar("has_scob_sort_reversed", 0, true, false)
 GM.CVars.DarkTheme = CreateClientConVar("has_darktheme", 1, true, false)
 GM.CVars.AvatarFrames = CreateClientConVar("has_avatarframes", 1, true, false)
+GM.CVars.SpecCams = CreateClientConVar("has_spec_cams", 1, true, false)
 
 -- For voice derma
 GM.CVars.VoiceLoopback = GetConVar("voice_loopback")

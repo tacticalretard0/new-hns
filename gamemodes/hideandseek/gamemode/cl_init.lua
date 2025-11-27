@@ -4,9 +4,14 @@ include("cl_fonts.lua")
 include("cl_hud.lua")
 include("cl_derma.lua")
 include("vgui/scoreboard.lua")
-include("vgui/preferences.lua")
-include("vgui/welcome.lua")
-include("vgui/teamselection.lua")
+include("vgui/help.lua")
+include("vgui/help_welcome.lua")
+include("vgui/help_achievements.lua")
+include("vgui/help_hiding.lua")
+include("vgui/help_seeking.lua")
+include("vgui/help_spectating.lua")
+include("vgui/team_select.lua")
+include("vgui/options.lua")
 include("vgui/voice.lua")
 include("vgui/avatar_frame.lua")
 include("vgui/avatar.lua")
@@ -92,7 +97,7 @@ function GM:InitPostEntity()
     net.Start("HNS.PlayerNetReady")
     net.SendToServer()
     -- Create welcome screen
-    vgui.Create("HNS.Welcome")
+    vgui.Create("HNS.Help")
     LocalPlayer().Stamina = 100
     -- Voice derma
     self.VoiceContainer = vgui.Create("HNS.VoiceContainer")
@@ -115,8 +120,9 @@ function GM:Tick()
 
 
     -- Spectator camera models
+    local show = self.CVars.SpecCams:GetBool()
     for i, cam in ipairs(specCams) do
-        local shouldHave = IsValid(cam.player) and cam.player:Team() == TEAM_SPECTATOR
+        local shouldHave = show and IsValid(cam.player) and cam.player:Team() == TEAM_SPECTATOR
 
         if not shouldHave then
             cam:Remove()
@@ -124,11 +130,16 @@ function GM:Tick()
         end
     end
 
+    if not show then return end
+
     for _, ply in ipairs(team.GetPlayers(TEAM_SPECTATOR)) do
         if ply == LocalPlayer() then continue end
 
         if not IsValid(ply.SpecCamera) then
-            ply.SpecCamera = ClientsideModel("models/dav0r/camera.mdl")
+            -- TODO: Let the player choose between these two models
+            --ply.SpecCamera = ClientsideModel("models/dav0r/camera.mdl") -- Light HNS
+            ply.SpecCamera = ClientsideModel("models/tools/camera/camera.mdl") -- Old HNS
+
             ply.SpecCamera:Spawn()
 
             ply.SpecCamera.player = ply
@@ -179,9 +190,9 @@ function GM:PlayerBindPress(ply, bind)
 
     -- Team selection menu
     if bind == "gm_showteam" then
-        vgui.Create("HNS.TeamSelection")
+        self:TeamSelect()
     elseif bind == "gm_showhelp" then
-        vgui.Create("HNS.Welcome")
+        vgui.Create("HNS.Help")
     elseif bind == "impulse 100" then
         -- Flashlight
         -- Allowed?
