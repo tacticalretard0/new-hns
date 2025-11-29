@@ -39,6 +39,41 @@ function PANEL:Init()
     tabInterface:Dock(FILL)
 
 
+    local selected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
+    if GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then
+
+        local label3p = tabInterface:Add("DLabel")
+        label3p:SetText("Third person mode")
+        label3p:Dock(TOP)
+
+        local panel3p = tabInterface:Add("DPanel")
+        panel3p:SetPaintBackground(false)
+        panel3p:Dock(TOP)
+
+        local button3pSelected
+        for i, text in ipairs( {"Left", "Center", "Right"} ) do
+            local button3p = panel3p:Add("DButton")
+            button3p:SetText(text)
+            button3p:DockMargin(0, 0, 1, 0)
+            button3p:Dock(LEFT)
+
+            if i == selected3p then
+                button3pSelected = button3p
+                button3p:SetToggle(true)
+            end
+
+
+            button3p.DoClick = function(this)
+                button3pSelected:SetToggle(false)
+                button3pSelected = this
+                selected3p = i
+
+                this:SetToggle(true)
+            end
+        end
+
+    end
+
 
 
 
@@ -76,6 +111,7 @@ function PANEL:Init()
     labelGender:Dock(TOP)
 
 
+    -- TODO: Make this be radio buttons like the thirdperson option
     local listGender = tabPA:Add("DComboBox")
     listGender:Dock(TOP)
     listGender:AddChoice("Male")
@@ -204,6 +240,9 @@ function PANEL:Init()
     buttonConfirm:Dock(LEFT)
     buttonConfirm:SetText("Confirm")
     buttonConfirm.DoClick = function()
+
+        if selected3p then GAMEMODE.CVars.ThirdpersonMode:SetInt(selected3p) end
+
         GAMEMODE.CVars.SpecCams:SetBool(boxSpecCams:GetChecked())
         GAMEMODE.CVars.ShowID:SetBool(boxShowIDs:GetChecked())
 

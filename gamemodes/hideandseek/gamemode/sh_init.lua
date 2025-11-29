@@ -4,14 +4,14 @@ GM.Name = "Light Hide and Seek"
 GM.Author = "Fafy"
 GM.Email = ""
 
+include("sh_cvars.lua")
 include("sh_colors.lua")
 include("sh_roundmanager.lua")
-include("sh_cvars.lua")
 include("sh_winner.lua")
 
+AddCSLuaFile("sh_cvars.lua")
 AddCSLuaFile("sh_colors.lua")
 AddCSLuaFile("sh_roundmanager.lua")
-AddCSLuaFile("sh_cvars.lua")
 AddCSLuaFile("sh_winner.lua")
 
 -- Player events

@@ -3,6 +3,7 @@ include("sh_init.lua")
 include("cl_fonts.lua")
 include("cl_hud.lua")
 include("cl_derma.lua")
+include("cl_thirdperson.lua")
 include("vgui/scoreboard.lua")
 include("vgui/help.lua")
 include("vgui/help_welcome.lua")
@@ -328,4 +329,10 @@ hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
 
         return true
     end
+
+    if text == "!3p" or text == "!3pv" then
+        GAMEMODE:ToggleThirdperson()
+        return true
+    end
 end)
+

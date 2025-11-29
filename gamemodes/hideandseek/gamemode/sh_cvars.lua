@@ -1,6 +1,7 @@
 -- Shared ConVars
 GM.CVars = GM.CVars or {}
 
+-- name, default, flags, helptext, min, max
 GM.CVars.MaxRounds = CreateConVar("has_maxrounds", 5, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Rounds until map change")
 GM.CVars.TimeLimit = CreateConVar("has_timelimit", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time to seek (0 is infinite)")
 GM.CVars.EnviromentDamageAllowed = CreateConVar("has_envdmgallowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Will the map hurt players?")
@@ -25,12 +26,13 @@ GM.CVars.StaminaRefill = CreateConVar("has_staminarefill", 6.6, {FCVAR_ARCHIVE, 
 GM.CVars.StaminaDeplete = CreateConVar("has_staminadeplete", 13.3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Rate at which stamina is depleted.")
 GM.CVars.StaminaWait = CreateConVar("has_staminawait", 2, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "How many seconds to wait before filling stamina.")
 GM.CVars.MinPlayers = CreateConVar("has_minplayers", 2, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Minimum players required to start a round.")
+GM.CVars.ThirdpersonAllowed = CreateConVar("has_thirdperson_allowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether the built-in thirdperson is allowed. Disabling this also removes the thirdperson mode buttons in the Options menu.")
 
 
 
 -- Create local cvars for customization
 if SERVER then return end
--- name, default, shouldSave, userinfo
+-- name, default, shouldSave, userinfo, helptext, min, max
 GM.CVars.HUD = CreateClientConVar("has_hud", 2, true, false)
 GM.CVars.HiderColor = CreateClientConVar("has_hidercolor", "Default", true, true)
 GM.CVars.SeekerColor = CreateClientConVar("has_seekercolor", "Default", true, true)
@@ -46,6 +48,7 @@ GM.CVars.SortReversed = CreateClientConVar("has_scob_sort_reversed", 0, true, fa
 GM.CVars.DarkTheme = CreateClientConVar("has_darktheme", 1, true, false)
 GM.CVars.AvatarFrames = CreateClientConVar("has_avatarframes", 1, true, false)
 GM.CVars.SpecCams = CreateClientConVar("has_spec_cams", 1, true, false)
+GM.CVars.ThirdpersonMode = CreateClientConVar("has_thirdperson_mode", 2, true, false, "1 = Left; 2 = Center; 3 = Right", 1, 3)
 
 -- For voice derma
 GM.CVars.VoiceLoopback = GetConVar("voice_loopback")
