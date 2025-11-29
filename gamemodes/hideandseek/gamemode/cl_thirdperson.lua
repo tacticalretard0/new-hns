@@ -13,7 +13,6 @@ end
 
 concommand.Add("thirdperson_toggle", function() GAMEMODE:ToggleThirdperson() end)
 
-local addAng = Angle(1, 1, 0)
 local view = {}
 function GM:CalcView(ply, pos, ang, fov)
     local allowed = self.CVars.ThirdpersonAllowed:GetBool()
@@ -25,13 +24,10 @@ function GM:CalcView(ply, pos, ang, fov)
 
         if mode == 1 then
             view.origin = pos - ang:Forward() * 70 + ang:Right() * -20 + ang:Up() * 5
-            view.angles = ply:EyeAngles() + addAng
         elseif mode == 2 then
             view.origin = pos - ang:Forward() * 90 + ang:Right() * 1.75 + ang:Up() * 7.5
-            view.angles = ply:EyeAngles() + addAng
         elseif mode == 3 then
             view.origin = pos - ang:Forward() * 70 + ang:Right() * 20 + ang:Up() * 5
-            view.angles = ply:EyeAngles() + addAng
         end
 
         view.drawviewer = true
