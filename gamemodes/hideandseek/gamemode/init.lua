@@ -32,6 +32,10 @@ function GM:BroadcastChat(...)
     net.Broadcast()
 end
 
+function GM:BroadcastChatWithTag(tagColor, ...)
+    self:BroadcastChat(COLOR_WHITE, "[", tagColor, "HNS", COLOR_WHITE, "] ", ...)
+end
+
 -- Plays a sound on the client
 function GM:SendSound(ply, path)
     net.Start("HNS.PlaySound")
@@ -52,3 +56,4 @@ function GM:BroadcastEvent(ply, event)
     net.WriteEntity(ply)
     net.Broadcast()
 end
+

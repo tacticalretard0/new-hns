@@ -71,7 +71,7 @@ function GM:RoundCheck()
                 end
 
                 self:BroadcastSound("ui/medic_alert.wav")
-                self:BroadcastChat(COLOR_WHITE, "[", Color(155, 155, 255), "HNS", COLOR_WHITE, "] ", Color(155, 155, 155), "1 hider left.")
+                self:BroadcastChatWithTag(COLOR_HNS_TAG_HIDER, Color(155, 155, 155), "1 hider left.")
                 self.PlayedLastHiderSound = true
             end
         elseif self.RoundState == ROUND_WAIT then
@@ -167,7 +167,7 @@ function GM:RoundRestart()
         -- Network
         self:RoundTimer(self.CVars.TimeLimit:GetInt() + self.CVars.BlindTime:GetInt())
         -- Advert
-        self:BroadcastChat(COLOR_WHITE, "[", COLOR_HNS_TAG, "HNS", COLOR_WHITE, "] There's not enough players to start the round...")
+        self:BroadcastChatWithTag(COLOR_HNS_TAG, COLOR_WHITE, "There's not enough players to start the round...")
         print("[LHNS] There's not enough players to begin round " .. self.RoundCount .. "!")
     end
 
@@ -193,54 +193,46 @@ function GM:RoundEnd(ending, winner)
     if ending == ROUND_ENDLEAVE then
         self.RoundCount = self.RoundCount - 1
         -- Advert
-        self:BroadcastChat(COLOR_WHITE, "[", Color(155, 155, 255), "HNS", COLOR_WHITE, "] ", Color(155, 155, 255), "The Hiding Win!")
-        self:BroadcastSound("misc/happy_birthday.wav")
+        self:BroadcastChatWithTag(COLOR_HNS_TAG_HIDER, COLOR_HNS_TAG_HIDER, "The Hiding Win!")
         -- Log
         print(string.format("[LHNS] Round %s was aborted! Starting round again.", self.RoundCount + 1))
-
-        return
-    else
-        if ending == ROUND_ENDTIME then
-            -- Award hiders
-            if GAMEMODE.RoundCount > 0 then
-                for _, ply in ipairs(team.GetPlayers(TEAM_HIDE)) do
-                    ply:AddFrags(GetConVar("has_hidereward"):GetInt())
-                end
-            end
-
-            -- Advert
-            self:BroadcastChat(COLOR_WHITE, "[", Color(155, 155, 255), "HNS", COLOR_WHITE, "] ", Color(155, 155, 255), "The Hiding Win!")
-            self:BroadcastSound("misc/happy_birthday.wav")
-            -- Log
-            print(string.format("[LHNS] Hiders won round %s with %s hider(s) left.", self.RoundCount, team.NumPlayers(TEAM_HIDE)))
-            -- Call hooks
-            hook.Run("HASRoundEndedTime")
-            hook.Run("HASRoundEnded", ROUND_ENDTIME)
-        elseif ending == ROUND_ENDCAUGHT then
-            -- Advert seekers
-            self:BroadcastChat(COLOR_WHITE, "[", Color(255, 155, 155), "HNS", COLOR_WHITE, "] ", Color(255, 155, 155), "The Seekers Win!")
-            self:BroadcastSound("misc/happy_birthday.wav")
-            -- Log
-            print(string.format("[LHNS] Seekers won round %s with %s left.", self.RoundCount, string.ToMinutesSeconds(left)))
-            -- Call hooks
-            hook.Run("HASRoundEndedCaught")
-            hook.Run("HASRoundEnded", ROUND_ENDCAUGHT)
-        elseif ending == ROUND_ENDMAP then
-            if winner == WIN_TRAITOR then
-                self:BroadcastChat(COLOR_WHITE, "[", Color(255, 155, 155), "HNS", COLOR_WHITE, "] The map caused the seekers to win!")
-                self:BroadcastSound("misc/happy_birthday.wav")
-            elseif winner == WIN_INNOCENT then
-                self:BroadcastChat(COLOR_WHITE, "[", Color(155, 155, 255), "HNS", COLOR_WHITE, "] The map caused the hiders to win!")
-                self:BroadcastSound("misc/happy_birthday.wav")
+    elseif ending == ROUND_ENDTIME then
+        -- Award hiders
+        if GAMEMODE.RoundCount > 0 then
+            for _, ply in ipairs(team.GetPlayers(TEAM_HIDE)) do
+                ply:AddFrags(GetConVar("has_hidereward"):GetInt())
             end
         end
 
-        if self.RoundCount >= self.CVars.MaxRounds:GetInt() then
-            -- Start votemap
-            hook.Run("HASVotemapStart")
-            -- Remove timer
-            timer.Remove("HNS.RoundTimer")
+        -- Advert
+        self:BroadcastChatWithTag(COLOR_HNS_TAG_HIDER, COLOR_HNS_TAG_HIDER, "The Hiding Win!")
+        -- Log
+        print(string.format("[LHNS] Hiders won round %s with %s hider(s) left.", self.RoundCount, team.NumPlayers(TEAM_HIDE)))
+        -- Call hooks
+        hook.Run("HASRoundEndedTime")
+        hook.Run("HASRoundEnded", ROUND_ENDTIME)
+    elseif ending == ROUND_ENDCAUGHT then
+        -- Advert seekers
+        self:BroadcastChatWithTag(COLOR_HNS_TAG_SEEKER, COLOR_HNS_TAG_SEEKER, "The Seekers Win!")
+        -- Log
+        print(string.format("[LHNS] Seekers won round %s with %s left.", self.RoundCount, string.ToMinutesSeconds(left)))
+        -- Call hooks
+        hook.Run("HASRoundEndedCaught")
+        hook.Run("HASRoundEnded", ROUND_ENDCAUGHT)
+    elseif ending == ROUND_ENDMAP then
+        if winner == WIN_TRAITOR then
+            self:BroadcastChatWithTag(COLOR_HNS_TAG_SEEKER, COLOR_HNS_TAG_SEEKER, "The map caused the seekers to win!")
+        elseif winner == WIN_INNOCENT then
+            self:BroadcastChatWithTag(COLOR_HNS_TAG_HIDER, COLOR_HNS_TAG_HIDER, "The map caused the hiders to win!")
         end
+    end
+
+    self:BroadcastSound("misc/happy_birthday.wav")
+    if self.RoundCount >= self.CVars.MaxRounds:GetInt() then
+        -- Start votemap
+        hook.Run("HASVotemapStart")
+        -- Remove timer
+        timer.Remove("HNS.RoundTimer")
     end
 end
 
