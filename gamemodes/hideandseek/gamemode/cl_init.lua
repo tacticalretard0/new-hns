@@ -16,6 +16,7 @@ include("vgui/options.lua")
 include("vgui/voice.lua")
 include("vgui/avatar_frame.lua")
 include("vgui/avatar.lua")
+include("ttt/cl_tbuttons.lua")
 
 function GM:PlayerStartVoice(ply)
     if not IsValid(ply) then return end
@@ -104,6 +105,9 @@ function GM:InitPostEntity()
     self.VoiceContainer = vgui.Create("HNS.VoiceContainer")
 
     self.BlurMaterial = Material("pp/blurscreen")
+
+    -- From TTT cl_init.lua
+    timer.Create("tbutton_cache_ents", 1, 0, function() TBHUD:CacheEnts() end)
 end
 
 local specCams = {}
@@ -185,9 +189,14 @@ function GM:KeyPress(ply, key)
     end
 end
 
-function GM:PlayerBindPress(ply, bind)
+function GM:PlayerBindPress(ply, bind, pressed)
     -- Safe check
     if ply ~= LocalPlayer() then return end
+
+    -- From TTT cl_keys.lua
+    if bind == "+use" and TBHUD:PlayerIsFocused() then
+        return TBHUD:UseFocused()
+    end
 
     -- Team selection menu
     if bind == "gm_showteam" then

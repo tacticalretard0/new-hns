@@ -229,6 +229,10 @@ function GM:HUDPaint()
         ply = target
     end
 
+
+    TBHUD:Draw(ply)
+
+
     scale = self.CVars.HUDScale:GetFloat()
     self.SelectedHUD = self.HUDs[self.CVars.HUD:GetInt()] or self.HUDs[2]
 

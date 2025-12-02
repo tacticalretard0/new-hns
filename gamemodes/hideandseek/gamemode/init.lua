@@ -17,6 +17,7 @@ AddCSLuaFile("vgui/options.lua")
 AddCSLuaFile("vgui/voice.lua")
 AddCSLuaFile("vgui/avatar.lua")
 AddCSLuaFile("vgui/avatar_frame.lua")
+AddCSLuaFile("ttt/cl_tbuttons.lua")
 include("sv_player.lua")
 
 util.AddNetworkString("HNS.Say")
@@ -28,6 +29,10 @@ util.AddNetworkString("HNS.PlayerEvent")
 util.AddNetworkString("HNS.PlayerNetReady")
 util.AddNetworkString("HNS.RoundInfo")
 util.AddNetworkString("HNS.Winner")
+
+-- From TTT init.lua
+util.AddNetworkString("TTT_ConfirmUseTButton")
+
 
 -- Sends a table to be unpacked on chat.AddText
 function GM:SendChat(ply, ...)

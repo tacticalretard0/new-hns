@@ -73,3 +73,15 @@ surface.CreateFont("HNS.RobotoSpec", {
     size = 84,
     antialias = true,
 })
+
+-- Traitor buttons
+--
+-- From TTT cl_init.lua
+surface.CreateFont("HNS.TabLarge", {
+    font = "Tahoma",
+    size = 13,
+    weight = 700,
+    shadow = true,
+    antialias = false
+})
+

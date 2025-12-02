@@ -1,6 +1,9 @@
 -- Enums
 ROUND_WAIT, ROUND_ACTIVE, ROUND_POST = 1, 2, 3
-ROUND_ENDTIME, ROUND_ENDCAUGHT, ROUND_ENDABORT, ROUND_ENDLEAVE = 1, 2, 3, 4
+ROUND_ENDTIME, ROUND_ENDCAUGHT, ROUND_ENDABORT, ROUND_ENDLEAVE, ROUND_ENDMAP = 1, 2, 3, 4, 5
+
+-- From TTT shared.lua
+WIN_TRAITOR, WIN_INNOCENT = 2, 3
 
 -- Prevent interruption when reloading gamemode
 if GAMEMODE then
@@ -177,7 +180,9 @@ function GM:RoundRestart()
     hook.Run("HASRoundStarted")
 end
 
-function GM:RoundEnd(ending)
+-- winner is only set if the ending was caused by a map entity (ROUND_ENDMAP)
+-- TODO: improve that
+function GM:RoundEnd(ending, winner)
     -- Store time left
     local left = math.abs(timer.TimeLeft("HNS.RoundTimer") or 0)
     -- End round and start counting the next
@@ -220,6 +225,14 @@ function GM:RoundEnd(ending)
             -- Call hooks
             hook.Run("HASRoundEndedCaught")
             hook.Run("HASRoundEnded", ROUND_ENDCAUGHT)
+        elseif ending == ROUND_ENDMAP then
+            if winner == WIN_TRAITOR then
+                self:BroadcastChat(COLOR_WHITE, "[", Color(255, 155, 155), "HNS", COLOR_WHITE, "] The map caused the seekers to win!")
+                self:BroadcastSound("misc/happy_birthday.wav")
+            elseif winner == WIN_INNOCENT then
+                self:BroadcastChat(COLOR_WHITE, "[", Color(155, 155, 255), "HNS", COLOR_WHITE, "] The map caused the hiders to win!")
+                self:BroadcastSound("misc/happy_birthday.wav")
+            end
         end
 
         if self.RoundCount >= self.CVars.MaxRounds:GetInt() then

@@ -8,11 +8,15 @@ include("sh_cvars.lua")
 include("sh_colors.lua")
 include("sh_roundmanager.lua")
 include("sh_winner.lua")
+include("ttt/sh_util.lua")
+include("ttt/sh_extensions.lua")
 
 AddCSLuaFile("sh_cvars.lua")
 AddCSLuaFile("sh_colors.lua")
 AddCSLuaFile("sh_roundmanager.lua")
 AddCSLuaFile("sh_winner.lua")
+AddCSLuaFile("ttt/sh_util.lua")
+AddCSLuaFile("ttt/sh_extensions.lua")
 
 -- Player events
 PLYEVENT_PLAY, PLYEVENT_SPEC, PLYEVENT_AVOID = 1, 2, 3
