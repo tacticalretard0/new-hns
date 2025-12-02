@@ -1,22 +1,4 @@
--- Includes
 include("sh_init.lua")
-include("cl_fonts.lua")
-include("cl_hud.lua")
-include("cl_derma.lua")
-include("cl_thirdperson.lua")
-include("vgui/scoreboard.lua")
-include("vgui/help.lua")
-include("vgui/help_welcome.lua")
-include("vgui/help_achievements.lua")
-include("vgui/help_hiding.lua")
-include("vgui/help_seeking.lua")
-include("vgui/help_spectating.lua")
-include("vgui/team_select.lua")
-include("vgui/options.lua")
-include("vgui/voice.lua")
-include("vgui/avatar_frame.lua")
-include("vgui/avatar.lua")
-include("ttt/cl_tbuttons.lua")
 
 function GM:PlayerStartVoice(ply)
     if not IsValid(ply) then return end
@@ -194,7 +176,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
     if ply ~= LocalPlayer() then return end
 
     -- From TTT cl_keys.lua
-    if bind == "+use" and TBHUD:PlayerIsFocused() then
+    if bind == "+use" and pressed and TBHUD:PlayerIsFocused() then
         return TBHUD:UseFocused()
     end
 

@@ -4,19 +4,69 @@ GM.Name = "Light Hide and Seek"
 GM.Author = "Fafy"
 GM.Email = ""
 
-include("sh_cvars.lua")
-include("sh_colors.lua")
-include("sh_roundmanager.lua")
-include("sh_winner.lua")
-include("ttt/sh_util.lua")
-include("ttt/sh_extensions.lua")
+AddCSLuaFile()
+AddCSLuaFile("sh_init.lua")
 
+-- Client
+AddCSLuaFile("cl_init.lua")
+AddCSLuaFile("cl_fonts.lua")
+AddCSLuaFile("cl_hud.lua")
+AddCSLuaFile("cl_derma.lua")
+AddCSLuaFile("cl_thirdperson.lua")
+AddCSLuaFile("vgui/scoreboard.lua")
+AddCSLuaFile("vgui/help.lua")
+AddCSLuaFile("vgui/help_welcome.lua")
+AddCSLuaFile("vgui/help_achievements.lua")
+AddCSLuaFile("vgui/help_hiding.lua")
+AddCSLuaFile("vgui/help_seeking.lua")
+AddCSLuaFile("vgui/help_spectating.lua")
+AddCSLuaFile("vgui/team_select.lua")
+AddCSLuaFile("vgui/options.lua")
+AddCSLuaFile("vgui/voice.lua")
+AddCSLuaFile("vgui/avatar.lua")
+AddCSLuaFile("vgui/avatar_frame.lua")
+AddCSLuaFile("ttt/cl_tbuttons.lua")
+
+
+-- Shared
 AddCSLuaFile("sh_cvars.lua")
 AddCSLuaFile("sh_colors.lua")
 AddCSLuaFile("sh_roundmanager.lua")
 AddCSLuaFile("sh_winner.lua")
 AddCSLuaFile("ttt/sh_util.lua")
 AddCSLuaFile("ttt/sh_extensions.lua")
+
+
+-- Shared
+include("sh_cvars.lua")
+include("sh_colors.lua")
+include("sh_roundmanager.lua")
+include("sh_winner.lua")
+include("ttt/sh_util.lua")
+include("ttt/sh_extensions.lua")
+if SERVER then
+    include("sv_player.lua")
+else
+    -- Client
+    include("cl_fonts.lua")
+    include("cl_hud.lua")
+    include("cl_derma.lua")
+    include("cl_thirdperson.lua")
+    include("vgui/scoreboard.lua")
+    include("vgui/help.lua")
+    include("vgui/help_welcome.lua")
+    include("vgui/help_achievements.lua")
+    include("vgui/help_hiding.lua")
+    include("vgui/help_seeking.lua")
+    include("vgui/help_spectating.lua")
+    include("vgui/team_select.lua")
+    include("vgui/options.lua")
+    include("vgui/voice.lua")
+    include("vgui/avatar_frame.lua")
+    include("vgui/avatar.lua")
+    include("ttt/cl_tbuttons.lua")
+end
+
 
 -- Player events
 PLYEVENT_PLAY, PLYEVENT_SPEC, PLYEVENT_AVOID = 1, 2, 3
@@ -204,3 +254,4 @@ function PLAYER:GetStamina()
 
     return self.Stamina
 end
+
