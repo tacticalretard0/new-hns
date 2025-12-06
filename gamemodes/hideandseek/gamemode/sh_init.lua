@@ -1,6 +1,6 @@
 DeriveGamemode("base")
 
-GM.Name = "Light Hide and Seek"
+GM.Name = "New Hide and Seek"
 GM.Author = "Fafy"
 GM.Email = ""
 
