@@ -2,9 +2,6 @@
 ROUND_WAIT, ROUND_ACTIVE, ROUND_POST = 1, 2, 3
 ROUND_ENDTIME, ROUND_ENDCAUGHT, ROUND_ENDABORT, ROUND_ENDLEAVE, ROUND_ENDMAP = 1, 2, 3, 4, 5
 
--- From TTT shared.lua
-WIN_TRAITOR, WIN_INNOCENT = 2, 3
-
 -- Prevent interruption when reloading gamemode
 if GAMEMODE then
     GM.RoundStartTime = GAMEMODE.RoundStartTime
@@ -180,14 +177,15 @@ function GM:RoundRestart()
     hook.Run("HASRoundStarted")
 end
 
--- winner is only set if the ending was caused by a map entity (ROUND_ENDMAP)
--- TODO: improve that
-function GM:RoundEnd(ending, winner)
+-- winningTeam is only set if the ending was caused by a ttt_win entity (ROUND_ENDMAP)
+function GM:RoundEnd(ending, winningTeam)
     -- Store time left
     local left = math.abs(timer.TimeLeft("HNS.RoundTimer") or 0)
     -- End round and start counting the next
     self.RoundState = ROUND_POST
     self:RoundTimer(10)
+
+
 
     -- If a seeker avoided, use one less round to restart the round we just lost
     if ending == ROUND_ENDLEAVE then
@@ -196,6 +194,9 @@ function GM:RoundEnd(ending, winner)
         self:BroadcastChatWithTag(COLOR_HNS_TAG_HIDER, COLOR_HNS_TAG_HIDER, "The Hiding Win!")
         -- Log
         print(string.format("[LHNS] Round %s was aborted! Starting round again.", self.RoundCount + 1))
+
+
+
     elseif ending == ROUND_ENDTIME then
         -- Award hiders
         if GAMEMODE.RoundCount > 0 then
@@ -211,6 +212,9 @@ function GM:RoundEnd(ending, winner)
         -- Call hooks
         hook.Run("HASRoundEndedTime")
         hook.Run("HASRoundEnded", ROUND_ENDTIME)
+
+
+
     elseif ending == ROUND_ENDCAUGHT then
         -- Advert seekers
         self:BroadcastChatWithTag(COLOR_HNS_TAG_SEEKER, COLOR_HNS_TAG_SEEKER, "The Seekers Win!")
@@ -219,13 +223,18 @@ function GM:RoundEnd(ending, winner)
         -- Call hooks
         hook.Run("HASRoundEndedCaught")
         hook.Run("HASRoundEnded", ROUND_ENDCAUGHT)
+
+
+
     elseif ending == ROUND_ENDMAP then
-        if winner == WIN_TRAITOR then
-            self:BroadcastChatWithTag(COLOR_HNS_TAG_SEEKER, COLOR_HNS_TAG_SEEKER, "The map caused the seekers to win!")
-        elseif winner == WIN_INNOCENT then
+        if winningTeam == TEAM_HIDE then
             self:BroadcastChatWithTag(COLOR_HNS_TAG_HIDER, COLOR_HNS_TAG_HIDER, "The map caused the hiders to win!")
+        elseif winningTeam == TEAM_SEEK then
+            self:BroadcastChatWithTag(COLOR_HNS_TAG_SEEKER, COLOR_HNS_TAG_SEEKER, "The map caused the seekers to win!")
         end
     end
+
+
 
     self:BroadcastSound("misc/happy_birthday.wav")
     if self.RoundCount >= self.CVars.MaxRounds:GetInt() then

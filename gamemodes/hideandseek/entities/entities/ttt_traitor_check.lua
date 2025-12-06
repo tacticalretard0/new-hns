@@ -3,7 +3,8 @@ ENT.Type = "brush"
 ENT.Base = "base_brush"
 
 function ENT:KeyValue(key, value)
-   value = hook.Run("HASTTTKeyValue", self, key, value) or value
+   local newVal = hook.Run("HASTTTKeyValue", self, key, value)
+   if newVal ~= nil then value = newVal end
 
    if key == "TraitorsFound" then
       -- This is our output, so handle it as such

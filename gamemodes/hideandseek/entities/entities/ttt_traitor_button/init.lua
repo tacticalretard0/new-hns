@@ -40,7 +40,8 @@ function ENT:Initialize()
 end
 
 function ENT:KeyValue(key, value)
-   value = hook.Run("HASTTTKeyValue", self, key, value) or value
+   local newVal = hook.Run("HASTTTKeyValue", self, key, value)
+   if newVal ~= nil then value = newVal end
 
    if key == "OnPressed" then
       self:StoreOutput(key, value)

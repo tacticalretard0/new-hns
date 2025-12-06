@@ -8,10 +8,6 @@ end
 -- From TTT cl_tbuttons.lua
 
 --- Display of and interaction with ttt_traitor_button
---local surface = surface
---local pairs = pairs
---local math = math
---local abs = math.abs
 
 TBHUD = {}
 TBHUD.buttons = {}

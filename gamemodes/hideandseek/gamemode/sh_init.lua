@@ -35,6 +35,8 @@ AddCSLuaFile("sh_roundmanager.lua")
 AddCSLuaFile("sh_winner.lua")
 AddCSLuaFile("ttt/sh_util.lua")
 AddCSLuaFile("ttt/sh_extensions.lua")
+AddCSLuaFile("_config.lua")
+AddCSLuaFile("ttt/sh_config.lua")
 
 
 -- Shared
@@ -44,6 +46,7 @@ include("sh_roundmanager.lua")
 include("sh_winner.lua")
 include("ttt/sh_util.lua")
 include("ttt/sh_extensions.lua")
+
 if SERVER then
     include("sv_player.lua")
 else
@@ -71,10 +74,15 @@ end
 -- Player events
 PLYEVENT_PLAY, PLYEVENT_SPEC, PLYEVENT_AVOID = 1, 2, 3
 
+TEAM_HIDE, TEAM_SEEK = 1, 2
+
+-- Shared, these need to be included after the team enums are defined
+-- so that the enums can be used in the configuration file for convenience
+include("_config.lua")
+include("ttt/sh_config.lua")
+
 function GM:CreateTeams()
-    TEAM_HIDE = 1
     team.SetUp(TEAM_HIDE, "Hiding", Color(75, 150, 225))
-    TEAM_SEEK = 2
     team.SetUp(TEAM_SEEK, "Seeking", Color(215, 75, 50))
     -- Just changing spectators colors
     team.SetUp(TEAM_SPECTATOR, "Spectating", Color(0, 175, 100))
