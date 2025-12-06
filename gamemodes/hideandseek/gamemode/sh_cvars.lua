@@ -49,6 +49,7 @@ GM.CVars.DarkTheme = CreateClientConVar("has_darktheme", 1, true, false)
 GM.CVars.AvatarFrames = CreateClientConVar("has_avatarframes", 1, true, false)
 GM.CVars.SpecCams = CreateClientConVar("has_spec_cams", 1, true, false)
 GM.CVars.ThirdpersonMode = CreateClientConVar("has_thirdperson_mode", 2, true, false, "1 = Left; 2 = Center; 3 = Right", 1, 3)
+GM.CVars.CarryAngles = CreateClientConVar("has_carryangles", 0, true, true, "Should props rotate with your view angle when you're holding them?", 0, 1)
 
 -- For voice derma
 GM.CVars.VoiceLoopback = GetConVar("voice_loopback")

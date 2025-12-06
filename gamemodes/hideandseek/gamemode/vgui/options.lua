@@ -221,9 +221,24 @@ function PANEL:Init()
 
 
 
+    local tabWorld = sheet:Add("DPanel")
+    --tabGender:SetPaintBackground(false)
+    tabWorld:SetBackgroundColor( Color(50, 50, 50) )
+    tabWorld:DockPadding(4, 4, 4, 4)
+    tabWorld:Dock(FILL)
+
+    local boxCarry = tabWorld:Add("DCheckBoxLabel")
+    boxCarry:Dock(BOTTOM)
+
+    boxCarry:SetText("Rotate props while carrying them?")
+    boxCarry:SetChecked(GAMEMODE.CVars.CarryAngles:GetBool())
+
+
+
 
     sheet:AddSheet("Interface", tabInterface, "icon16/application_edit.png")
     sheet:AddSheet("Player", tabPA, "icon16/user.png")
+    sheet:AddSheet("World", tabWorld, "icon16/world.png")
 
 
 
@@ -241,6 +256,7 @@ function PANEL:Init()
     buttonConfirm:SetText("Confirm")
     buttonConfirm.DoClick = function()
 
+        -- Interface
         if selected3p then GAMEMODE.CVars.ThirdpersonMode:SetInt(selected3p) end
 
         GAMEMODE.CVars.SpecCams:SetBool(boxSpecCams:GetChecked())
@@ -249,6 +265,7 @@ function PANEL:Init()
         -- Syntax error for some reason
         --GAMEMODE.CVars.Gender:SetBool( {true, false}[listGender:GetSelectedID()] )
 
+        -- Player
         GAMEMODE.CVars.Gender:SetBool( tobool(listGender:GetSelectedID() - 1) )
 
         if selectedColorHider ~= nil then
@@ -258,6 +275,10 @@ function PANEL:Init()
         if selectedColorSeeker ~= nil then
             GAMEMODE.CVars.SeekerColor:SetString(selectedColorSeeker)
         end
+
+
+        -- World
+        GAMEMODE.CVars.CarryAngles:SetBool(boxCarry:GetChecked())
 
         self:Close()
         surface.PlaySound("garrysmod/save_load3.wav")

@@ -164,6 +164,14 @@ function GM:PlayerUse(ply, ent)
     return true
 end
 
+-- I think a GMod update messed up prop carrying at one point.
+-- This recreates it, but it still might be kinda weird
+function GM:GetPreferredCarryAngles(ent, ply)
+    if ply:GetInfoNum("has_carryangles", 0) == 1 then
+        return angle_zero
+    end
+end
+
 function GM:CanPlayerTag(ply)
     return true
 end
