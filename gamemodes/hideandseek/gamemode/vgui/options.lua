@@ -28,216 +28,18 @@ function PANEL:Init()
 
 
 
-    local tabInterface = sheet:Add("DPanel")
-    tabInterface:SetBackgroundColor( Color(50, 50, 50) )
+    local tabInterface = sheet:Add("HNS.Options.Interface")
     --tabInterface.Paint = function(this)
     --    surface.SetDrawColor(50, 50, 50, 255)
     --    surface.DrawRect(0, 0, this:GetWide(), this:GetTall())
     --end
 
-    tabInterface:DockPadding(4, 4, 4, 4)
-    tabInterface:Dock(FILL)
-
-
-    local selected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
-    if GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then
-
-        local label3p = tabInterface:Add("DLabel")
-        label3p:SetText("Third person mode")
-        label3p:Dock(TOP)
-
-        local panel3p = tabInterface:Add("DPanel")
-        panel3p:SetPaintBackground(false)
-        panel3p:Dock(TOP)
-
-        local button3pSelected
-        for i, text in ipairs( {"Left", "Center", "Right"} ) do
-            local button3p = panel3p:Add("DButton")
-            button3p:SetText(text)
-            button3p:DockMargin(0, 0, 1, 0)
-            button3p:Dock(LEFT)
-
-            if i == selected3p then
-                button3pSelected = button3p
-                button3p:SetToggle(true)
-            end
-
-
-            button3p.DoClick = function(this)
-                button3pSelected:SetToggle(false)
-                button3pSelected = this
-                selected3p = i
-
-                this:SetToggle(true)
-            end
-        end
-
-    end
-
-
-
-
-    local boxSpecCams = tabInterface:Add("DCheckBoxLabel")
-    boxSpecCams:Dock(BOTTOM)
-
-    boxSpecCams:SetText("Show spectators?")
-    boxSpecCams:SetChecked(GAMEMODE.CVars.SpecCams:GetBool())
-
-
-
-
-    local boxShowIDs = tabInterface:Add("DCheckBoxLabel")
-
-    boxShowIDs:Dock(BOTTOM)
-
-    boxShowIDs:SetText("Show other players' Steam IDs?")
-    boxShowIDs:SetChecked(GAMEMODE.CVars.ShowID:GetBool())
-
-
-
-
-
-
-
-    local tabPA = sheet:Add("DPanel")
-    --tabGender:SetPaintBackground(false)
-    tabPA:SetBackgroundColor( Color(50, 50, 50) )
-    tabPA:DockPadding(4, 4, 4, 4)
-    tabPA:Dock(FILL)
-
-
-    local labelGender = tabPA:Add("DLabel")
-    labelGender:SetText("Gender")
-    labelGender:Dock(TOP)
-
-
-    -- TODO: Make this be radio buttons like the thirdperson option
-    local listGender = tabPA:Add("DComboBox")
-    listGender:Dock(TOP)
-    listGender:AddChoice("Male")
-    listGender:AddChoice("Female")
-    listGender:ChooseOptionID(GAMEMODE.CVars.Gender:GetBool() and 2 or 1)
-
-    listGender.OnMousePressed = function(this)
-        if this:IsMenuOpen() then
-            this:CloseMenu()
-        else
-            this:OpenMenu()
-        end
-
-        surface.PlaySound("garrysmod/ui_hover.wav")
-    end
-    listGender.OnSelect = function()
-        surface.PlaySound("garrysmod/ui_click.wav")
-    end
-
-
-
-
-
-
-    local selectedColorHider = GAMEMODE.CVars.HiderColor:GetString()
-    local selectedColorSeeker = GAMEMODE.CVars.SeekerColor:GetString()
-
-    local function AddColor(panel, color)
-        local buttonColor = panel:Add("DColorButton")
-        buttonColor:Dock(LEFT)
-        buttonColor:DockMargin(0, 0, 2, 0)
-        buttonColor:SetSize(panel:GetTall(), panel:GetTall())
-        
-        buttonColor:SetColor(color)
-    
-        return buttonColor
-    end
-
-    local labelHider = tabPA:Add("DLabel")
-    labelHider:SetText("Hider color (" .. selectedColorHider .. ")")
-    labelHider:Dock(TOP)
-
-
-    local panelHider = tabPA:Add("DPanel")
-    panelHider:SetPaintBackground(false)
-    panelHider:Dock(TOP)
-
-
-    local buttonPreviewHider
-    for name, color in pairs(GAMEMODE.HiderColors) do
-
-        AddColor(panelHider, color).DoClick = function(this)
-            selectedColorHider = name
-            labelHider:SetText("Hider color (" .. name .. ")")
-            buttonPreviewHider:SetColor(color)
-        end
-            
-    end
-
-
-
-
-    local labelSeeker = tabPA:Add("DLabel")
-    labelSeeker:SetText("Seeker color (" .. selectedColorSeeker .. ")")
-    labelSeeker:Dock(TOP)
-
-    local panelSeeker = tabPA:Add("DPanel")
-    panelSeeker:SetPaintBackground(false)
-    panelSeeker:Dock(TOP)
-
-
-    local buttonPreviewSeeker
-    for name, color in pairs(GAMEMODE.SeekerColors) do
-
-        AddColor(panelSeeker, color).DoClick = function(this)
-            selectedColorSeeker = name
-            labelSeeker:SetText("Seeker color (" .. name .. ")")
-            buttonPreviewSeeker:SetColor(color)
-        end
-
-    end
-
-
-
-
-    local labelPreview = tabPA:Add("DLabel")
-    labelPreview:SetText("Selected:")
-    labelPreview:Dock(TOP)
-
-    buttonPreviewSeeker = labelPreview:Add("DColorButton")
-    buttonPreviewSeeker:Dock(RIGHT)
-    buttonPreviewSeeker:DockMargin(2, 0, 0, 0)
-    buttonPreviewSeeker:SetSize(labelPreview:GetTall(), labelPreview:GetTall())
-
-    buttonPreviewSeeker:SetColor( GAMEMODE.SeekerColors[selectedColorSeeker] or GAMEMODE.SeekerColors.Default )
-
-
-
-    buttonPreviewHider = labelPreview:Add("DColorButton")
-    buttonPreviewHider:Dock(RIGHT)
-    buttonPreviewHider:DockMargin(2, 0, 0, 0)
-    buttonPreviewHider:SetSize(labelPreview:GetTall(), labelPreview:GetTall())
-
-    buttonPreviewHider:SetColor( GAMEMODE.HiderColors[selectedColorHider] or GAMEMODE.HiderColors.Default )
-
-
-
-
-
-    local tabWorld = sheet:Add("DPanel")
-    --tabGender:SetPaintBackground(false)
-    tabWorld:SetBackgroundColor( Color(50, 50, 50) )
-    tabWorld:DockPadding(4, 4, 4, 4)
-    tabWorld:Dock(FILL)
-
-    local boxCarry = tabWorld:Add("DCheckBoxLabel")
-    boxCarry:Dock(BOTTOM)
-
-    boxCarry:SetText("Rotate props while carrying them?")
-    boxCarry:SetChecked(GAMEMODE.CVars.CarryAngles:GetBool())
-
-
+    local tabPlayer = sheet:Add("HNS.Options.Player")
+    local tabWorld = sheet:Add("HNS.Options.World")
 
 
     sheet:AddSheet("Interface", tabInterface, "icon16/application_edit.png")
-    sheet:AddSheet("Player", tabPA, "icon16/user.png")
+    sheet:AddSheet("Player", tabPlayer, "icon16/user.png")
     sheet:AddSheet("World", tabWorld, "icon16/world.png")
 
 
@@ -255,30 +57,18 @@ function PANEL:Init()
     buttonConfirm:Dock(LEFT)
     buttonConfirm:SetText("Confirm")
     buttonConfirm.DoClick = function()
-
-        -- Interface
-        if selected3p then GAMEMODE.CVars.ThirdpersonMode:SetInt(selected3p) end
-
-        GAMEMODE.CVars.SpecCams:SetBool(boxSpecCams:GetChecked())
-        GAMEMODE.CVars.ShowID:SetBool(boxShowIDs:GetChecked())
-
-        -- Syntax error for some reason
-        --GAMEMODE.CVars.Gender:SetBool( {true, false}[listGender:GetSelectedID()] )
+        -- With most of the other options, we change the CVar while the user
+        -- is in the menu, keeping the changes if they click Confirm and resetting them
+        -- if they click Cancel. We don't do that with these options because
+        -- you can't really see changes to them while you're still in the menu
+        --
+        -- (Gender only updates on player respawn)
 
         -- Player
-        GAMEMODE.CVars.Gender:SetBool( tobool(listGender:GetSelectedID() - 1) )
-
-        if selectedColorHider ~= nil then
-            GAMEMODE.CVars.HiderColor:SetString(selectedColorHider)
-        end
-
-        if selectedColorSeeker ~= nil then
-            GAMEMODE.CVars.SeekerColor:SetString(selectedColorSeeker)
-        end
-
+        GAMEMODE.CVars.Gender:SetBool(tabPlayer.female)
 
         -- World
-        GAMEMODE.CVars.CarryAngles:SetBool(boxCarry:GetChecked())
+        GAMEMODE.CVars.CarryAngles:SetBool(tabWorld.carry)
 
         self:Close()
         surface.PlaySound("garrysmod/save_load3.wav")
@@ -290,6 +80,20 @@ function PANEL:Init()
     buttonCancel:Dock(RIGHT)
     buttonCancel:SetText("Cancel")
     buttonCancel.DoClick = function()
+        -- Reset CVars
+
+        -- Interface
+        GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
+
+        GAMEMODE.CVars.SpecCams:SetBool(tabInterface.ogSpecCams)
+        GAMEMODE.CVars.ShowID:SetBool(tabInterface.ogShowIDs)
+
+
+        -- Player
+        GAMEMODE.CVars.HiderColor:SetString(tabPlayer.ogColorHider)
+        GAMEMODE.CVars.SeekerColor:SetString(tabPlayer.ogColorSeeker)
+
+
         self:Close()
         surface.PlaySound("garrysmod/ui_return.wav")
     end
