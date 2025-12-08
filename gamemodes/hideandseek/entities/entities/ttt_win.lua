@@ -4,9 +4,13 @@ ENT.Base = "base_point"
 
 function ENT:AcceptInput(name, activator, caller)
    if name == "TraitorWin" then
+      if GAMEMODE.RoundState ~= ROUND_ACTIVE then return end
+
       GAMEMODE:RoundEnd(ROUND_ENDMAP, self:GetWinningTeam(ROLE_TRAITOR))
       return true
    elseif name == "InnocentWin" then
+      if GAMEMODE.RoundState ~= ROUND_ACTIVE then return end
+
       GAMEMODE:RoundEnd(ROUND_ENDMAP, self:GetWinningTeam(ROLE_INNOCENT))
       return true
    end
