@@ -34,7 +34,7 @@ function PANEL:Init()
 
         surface.PlaySound("garrysmod/ui_hover.wav")
     end
-    listGender.OnSelect = function(this, _, data)
+    listGender.OnSelect = function(this, _, _, data)
         self.female = data.female
         surface.PlaySound("garrysmod/ui_click.wav")
     end

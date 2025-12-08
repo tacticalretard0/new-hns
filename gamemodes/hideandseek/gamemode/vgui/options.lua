@@ -83,6 +83,8 @@ function PANEL:Init()
         -- Reset CVars
 
         -- Interface
+        GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
+
         GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
 
         GAMEMODE.CVars.SpecCams:SetBool(tabInterface.ogSpecCams)

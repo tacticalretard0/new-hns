@@ -6,6 +6,41 @@ function PANEL:Init()
     self:DockPadding(4, 4, 4, 4)
     self:Dock(FILL)
 
+
+
+
+    self.ogHUD = GAMEMODE.CVars.HUD:GetInt()
+
+    local labelHUD = self:Add("DLabel")
+    labelHUD:SetText("HUD style")
+    labelHUD:Dock(TOP)
+
+
+    local listHUD = self:Add("DComboBox")
+    listHUD:Dock(TOP)
+
+    for i, hud in ipairs(GAMEMODE.HUDs) do
+        listHUD:AddChoice(hud.Name, i, i == self.ogHUD)
+    end
+
+    listHUD.OnMousePressed = function(this)
+        if this:IsMenuOpen() then
+            this:CloseMenu()
+        else
+            this:OpenMenu()
+        end
+
+        surface.PlaySound("garrysmod/ui_hover.wav")
+    end
+    listHUD.OnSelect = function(this, _, _, data)
+        GAMEMODE.CVars.HUD:SetInt(data)
+        surface.PlaySound("garrysmod/ui_click.wav")
+    end
+
+
+
+
+
     self.ogSelected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
     if GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then
 
@@ -43,17 +78,21 @@ function PANEL:Init()
 
 
 
+
+
     self.ogSpecCams = GAMEMODE.CVars.SpecCams:GetBool()
 
     local boxSpecCams = self:Add("DCheckBoxLabel")
     boxSpecCams:Dock(BOTTOM)
 
-    boxSpecCams:SetText("Show spectators?")
+    boxSpecCams:SetText("Show spectator cameras?")
     boxSpecCams:SetChecked(self.ogSpecCams)
 
     boxSpecCams.OnChange = function(this, newVal)
         GAMEMODE.CVars.SpecCams:SetBool(newVal)
     end
+
+
 
 
 
