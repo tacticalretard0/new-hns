@@ -84,6 +84,7 @@ function PANEL:Init()
 
         -- Interface
         GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
+        GAMEMODE.CVars.HUDScale:SetFloat(tabInterface.ogHUDScale)
 
         GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
 

@@ -39,6 +39,31 @@ function PANEL:Init()
 
 
 
+    
+
+    self.ogHUDScale = GAMEMODE.CVars.HUDScale:GetFloat()
+
+    local labelHUDScale = self:Add("DLabel")
+    labelHUDScale:SetText("HUD scale")
+    labelHUDScale:Dock(TOP)
+    
+    local sliderHUDScale = self:Add("DNumSlider")
+    sliderHUDScale.Label:Hide()
+    sliderHUDScale:SetMinMax(1, 6)
+    sliderHUDScale:SetDecimals(2)
+    sliderHUDScale:SetValue(self.ogHUDScale)
+    sliderHUDScale:Dock(TOP)
+
+    sliderHUDScale.OnValueChanged = function(this, newVal)
+        -- Change in intervals of 0.25
+        newVal = 0.25 * math.Round(newVal / 0.25)
+        this:SetValue(newVal)
+
+        GAMEMODE.CVars.HUDScale:SetFloat(newVal)
+    end
+
+
+
 
 
     self.ogSelected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
