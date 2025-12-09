@@ -29,6 +29,7 @@ function PANEL:Init()
     label3.DoClick = function()
         local derm = AchieveLBase or NULL
         if derm:IsValid() then return end
+        vgui.Create("HNS.Achievements")
         --OpenAchievementsList()
         surface.PlaySound("garrysmod/content_downloaded.wav")
     end
