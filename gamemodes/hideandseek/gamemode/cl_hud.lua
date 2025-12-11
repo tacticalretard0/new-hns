@@ -355,9 +355,26 @@ function GM:HUDShouldDraw(element)
     return not hide[element]
 end
 
--- Blind time
+-- Blind time and hider night vision
 function GM:RenderScreenspaceEffects()
+    if self.NightVisionIsOn and LocalPlayer():Team() == TEAM_HIDE then
+        DrawColorModify({
+            ["$pp_colour_brightness"] = 0,
+            ["$pp_colour_colour"] = 1,
+            ["$pp_colour_mulr"] = 0,
+            ["$pp_colour_mulg"] = 0,
+            ["$pp_colour_mulb"] = 0,
+
+            ["$pp_colour_contrast"] = 1.5,
+            ["$pp_colour_addr"] = 120 / 2550,
+            ["$pp_colour_addg"] = 255 / 2550,
+            ["$pp_colour_addb"] = 120 / 2550
+
+        })
+    end
+
     if self.SeekerBlinded and LocalPlayer():Team() == TEAM_SEEK then
+        -- TODO: fix
         DrawColorModify({
             ["pp_colour_addr "] = 0,
             ["pp_colour_addg "] = 0,

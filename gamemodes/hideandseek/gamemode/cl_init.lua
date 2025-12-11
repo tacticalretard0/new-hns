@@ -97,11 +97,20 @@ function GM:Tick()
     local ply = LocalPlayer()
     if not IsValid(ply) or not ply.KeyDown then return end
 
-    -- Turn off flashlight clientside
-    if self.FlashlightIsOn and (ply:Team() ~= TEAM_HIDE or not self.CVars.HiderFlash:GetBool()) then
+
+
+    local hider = ply:Team() == TEAM_HIDE
+
+    -- Don't want it to stay on if they become a seeker or if it's suddenly disallowed
+    if self.FlashlightIsOn and (hider and not self.CVars.HiderFlash:GetBool() or not hider) then
         ply:RemoveEffects(EF_DIMLIGHT)
-        self.FlashlightIsOn = nil
+        self.FlashlightIsOn = false
     end
+
+    if not hider or not self.CVars.HiderNV:GetBool() then
+        self.NightVisionIsOn = false
+    end
+
 
     self:StaminaPrediction(ply, ply:KeyDown(IN_SPEED))
 
@@ -135,6 +144,24 @@ function GM:Tick()
 
         ply.SpecCamera:SetPos(ply:EyePos())
         ply.SpecCamera:SetAngles(ply:EyeAngles())
+    end
+end
+
+function GM:Think()
+    if not self.NightVisionIsOn then return end
+
+    local nvLight = DynamicLight( LocalPlayer():EntIndex() )
+
+    if nvLight then
+        nvLight.pos = LocalPlayer():GetPos() + Vector(0, 0, 30)
+        nvLight.r = 120
+        nvLight.g = 255
+        nvLight.b = 120
+        nvLight.brightness = 1
+        nvLight.size = 750
+        nvLight.decay = 750 * 5
+        nvLight.dietime = CurTime() + 1
+        nvLight.style = 0
     end
 end
 
@@ -186,18 +213,55 @@ function GM:PlayerBindPress(ply, bind, pressed)
     elseif bind == "gm_showhelp" then
         vgui.Create("HNS.Help")
     elseif bind == "impulse 100" then
-        -- Flashlight
-        -- Allowed?
-        if ply:Team() == TEAM_HIDE and self.CVars.HiderFlash:GetBool() then
+
+
+        local options = {"fl", "nv"}
+
+        if not self.CVars.HiderFlash:GetBool() then
+            table.RemoveByValue(options, "fl")
+        end
+
+        if not self.CVars.HiderNV:GetBool() then
+            table.RemoveByValue(options, "nv")
+        end
+
+
+        local which
+
+        -- Choose preference if the length is two, otherwise choose whatever value is in there
+        if #options == 1 then
+            which = options[1]
+        elseif #options == 2 then
+            which = options[self.CVars.PreferNV:GetBool() and 2 or 1]
+        end
+
+
+
+        -- If both are disallowed, then `#options` will be 0 and `which` will be nil
+        -- and both of these checks will fail
+
+        if ply:Team() == TEAM_HIDE and which == "fl" then
+            -- So that we don't end up in a state where both are on simultaneously
+            self.NightVisionIsOn = false
+
             self.FlashlightIsOn = not self.FlashlightIsOn
 
-            -- Toggle
             if self.FlashlightIsOn then
                 ply:AddEffects(EF_DIMLIGHT)
             else
                 ply:RemoveEffects(EF_DIMLIGHT)
             end
         end
+
+        if ply:Team() == TEAM_HIDE and which == "nv" then
+            self.FlashlightIsOn = false
+
+            self.NightVisionIsOn = not self.NightVisionIsOn
+
+            LocalPlayer():EmitSound("buttons/blip1.wav")
+        end
+
+
     end
 end
 

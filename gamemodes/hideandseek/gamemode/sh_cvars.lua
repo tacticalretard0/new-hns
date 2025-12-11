@@ -6,27 +6,38 @@ GM.CVars.MaxRounds = CreateConVar("has_maxrounds", 5, {FCVAR_ARCHIVE, FCVAR_NOTI
 GM.CVars.TimeLimit = CreateConVar("has_timelimit", 300, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time to seek (0 is infinite)")
 GM.CVars.EnviromentDamageAllowed = CreateConVar("has_envdmgallowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Will the map hurt players?")
 GM.CVars.BlindTime = CreateConVar("has_blindtime", 30, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Time to hide (seekers are blinded)")
+
 GM.CVars.HiderReward = CreateConVar("has_hidereward", 3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "How many points to award hiders per round won")
 GM.CVars.SeekerReward = CreateConVar("has_seekreward", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "How many points to award seekers per hider tag")
+
 GM.CVars.HiderRunSpeed = CreateConVar("has_hiderrunspeed", 320, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Speed at which hiders run at")
 GM.CVars.SeekerRunSpeed = CreateConVar("has_seekerrunspeed", 360, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Speed at which seekers run at")
 GM.CVars.HiderWalkSpeed = CreateConVar("has_hiderwalkspeed", 190, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Speed at which hiders walk at")
 GM.CVars.SeekerWalkSpeed = CreateConVar("has_seekerwalkspeed", 200, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Speed at which seekers walk at")
 GM.CVars.JumpPower = CreateConVar("has_jumppower", 210, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Force everyone jumps with")
+
 GM.CVars.ClickRange = CreateConVar("has_clickrange", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Range at which seekers can click tag")
+
 GM.CVars.ScoreboardText = CreateConVar("has_scob_text", "Light HNS", {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Text for the scoreboard (top left button)")
 GM.CVars.ScoreboardURL = CreateConVar("has_scob_url", "https://github.com/Fafy2801/light-hns", {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Link the scoreboard button will open (top left button too)")
 GM.CVars.HiderTrail = CreateConVar("has_lasthidertrail", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Put a trail on the last remaining hider.")
-GM.CVars.HiderFlash = CreateConVar("has_hiderflashlight", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable hider flashlights (only visible to them).")
+
+GM.CVars.HiderFlash = CreateConVar("has_hider_flashlight_allowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Allow hiders to use their flashlight (only visible to them)")
+GM.CVars.HiderNV = CreateConVar("has_hider_nightvis_allowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Allow hiders to use night vision (only visible to them)")
+
+GM.CVars.ThirdpersonAllowed = CreateConVar("has_thirdperson_allowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether the built-in thirdperson is allowed. Disabling this also removes the thirdperson mode buttons in the Options menu.")
+
 GM.CVars.TeamIndicators = CreateConVar("has_teamindicators", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Draw an indicator over teammates heads when they are far away.")
+
 GM.CVars.InfiniteStamina = CreateConVar("has_infinitestamina", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Enable infinite stamina.")
 GM.CVars.FirstSeeks = CreateConVar("has_firstcaughtseeks", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "First player caught will seek next round.")
+
 GM.CVars.MaxStamina = CreateConVar("has_maxstamina", 100, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Maximum ammount of stamina players can refill.")
 GM.CVars.StaminaRefill = CreateConVar("has_staminarefill", 6.6, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Rate at which stamina is filled.")
 GM.CVars.StaminaDeplete = CreateConVar("has_staminadeplete", 13.3, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Rate at which stamina is depleted.")
 GM.CVars.StaminaWait = CreateConVar("has_staminawait", 2, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "How many seconds to wait before filling stamina.")
+
 GM.CVars.MinPlayers = CreateConVar("has_minplayers", 2, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Minimum players required to start a round.")
-GM.CVars.ThirdpersonAllowed = CreateConVar("has_thirdperson_allowed", 1, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether the built-in thirdperson is allowed. Disabling this also removes the thirdperson mode buttons in the Options menu.")
 
 
 
@@ -50,6 +61,7 @@ GM.CVars.AvatarFrames = CreateClientConVar("has_avatarframes", 1, true, false)
 GM.CVars.SpecCams = CreateClientConVar("has_spec_cams", 1, true, false)
 GM.CVars.ThirdpersonMode = CreateClientConVar("has_thirdperson_mode", 2, true, false, "1 = Left; 2 = Center; 3 = Right", 1, 3)
 GM.CVars.CarryAngles = CreateClientConVar("has_carryangles", 0, true, true, "Should props rotate with your view angle when you're holding them?", 0, 1)
+GM.CVars.PreferNV = CreateClientConVar("has_prefer_nightvis", 1, true, false, "If set, pressing your flashlight button will toggle night vision instead (but only if has_hider_nightvis_allowed is set)")
 
 -- For voice derma
 GM.CVars.VoiceLoopback = GetConVar("voice_loopback")
