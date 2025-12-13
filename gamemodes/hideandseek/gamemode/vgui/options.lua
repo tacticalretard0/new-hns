@@ -83,6 +83,11 @@ function PANEL:Init()
         -- Reset CVars
 
         -- Interface
+        GAMEMODE.CVars.ShowSpeed:SetBool(tabInterface.ogShowSpeed)
+        GAMEMODE.CVars.SpeedX:SetInt(tabInterface.ogSpeedX)
+        GAMEMODE.CVars.SpeedY:SetInt(tabInterface.ogSpeedY)
+
+
         GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
         GAMEMODE.CVars.HUDScale:SetFloat(tabInterface.ogHUDScale)
 

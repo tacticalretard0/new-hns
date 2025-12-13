@@ -9,6 +9,58 @@ function PANEL:Init()
 
 
 
+    self.ogShowSpeed = GAMEMODE.CVars.ShowSpeed:GetBool()
+
+    local boxShowSpeed = self:Add("DCheckBoxLabel")
+    boxShowSpeed:SetConVar("has_showspeed")
+
+    boxShowSpeed:SetText("Show movement speed?")
+    boxShowSpeed:Dock(TOP)
+
+
+
+
+    local labelSpeedPos = self:Add("DLabel")
+    labelSpeedPos:SetText("Speed position (X, Y)")
+    labelSpeedPos:Dock(TOP)
+
+
+
+
+
+
+    local panelSpeedPos = self:Add("DPanel")
+    panelSpeedPos:SetPaintBackground(false)
+    panelSpeedPos:Dock(TOP)
+
+
+    self.ogSpeedX = GAMEMODE.CVars.SpeedX:GetInt()
+    self.ogSpeedY = GAMEMODE.CVars.SpeedY:GetInt()
+
+
+    local wangSpeedX = panelSpeedPos:Add("DNumberWang")
+    local wangSpeedY = panelSpeedPos:Add("DNumberWang")
+
+    wangSpeedX:Dock(LEFT)
+    wangSpeedY:Dock(LEFT)
+
+
+    wangSpeedX:SetMinMax(45, ScrW() - 45)
+    wangSpeedY:SetMinMax(30, ScrH() - 30)
+
+
+    -- The DCheckBoxLabel shows the right value because of the SetConVar call.
+    -- That doesn't seem to work here though
+    wangSpeedX:SetValue(self.ogSpeedX)
+    wangSpeedY:SetValue(self.ogSpeedY)
+
+    wangSpeedX:SetConVar("has_speedx")
+    wangSpeedY:SetConVar("has_speedy")
+
+
+
+
+
     self.ogHUD = GAMEMODE.CVars.HUD:GetInt()
 
     local labelHUD = self:Add("DLabel")
