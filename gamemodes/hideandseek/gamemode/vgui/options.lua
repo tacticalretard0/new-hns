@@ -91,8 +91,11 @@ function PANEL:Init()
         GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
         GAMEMODE.CVars.HUDScale:SetFloat(tabInterface.ogHUDScale)
 
+
         GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
 
+
+        GAMEMODE.CVars.ShowOnTop:SetBool(tabInterface.ogOnTop)
         GAMEMODE.CVars.SpecCams:SetBool(tabInterface.ogSpecCams)
         GAMEMODE.CVars.ShowID:SetBool(tabInterface.ogShowIDs)
 

@@ -163,12 +163,7 @@ function PANEL:Init()
     boxSpecCams:Dock(BOTTOM)
 
     boxSpecCams:SetText("Show spectator cameras?")
-    boxSpecCams:SetChecked(self.ogSpecCams)
-
-    boxSpecCams.OnChange = function(this, newVal)
-        GAMEMODE.CVars.SpecCams:SetBool(newVal)
-    end
-
+    boxSpecCams:SetConVar("has_spec_cams")
 
 
 
@@ -177,15 +172,23 @@ function PANEL:Init()
     self.ogShowIDs = GAMEMODE.CVars.ShowID:GetBool()
 
     local boxShowIDs = self:Add("DCheckBoxLabel")
-
     boxShowIDs:Dock(BOTTOM)
 
     boxShowIDs:SetText("Show other players' Steam IDs?")
-    boxShowIDs:SetChecked(self.ogShowIDs)
+    boxShowIDs:SetConVar("has_showid")
 
-    boxShowIDs.OnChange = function(this, newVal)
-        GAMEMODE.CVars.ShowID:SetBool(newVal)
-    end
+
+
+
+    self.ogOnTop = GAMEMODE.CVars.ShowOnTop:GetBool()
+
+    local boxOnTop = self:Add("DCheckBoxLabel")
+    boxOnTop:Dock(BOTTOM)
+
+    boxOnTop:SetText("Put yourself first on the scoreboard?")
+    boxOnTop:SetConVar("has_scob_ontop")
+
+
 
 
 end
