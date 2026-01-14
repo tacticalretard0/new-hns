@@ -60,8 +60,16 @@ GM.TTTConfig = {
     ["ttt_polasbase_v1"] = {
         -- Disable the meltdown thing
         [1800] = {
-            [TEAM_HIDE] = TEAM_INNOCENT,
-            [TEAM_SEEK] = TEAM_INNOCENT
+            [TEAM_HIDE] = ROLE_INNOCENT,
+            [TEAM_SEEK] = ROLE_INNOCENT
+        }
+    },
+
+    ["ttt_ants"] = {
+        -- This button spawns manhacks which go straight to hiders. Disable it
+        [2101] = {
+            [TEAM_HIDE] = ROLE_INNOCENT,
+            [TEAM_SEEK] = ROLE_INNOCENT
         }
     }
 
