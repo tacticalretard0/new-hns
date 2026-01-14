@@ -83,19 +83,21 @@ function PANEL:Init()
         -- Reset CVars
 
         -- Interface
+        GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
+
+        GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
+        GAMEMODE.CVars.HUDScale:SetFloat(tabInterface.ogHUDScale)
+
+        GAMEMODE.CVars.ScoreboardClassic:SetBool(tabInterface.ogScoreboard)
+        GAMEMODE.CVars.ShowOnTop:SetBool(tabInterface.ogOnTop)
+
         GAMEMODE.CVars.ShowSpeed:SetBool(tabInterface.ogShowSpeed)
         GAMEMODE.CVars.SpeedX:SetInt(tabInterface.ogSpeedX)
         GAMEMODE.CVars.SpeedY:SetInt(tabInterface.ogSpeedY)
 
 
-        GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
-        GAMEMODE.CVars.HUDScale:SetFloat(tabInterface.ogHUDScale)
 
 
-        GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
-
-
-        GAMEMODE.CVars.ShowOnTop:SetBool(tabInterface.ogOnTop)
         GAMEMODE.CVars.SpecCams:SetBool(tabInterface.ogSpecCams)
         GAMEMODE.CVars.ShowID:SetBool(tabInterface.ogShowIDs)
 

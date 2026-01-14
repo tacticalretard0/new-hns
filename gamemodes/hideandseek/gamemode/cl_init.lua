@@ -192,9 +192,8 @@ function GM:KeyPress(ply, key)
     if ply ~= LocalPlayer() then return end
 
     -- Scoreboard
-    if key == IN_ATTACK2 and ply:KeyDown(IN_SCORE) and IsValid(GAMEMODE.Scoreboard) then
-        GAMEMODE.Scoreboard:MakePopup()
-        GAMEMODE.Scoreboard:SetKeyboardInputEnabled(false) -- Not needed
+    if key == IN_ATTACK2 and ply:KeyDown(IN_SCORE) and IsValid(self.Scoreboard) and self.Scoreboard:IsVisible() then
+        gui.EnableScreenClicker(true)
     end
 end
 
@@ -266,21 +265,58 @@ function GM:PlayerBindPress(ply, bind, pressed)
 end
 
 function GM:ScoreboardShow()
+    local classic = GAMEMODE.CVars.ScoreboardClassic:GetBool()
+
+
     if not IsValid(self.Scoreboard) then
-        self.Scoreboard = vgui.Create("HNS.Scoreboard")
+        self.Scoreboard = vgui.Create(classic and "HNS.ScoreboardClassic" or "HNS.Scoreboard")
     end
 
+
+    timer.Create("HNS.ScoreboardRefresh", 0.8, 0, function()
+        self.Scoreboard:RefreshPlayers()
+    end)
+
+
     self.Scoreboard:Show()
-    self.Scoreboard:UpdateDimentions()
+
+    if not classic then self.Scoreboard:UpdateDimentions() end
+
 end
 
 function GM:ScoreboardHide()
     if IsValid(self.Scoreboard) then
+        -- Don't bother refreshing if the scoreboard isn't visible
+        timer.Remove("HNS.ScoreboardRefresh")
+
         self.Scoreboard:Hide()
-        self.Scoreboard:SetMouseInputEnabled(false)
-        self.Scoreboard:SetKeyboardInputEnabled(false)
+
+        gui.EnableScreenClicker(false)
     end
 end
+
+cvars.AddChangeCallback("has_scob_classic", function()
+    if not IsValid(GAMEMODE.Scoreboard) then return end
+
+    timer.Remove("HNS.ScoreboardRefresh")
+    GAMEMODE.Scoreboard:Remove()
+end)
+
+
+local function ScoreboardReSort()
+    if not IsValid(GAMEMODE.Scoreboard) or not GAMEMODE.Scoreboard:IsVisible() then return end
+
+    if GAMEMODE.CVars.ScoreboardClassic:GetBool() then
+        GAMEMODE.Scoreboard:RefreshPlayers()
+    else
+        GAMEMODE.Scoreboard:SortPlayers()
+    end
+end
+
+cvars.AddChangeCallback("has_scob_sort_reversed", ScoreboardReSort, "HNS.ScoreboardUpdate")
+cvars.AddChangeCallback("has_scob_sort", ScoreboardReSort, "HNS.ScoreboardUpdate")
+cvars.AddChangeCallback("has_scob_ontop", ScoreboardReSort, "HNS.ScoreboardUpdate")
+
 
 function GM:HASScoreboardMenu(menu, ply)
     local pnl = menu:AddOption("", function()
@@ -323,6 +359,18 @@ function GM:HASScoreboardMenu(menu, ply)
     menu:AddOption("Open Profile", function()
         ply:ShowProfile()
     end):SetIcon("icon16/user.png")
+
+
+
+    menu:AddSpacer()
+
+    menu:AddOption("Copy Name", function()
+        SetClipboardText(ply:Name())
+    end):SetIcon("icon16/shield.png")
+
+    menu:AddOption("Copy Steam ID (" .. ply:Name() .. ")", function()
+        SetClipboardText(ply:SteamID())
+    end):SetIcon("icon16/shield.png")
 end
 
 function GM:OnPlayerChat(ply, text, teamChat, dead)

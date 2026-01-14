@@ -44,9 +44,6 @@ function PANEL:Init()
         else
             GAMEMODE.CVars.Sort:SetInt(1)
         end
-
-        -- Resort
-        self:UpdatePlayers(GAMEMODE.CVars.HUDScale:GetFloat())
     end
 
     self.SortVertical = self:Add("DButton")
@@ -256,7 +253,7 @@ function PANEL:UpdateDimentions()
     }
 
     -- Players
-    self:UpdatePlayers(scale)
+    self:SortPlayers()
     -- Server name
     surface.SetFont("HNSHUD.RobotoThin")
     self.ServerName.HostNameWide, self.HostNameTall = surface.GetTextSize(GetHostName())
@@ -269,7 +266,9 @@ function PANEL:UpdateDimentions()
     self.ServerName.Scale = scale
 end
 
-function PANEL:UpdatePlayers(scale)
+function PANEL:SortPlayers()
+    local scale = GAMEMODE.CVars.HUDScale:GetFloat()
+
     -- We sort by name here
     if GAMEMODE.CVars.Sort:GetInt() == 3 then
         table.sort(self.Players, function(a, b)
@@ -324,7 +323,7 @@ function PANEL:ShadowedText(text, font, x, y, color, alignx, aligny)
 end
 
 -- Add missing players
-function PANEL:Think()
+function PANEL:RefreshPlayers()
     -- Fix players being able to see through scoreboard on seeker blind
  
     -- Loop through players
@@ -345,7 +344,7 @@ function PANEL:Think()
             end
         end
 
-        -- This will not run if a button was found
+        -- This code will only run if a button wasn't found
         -- So we add the button here
         local button = self.SP:Add("HNS.ScoreboardPlayer")
         button.Blur = self.Blur
@@ -354,13 +353,13 @@ function PANEL:Think()
         button:SetScale(GAMEMODE.CVars.HUDScale:GetFloat())
         table.insert(self.Players, button)
 
-        -- We do this in a timer so it updates properly
-        timer.Simple(1, function()
-            self:UpdatePlayers(GAMEMODE.CVars.HUDScale:GetFloat())
-        end)
+        ---- We do this in a timer so it updates properly
+        --timer.Simple(1, function()
+        --end)
 
         ::foundply::
     end
+    self:SortPlayers()
 end
 
 vgui.Register("HNS.Scoreboard", PANEL, "DFrame")
@@ -505,26 +504,16 @@ end
 function PANEL:DoClick()
     local menu = DermaMenu()
     hook.Run("HASScoreboardMenu", menu, self.Player)
-    menu:AddSpacer()
-
-    menu:AddOption("Copy Name", function()
-        SetClipboardText(self.Player:Name())
-    end):SetIcon("icon16/shield.png")
-
-    menu:AddOption("Copy Steam ID (" .. self.Player:Name() .. ")", function()
-        SetClipboardText(self.Player:SteamID())
-    end):SetIcon("icon16/shield.png")
 
     menu:Open()
 end
 
 vgui.Register("HNS.ScoreboardPlayer", PANEL, "DButton")
 
-local function resort()
-    if IsValid(GAMEMODE.Scoreboard) then
-        GAMEMODE.Scoreboard:UpdateDimentions()
-    end
-end
 
-cvars.AddChangeCallback("has_hud_scale", resort, "HNS.ScoreboardUpdate")
-cvars.AddChangeCallback("has_scob_sort_reversed", resort, "HNS.ScoreboardUpdate")
+cvars.AddChangeCallback("has_hud_scale", function()
+    if not IsValid(GAMEMODE.Scoreboard) then return end
+
+    GAMEMODE.Scoreboard:UpdateDimensions()
+end, "HNS.ScoreboardUpdate")
+

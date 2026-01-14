@@ -8,54 +8,43 @@ function PANEL:Init()
 
 
 
+    self.ogSelected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
+    if GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then
 
-    self.ogShowSpeed = GAMEMODE.CVars.ShowSpeed:GetBool()
+        local label3p = self:Add("DLabel")
+        label3p:SetText("Third person mode")
+        label3p:Dock(TOP)
 
-    local boxShowSpeed = self:Add("DCheckBoxLabel")
-    boxShowSpeed:SetConVar("has_showspeed")
+        local panel3p = self:Add("DPanel")
+        panel3p:SetPaintBackground(false)
+        panel3p:Dock(TOP)
 
-    boxShowSpeed:SetText("Show movement speed?")
-    boxShowSpeed:Dock(TOP)
+        local button3pSelected
+        for i, text in ipairs( {"Left", "Center", "Right"} ) do
+            local button3p = panel3p:Add("DButton")
+            button3p:SetText(text)
+            button3p:DockMargin(0, 0, 1, 0)
+            button3p:Dock(LEFT)
 
-
-
-
-    local labelSpeedPos = self:Add("DLabel")
-    labelSpeedPos:SetText("Speed position (X, Y)")
-    labelSpeedPos:Dock(TOP)
-
-
-
-
-
-
-    local panelSpeedPos = self:Add("DPanel")
-    panelSpeedPos:SetPaintBackground(false)
-    panelSpeedPos:Dock(TOP)
+            if i == self.ogSelected3p then
+                button3pSelected = button3p
+                button3p:SetToggle(true)
+            end
 
 
-    self.ogSpeedX = GAMEMODE.CVars.SpeedX:GetInt()
-    self.ogSpeedY = GAMEMODE.CVars.SpeedY:GetInt()
+            button3p.DoClick = function(this)
+                button3pSelected:SetToggle(false)
+                button3pSelected = this
+                GAMEMODE.CVars.ThirdpersonMode:SetInt(i)
+
+                this:SetToggle(true)
+            end
+        end
+
+    end
 
 
-    local wangSpeedX = panelSpeedPos:Add("DNumberWang")
-    local wangSpeedY = panelSpeedPos:Add("DNumberWang")
 
-    wangSpeedX:Dock(LEFT)
-    wangSpeedY:Dock(LEFT)
-
-
-    wangSpeedX:SetMinMax(45, ScrW() - 45)
-    wangSpeedY:SetMinMax(30, ScrH() - 30)
-
-
-    -- The DCheckBoxLabel shows the right value because of the SetConVar call.
-    -- That doesn't seem to work here though
-    wangSpeedX:SetValue(self.ogSpeedX)
-    wangSpeedY:SetValue(self.ogSpeedY)
-
-    wangSpeedX:SetConVar("has_speedx")
-    wangSpeedY:SetConVar("has_speedy")
 
 
 
@@ -117,41 +106,86 @@ function PANEL:Init()
 
 
 
+    self.ogScoreboard = GAMEMODE.CVars.ScoreboardClassic:GetBool()
 
-    self.ogSelected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
-    if GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then
+    local boxScoreboard = self:Add("DCheckBoxLabel")
+    boxScoreboard:Dock(TOP)
 
-        local label3p = self:Add("DLabel")
-        label3p:SetText("Third person mode")
-        label3p:Dock(TOP)
-
-        local panel3p = self:Add("DPanel")
-        panel3p:SetPaintBackground(false)
-        panel3p:Dock(TOP)
-
-        local button3pSelected
-        for i, text in ipairs( {"Left", "Center", "Right"} ) do
-            local button3p = panel3p:Add("DButton")
-            button3p:SetText(text)
-            button3p:DockMargin(0, 0, 1, 0)
-            button3p:Dock(LEFT)
-
-            if i == self.ogSelected3p then
-                button3pSelected = button3p
-                button3p:SetToggle(true)
-            end
+    boxScoreboard:SetText("Use classic scoreboard style?")
+    boxScoreboard:SetConVar("has_scob_classic")
 
 
-            button3p.DoClick = function(this)
-                button3pSelected:SetToggle(false)
-                button3pSelected = this
-                GAMEMODE.CVars.ThirdpersonMode:SetInt(i)
 
-                this:SetToggle(true)
-            end
-        end
 
-    end
+    self.ogOnTop = GAMEMODE.CVars.ShowOnTop:GetBool()
+
+    local boxOnTop = self:Add("DCheckBoxLabel")
+    boxOnTop:Dock(TOP)
+
+    boxOnTop:SetText("Put yourself first on the scoreboard?")
+    boxOnTop:SetConVar("has_scob_ontop")
+
+
+
+
+
+
+
+    self.ogShowSpeed = GAMEMODE.CVars.ShowSpeed:GetBool()
+
+    local boxShowSpeed = self:Add("DCheckBoxLabel")
+    boxShowSpeed:SetConVar("has_showspeed")
+
+    boxShowSpeed:SetText("Show movement speed?")
+
+    boxShowSpeed:Dock(TOP)
+
+
+
+
+    local labelSpeedPos = self:Add("DLabel")
+    labelSpeedPos:SetText("Speed position (X, Y)")
+    labelSpeedPos:Dock(TOP)
+
+
+
+
+
+
+    local panelSpeedPos = self:Add("DPanel")
+    panelSpeedPos:SetPaintBackground(false)
+    panelSpeedPos:Dock(TOP)
+
+
+    self.ogSpeedX = GAMEMODE.CVars.SpeedX:GetInt()
+    self.ogSpeedY = GAMEMODE.CVars.SpeedY:GetInt()
+
+
+    local wangSpeedX = panelSpeedPos:Add("DNumberWang")
+    local wangSpeedY = panelSpeedPos:Add("DNumberWang")
+
+    wangSpeedX:Dock(LEFT)
+    wangSpeedY:Dock(LEFT)
+
+
+    wangSpeedX:SetMinMax(45, ScrW() - 45)
+    wangSpeedY:SetMinMax(30, ScrH() - 30)
+
+
+    -- The DCheckBoxLabel shows the right value because of the SetConVar call.
+    -- That doesn't seem to work here though
+    wangSpeedX:SetValue(self.ogSpeedX)
+    wangSpeedY:SetValue(self.ogSpeedY)
+
+    wangSpeedX:SetConVar("has_speedx")
+    wangSpeedY:SetConVar("has_speedy")
+
+
+
+
+
+
+
 
 
 
@@ -179,14 +213,6 @@ function PANEL:Init()
 
 
 
-
-    self.ogOnTop = GAMEMODE.CVars.ShowOnTop:GetBool()
-
-    local boxOnTop = self:Add("DCheckBoxLabel")
-    boxOnTop:Dock(BOTTOM)
-
-    boxOnTop:SetText("Put yourself first on the scoreboard?")
-    boxOnTop:SetConVar("has_scob_ontop")
 
 
 
