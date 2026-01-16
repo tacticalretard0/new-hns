@@ -23,12 +23,12 @@ function GM:HASPlayerNetReady(ply)
     net.Send(ply)
 end
 
-function GM:PlayerSpawn(ply)
+GM:AddHook(function(gm, data, ply)
     -- Refresh cache
-    self.PlayersCache = {}
+    gm.PlayersCache = {}
     for _, other in ipairs(player.GetAll()) do
         if IsValid(other) then
-            table.insert(self.PlayersCache, other)
+            table.insert(gm.PlayersCache, other)
         end
     end
 
@@ -40,16 +40,16 @@ function GM:PlayerSpawn(ply)
     end
 
     if ply:Team() == TEAM_SPECTATOR then
-        self:PlayerSpawnAsSpectator(ply)
+        gm:PlayerSpawnAsSpectator(ply)
         ply:SetNoDraw(false) -- We hide spectators on PrePlayerDraw
         ply:AllowFlashlight(false)
         hook.Run("HASSpawnAsSpectator", ply)
 
-        return true
+        data.ret = true
     end
 
     -- Calling base spawn for stuff fixing
-    self.BaseClass.PlayerSpawn(self, ply)
+    gm.BaseClass.PlayerSpawn(gm, ply)
     -- Set current gender
     ply.Gender = ply:GetInfoNum("has_gender", 0) == 1
 
@@ -67,38 +67,30 @@ function GM:PlayerSpawn(ply)
 
     if ply:Team() == TEAM_HIDE then
         -- Setting desired color shade
-        ply:SetPlayerColor(self:GetTeamShade(TEAM_HIDE, hidercolor):ToVector())
+        ply:SetPlayerColor(gm:GetTeamShade(TEAM_HIDE, hidercolor):ToVector())
         -- Setting movement vars
-        ply:SetRunSpeed(self.CVars.HiderRunSpeed:GetInt())
-        ply:SetWalkSpeed(self.CVars.HiderWalkSpeed:GetInt())
+        ply:SetRunSpeed(gm.CVars.HiderRunSpeed:GetInt())
+        ply:SetWalkSpeed(gm.CVars.HiderWalkSpeed:GetInt())
         -- Block flashlight
         ply:AllowFlashlight(false)
     else
         -- Setting desired color shade
-        ply:SetPlayerColor(self:GetTeamShade(TEAM_SEEK, seekercolor):ToVector())
+        ply:SetPlayerColor(gm:GetTeamShade(TEAM_SEEK, seekercolor):ToVector())
         -- Setting movement vars
-        ply:SetRunSpeed(self.CVars.SeekerRunSpeed:GetInt())
-        ply:SetWalkSpeed(self.CVars.SeekerWalkSpeed:GetInt())
+        ply:SetRunSpeed(gm.CVars.SeekerRunSpeed:GetInt())
+        ply:SetWalkSpeed(gm.CVars.SeekerWalkSpeed:GetInt())
         -- Allow flashlight
         ply:AllowFlashlight(true)
     end
 
     -- Both teams get these
-    ply:SetJumpPower(self.CVars.JumpPower:GetInt())
+    ply:SetJumpPower(gm.CVars.JumpPower:GetInt())
     ply:SetCrouchedWalkSpeed(0.4)
     ply:GodEnable()
 
-    -- Map winner
-    --
-    -- These are also set in sh_winner.lua
-    if ply.winner then
-        ply:SetJumpPower(630)
-        ply:SetWalkSpeed(350)
-        ply:SetRunSpeed(550)
-    end
 
-    self:RoundCheck()
-end
+    gm:RoundCheck()
+end, "PlayerSpawn", {"HNS", "PlayerSpawn"})
 
 function GM:PlayerLoadout(ply)
     if ply:Team() ~= TEAM_SPECTATOR then
@@ -191,7 +183,7 @@ function GM:GetFallDamage(ply, speed)
         -- Restore jump power
         timer.Create("HNS.FallRestore." .. ply:EntIndex(), time, 1, function()
             if IsValid(ply) and ply:Team() ~= TEAM_SPECTATOR then
-                ply:SetJumpPower(ply.winner and 630 or GAMEMODE.CVars.JumpPower:GetInt())
+                ply:SetJumpPower(GAMEMODE.CVars.JumpPower:GetInt())
             end
         end)
 

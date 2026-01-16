@@ -28,7 +28,21 @@ if SERVER then
             net.WriteString(winner:Nick()) -- send the name in case the winner disconnects
         net.Broadcast()
     end
+
+
+    GM:AddHook(function(_, _, ply)
+        if not ply.winner then return end
+
+        ply:SetJumpPower(630)
+        ply:SetWalkSpeed(350)
+        ply:SetRunSpeed(550)
+    end, "PlayerSpawn", {"HNS", "WinnerSpawn"}, {
+        runMeAfter = "HNS PlayerSpawn &"
+    })
+
 end
+
+
 
 
 if CLIENT then
