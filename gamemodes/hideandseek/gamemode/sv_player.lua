@@ -45,7 +45,7 @@ GM:AddHook(function(gm, data, ply)
         ply:AllowFlashlight(false)
         hook.Run("HASSpawnAsSpectator", ply)
 
-        data.ret = true
+        return
     end
 
     -- Calling base spawn for stuff fixing
