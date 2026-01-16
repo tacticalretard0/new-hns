@@ -249,7 +249,7 @@ function PANEL:Init()
 
 
         --if LocalPlayer():Team() != TEAM_HIDE then
-        if GAMEMODE.SeekerBlinded or LocalPlayer():Team() ~= TEAM_SEEK then
+        if GAMEMODE.SeekerBlinded or LocalPlayer():Team() ~= TEAM_HIDE then
             local imagePlyTeam = framePly:Add("DImage")
             imagePlyTeam:SetPos(255,10)
             if ply:Team() == TEAM_HIDE then imagePlyTeam:SetImage("icon16/flag_blue.png") end
