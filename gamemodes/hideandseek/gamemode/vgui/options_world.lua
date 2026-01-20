@@ -1,21 +1,20 @@
-local PANEL = {}
 
-function PANEL:Init()
-    self:SetBackgroundColor( Color(50, 50, 50) )
-    self:DockPadding(4, 4, 4, 4)
-    self:Dock(FILL)
+GM:AddHook(function(_, _, tabs)
+    table.insert(tabs, {name = "World", icon = "icon16/world.png"})
 
-    self.carry = GAMEMODE.CVars.CarryAngles:GetBool()
-    local boxCarry = self:Add("DCheckBoxLabel")
-    boxCarry:Dock(BOTTOM)
+end, "HASOptionsTabs", {"HNS", "AddWorldTab"})
+
+
+
+GM:AddHook(function(_, _, panel, cvars)
+    table.insert(cvars, "has_carryangles")
+
+    local boxCarry = panel:Add("DCheckBoxLabel")
 
     boxCarry:SetText("Rotate props while carrying them?")
-    boxCarry:SetChecked(self.carry)
+    boxCarry:SetConVar("has_carryangles")
 
-    boxCarry.OnChange = function(this, newVal)
-        self.carry = newVal
-    end
-end
+    boxCarry:Dock(TOP)
 
-vgui.Register("HNS.Options.World", PANEL, "DPanel")
+end, "HASOptions_World", {"HNS", "FillWorldTab", "CarryAngles"})
 

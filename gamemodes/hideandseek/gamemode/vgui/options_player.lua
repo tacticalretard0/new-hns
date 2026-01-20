@@ -1,20 +1,25 @@
-local PANEL = {}
 
-function PANEL:Init()
-    self:SetBackgroundColor( Color(50, 50, 50) )
-    self:DockPadding(4, 4, 4, 4)
-    self:Dock(FILL)
+GM:AddHook(function(_, _, tabs)
+    table.insert(tabs, {name = "Player", icon = "icon16/user.png"})
+
+end, "HASOptionsTabs", {"HNS", "AddPlayerTab"})
 
 
-    local labelGender = self:Add("DLabel")
+
+GM:AddHook(function(_, _, panel, cvars)
+    table.insert(cvars, "has_gender")
+    local og = GAMEMODE.CVars.Gender:GetBool()
+
+
+    local labelGender = panel:Add("DLabel")
     labelGender:SetText("Gender (updates on respawn)")
     labelGender:Dock(TOP)
 
 
-    self.female = GAMEMODE.CVars.Gender:GetBool()
+
 
     -- TODO: Make this be radio buttons like the thirdperson option in the Interface tab
-    local listGender = self:Add("DComboBox")
+    local listGender = panel:Add("DComboBox")
     listGender:Dock(TOP)
 
     -- We need to wrap the bool in a table because there's a bug on this line:
@@ -22,8 +27,8 @@ function PANEL:Init()
     --
     -- It should be checking for nil-ness but instead it checks for truthiness, which means
     -- you can't add false as data
-    listGender:AddChoice("Male", {female = false}, not self.female)
-    listGender:AddChoice("Female", {female = true}, self.female)
+    listGender:AddChoice("Male", {female = false}, not og)
+    listGender:AddChoice("Female", {female = true}, og)
 
     listGender.OnMousePressed = function(this)
         if this:IsMenuOpen() then
@@ -35,17 +40,25 @@ function PANEL:Init()
         surface.PlaySound("garrysmod/ui_hover.wav")
     end
     listGender.OnSelect = function(this, _, _, data)
-        self.female = data.female
+        GAMEMODE.CVars.Gender:SetBool(data.female)
+
         surface.PlaySound("garrysmod/ui_click.wav")
     end
 
 
+    panel:Add("HNS.Hr")
+end, "HASOptions_Player", {"HNS", "FillPlayerTab", "Gender"})
 
 
 
 
-    self.ogColorHider = GAMEMODE.CVars.HiderColor:GetString()
-    self.ogColorSeeker = GAMEMODE.CVars.SeekerColor:GetString()
+GM:AddHook(function(_, _, panel, cvars)
+    table.insert(cvars, "has_hidercolor")
+    table.insert(cvars, "has_seekercolor")
+
+    local ogColorHider = GAMEMODE.CVars.HiderColor:GetString()
+    local ogColorSeeker = GAMEMODE.CVars.SeekerColor:GetString()
+
 
     local function AddColor(panel, color)
         local buttonColor = panel:Add("DColorButton")
@@ -58,12 +71,12 @@ function PANEL:Init()
         return buttonColor
     end
 
-    local labelHider = self:Add("DLabel")
-    labelHider:SetText("Hider color (" .. self.ogColorHider .. ")")
+    local labelHider = panel:Add("DLabel")
+    labelHider:SetText("Hider color (" .. ogColorHider .. ")")
     labelHider:Dock(TOP)
 
 
-    local panelHider = self:Add("DPanel")
+    local panelHider = panel:Add("DPanel")
     panelHider:SetPaintBackground(false)
     panelHider:Dock(TOP)
 
@@ -83,11 +96,11 @@ function PANEL:Init()
 
 
 
-    local labelSeeker = self:Add("DLabel")
-    labelSeeker:SetText("Seeker color (" .. self.ogColorSeeker .. ")")
+    local labelSeeker = panel:Add("DLabel")
+    labelSeeker:SetText("Seeker color (" .. ogColorSeeker .. ")")
     labelSeeker:Dock(TOP)
 
-    local panelSeeker = self:Add("DPanel")
+    local panelSeeker = panel:Add("DPanel")
     panelSeeker:SetPaintBackground(false)
     panelSeeker:Dock(TOP)
 
@@ -107,7 +120,7 @@ function PANEL:Init()
 
 
 
-    local labelPreview = self:Add("DLabel")
+    local labelPreview = panel:Add("DLabel")
     labelPreview:SetText("Selected:")
     labelPreview:Dock(TOP)
 
@@ -116,7 +129,7 @@ function PANEL:Init()
     buttonPreviewSeeker:DockMargin(2, 0, 0, 0)
     buttonPreviewSeeker:SetSize(labelPreview:GetTall(), labelPreview:GetTall())
 
-    buttonPreviewSeeker:SetColor( GAMEMODE.SeekerColors[self.ogColorSeeker] or GAMEMODE.SeekerColors.Default )
+    buttonPreviewSeeker:SetColor( GAMEMODE.SeekerColors[ogColorSeeker] or GAMEMODE.SeekerColors.Default )
 
 
 
@@ -125,9 +138,9 @@ function PANEL:Init()
     buttonPreviewHider:DockMargin(2, 0, 0, 0)
     buttonPreviewHider:SetSize(labelPreview:GetTall(), labelPreview:GetTall())
 
-    buttonPreviewHider:SetColor( GAMEMODE.HiderColors[self.ogColorHider] or GAMEMODE.HiderColors.Default )
+    buttonPreviewHider:SetColor( GAMEMODE.HiderColors[ogColorHider] or GAMEMODE.HiderColors.Default )
 
-end
 
-vgui.Register("HNS.Options.Player", PANEL, "DPanel")
+end, "HASOptions_Player", {"HNS", "FillPlayerTab", "Color"})
+
 

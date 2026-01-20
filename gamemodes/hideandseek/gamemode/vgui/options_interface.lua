@@ -1,67 +1,72 @@
-local PANEL = {}
 
-function PANEL:Init()
-    self:SetBackgroundColor( Color(50, 50, 50) )
+GM:AddHook(function(_, _, tabs)
+    table.insert(tabs, {name = "Interface", icon = "icon16/application_edit.png"})
 
-    self:DockPadding(4, 4, 4, 4)
-    self:Dock(FILL)
+end, "HASOptionsTabs", {"HNS", "AddInterfaceTab"})
 
 
 
-    self.ogSelected3p = GAMEMODE.CVars.ThirdpersonMode:GetInt()
-    if GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then
+GM:AddHook(function(_, _, panel, cvars)
+    if not GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then return end
 
-        local label3p = self:Add("DLabel")
-        label3p:SetText("Third person mode")
-        label3p:Dock(TOP)
-
-        local panel3p = self:Add("DPanel")
-        panel3p:SetPaintBackground(false)
-        panel3p:Dock(TOP)
-
-        local button3pSelected
-        for i, text in ipairs( {"Left", "Center", "Right"} ) do
-            local button3p = panel3p:Add("DButton")
-            button3p:SetText(text)
-            button3p:DockMargin(0, 0, 1, 0)
-            button3p:Dock(LEFT)
-
-            if i == self.ogSelected3p then
-                button3pSelected = button3p
-                button3p:SetToggle(true)
-            end
+    table.insert(cvars, "has_thirdperson_mode")
+    local og = GAMEMODE.CVars.ThirdpersonMode:GetInt()
 
 
-            button3p.DoClick = function(this)
-                button3pSelected:SetToggle(false)
-                button3pSelected = this
-                GAMEMODE.CVars.ThirdpersonMode:SetInt(i)
+    local label3p = panel:Add("DLabel")
+    label3p:SetText("Third person mode")
+    label3p:Dock(TOP)
 
-                this:SetToggle(true)
-            end
+    local panel3p = panel:Add("DPanel")
+    panel3p:SetPaintBackground(false)
+    panel3p:Dock(TOP)
+
+    local button3pSelected
+    for i, text in ipairs( {"Left", "Center", "Right"} ) do
+        local button3p = panel3p:Add("DButton")
+        button3p:SetText(text)
+        button3p:DockMargin(0, 0, 1, 0)
+        button3p:Dock(LEFT)
+
+        if i == og then
+            button3pSelected = button3p
+            button3p:SetToggle(true)
         end
 
+
+        button3p.DoClick = function(this)
+            button3pSelected:SetToggle(false)
+            button3pSelected = this
+            GAMEMODE.CVars.ThirdpersonMode:SetInt(i)
+
+            this:SetToggle(true)
+        end
     end
 
 
+    panel:Add("HNS.Hr")
+end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "ThirdpersonMode"})
 
 
 
 
+GM:AddHook(function(_, _, panel, cvars)
+    table.insert(cvars, "has_hud")
+    table.insert(cvars, "has_hud_scale")
+
+    local ogHUD = GAMEMODE.CVars.HUD:GetInt()
 
 
-    self.ogHUD = GAMEMODE.CVars.HUD:GetInt()
-
-    local labelHUD = self:Add("DLabel")
+    local labelHUD = panel:Add("DLabel")
     labelHUD:SetText("HUD style")
     labelHUD:Dock(TOP)
 
 
-    local listHUD = self:Add("DComboBox")
+    local listHUD = panel:Add("DComboBox")
     listHUD:Dock(TOP)
 
     for i, hud in ipairs(GAMEMODE.HUDs) do
-        listHUD:AddChoice(hud.Name, i, i == self.ogHUD)
+        listHUD:AddChoice(hud.Name, i, i == ogHUD)
     end
 
     listHUD.OnMousePressed = function(this)
@@ -80,19 +85,20 @@ function PANEL:Init()
 
 
 
-    
 
-    self.ogHUDScale = GAMEMODE.CVars.HUDScale:GetFloat()
 
-    local labelHUDScale = self:Add("DLabel")
+    local ogScale = GAMEMODE.CVars.HUDScale:GetFloat()
+
+
+    local labelHUDScale = panel:Add("DLabel")
     labelHUDScale:SetText("HUD scale")
     labelHUDScale:Dock(TOP)
     
-    local sliderHUDScale = self:Add("DNumSlider")
+    local sliderHUDScale = panel:Add("DNumSlider")
     sliderHUDScale.Label:Hide()
     sliderHUDScale:SetMinMax(1, 6)
     sliderHUDScale:SetDecimals(2)
-    sliderHUDScale:SetValue(self.ogHUDScale)
+    sliderHUDScale:SetValue(ogScale)
     sliderHUDScale:Dock(TOP)
 
     sliderHUDScale.OnValueChanged = function(this, newVal)
@@ -104,36 +110,20 @@ function PANEL:Init()
     end
 
 
-
-
-    self.ogScoreboard = GAMEMODE.CVars.ScoreboardClassic:GetBool()
-
-    local boxScoreboard = self:Add("DCheckBoxLabel")
-    boxScoreboard:Dock(TOP)
-
-    boxScoreboard:SetText("Use classic scoreboard style?")
-    boxScoreboard:SetConVar("has_scob_classic")
+    panel:Add("HNS.Hr")
+end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "HUD"})
 
 
 
 
-    self.ogOnTop = GAMEMODE.CVars.ShowOnTop:GetBool()
-
-    local boxOnTop = self:Add("DCheckBoxLabel")
-    boxOnTop:Dock(TOP)
-
-    boxOnTop:SetText("Put yourself first on the scoreboard?")
-    boxOnTop:SetConVar("has_scob_ontop")
+GM:AddHook(function(_, _, panel, cvars)
+    --local og = GAMEMODE.CVars.ShowSpeed:GetBool()
+    table.insert(cvars, "has_showspeed")
+    table.insert(cvars, "has_speedx")
+    table.insert(cvars, "has_speedy")
 
 
-
-
-
-
-
-    self.ogShowSpeed = GAMEMODE.CVars.ShowSpeed:GetBool()
-
-    local boxShowSpeed = self:Add("DCheckBoxLabel")
+    local boxShowSpeed = panel:Add("DCheckBoxLabel")
     boxShowSpeed:SetConVar("has_showspeed")
 
     boxShowSpeed:SetText("Show movement speed?")
@@ -143,22 +133,22 @@ function PANEL:Init()
 
 
 
-    local labelSpeedPos = self:Add("DLabel")
+
+    local ogX = GAMEMODE.CVars.SpeedX:GetInt()
+    local ogY = GAMEMODE.CVars.SpeedY:GetInt()
+
+
+
+    local labelSpeedPos = panel:Add("DLabel")
     labelSpeedPos:SetText("Speed position (X, Y)")
     labelSpeedPos:Dock(TOP)
 
 
-
-
-
-
-    local panelSpeedPos = self:Add("DPanel")
+    local panelSpeedPos = panel:Add("DPanel")
     panelSpeedPos:SetPaintBackground(false)
     panelSpeedPos:Dock(TOP)
 
 
-    self.ogSpeedX = GAMEMODE.CVars.SpeedX:GetInt()
-    self.ogSpeedY = GAMEMODE.CVars.SpeedY:GetInt()
 
 
     local wangSpeedX = panelSpeedPos:Add("DNumberWang")
@@ -172,52 +162,78 @@ function PANEL:Init()
     wangSpeedY:SetMinMax(30, ScrH() - 30)
 
 
-    -- The DCheckBoxLabel shows the right value because of the SetConVar call.
+    -- The DCheckBoxLabel for ShowSpeed shows the right value because of the SetConVar call.
     -- That doesn't seem to work here though
-    wangSpeedX:SetValue(self.ogSpeedX)
-    wangSpeedY:SetValue(self.ogSpeedY)
+    wangSpeedX:SetValue(ogX)
+    wangSpeedY:SetValue(ogY)
 
     wangSpeedX:SetConVar("has_speedx")
     wangSpeedY:SetConVar("has_speedy")
 
 
+    panel:Add("HNS.Hr")
+end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Speed"})
+
+
+
+
+GM:AddHook(function(_, _, panel, cvars)
+    --local og = GAMEMODE.CVars.ScoreboardClassic:GetBool()
+    table.insert(cvars, "has_scob_classic")
+
+    local boxScoreboard = panel:Add("DCheckBoxLabel")
+    boxScoreboard:Dock(TOP)
+
+    boxScoreboard:SetText("Use classic scoreboard style?")
+    boxScoreboard:SetConVar("has_scob_classic")
+
+
+
+    --local og = GAMEMODE.CVars.ShowOnTop:GetBool()
+    table.insert(cvars, "has_scob_ontop")
+
+    local boxOnTop = panel:Add("DCheckBoxLabel")
+    boxOnTop:Dock(TOP)
+
+    boxOnTop:SetText("Put yourself first on the scoreboard?")
+    boxOnTop:SetConVar("has_scob_ontop")
+
+
+    panel:Add("HNS.Hr")
+end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Scoreboard"})
 
 
 
 
 
+GM:AddHook(function(_, _, panel, cvars)
+    --local og = GAMEMODE.CVars.SpecCams:GetBool()
+    table.insert(cvars, "has_spec_cams")
 
-
-
-
-
-    self.ogSpecCams = GAMEMODE.CVars.SpecCams:GetBool()
-
-    local boxSpecCams = self:Add("DCheckBoxLabel")
-    boxSpecCams:Dock(BOTTOM)
+    local boxSpecCams = panel:Add("DCheckBoxLabel")
+    boxSpecCams:Dock(TOP)
 
     boxSpecCams:SetText("Show spectator cameras?")
     boxSpecCams:SetConVar("has_spec_cams")
 
 
+    panel:Add("HNS.Hr")
+end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "SpecCams"})
 
 
 
-    self.ogShowIDs = GAMEMODE.CVars.ShowID:GetBool()
 
-    local boxShowIDs = self:Add("DCheckBoxLabel")
-    boxShowIDs:Dock(BOTTOM)
+
+GM:AddHook(function(_, _, panel, cvars)
+    --local og = GAMEMODE.CVars.ShowID:GetBool()
+    table.insert(cvars, "has_showid")
+
+    local boxShowIDs = panel:Add("DCheckBoxLabel")
+    boxShowIDs:Dock(TOP)
 
     boxShowIDs:SetText("Show other players' Steam IDs?")
     boxShowIDs:SetConVar("has_showid")
 
+end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "ShowID"})
 
-
-
-
-
-
-end
-
-vgui.Register("HNS.Options.Interface", PANEL, "DPanel")
 

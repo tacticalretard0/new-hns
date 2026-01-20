@@ -28,19 +28,33 @@ function PANEL:Init()
 
 
 
-    local tabInterface = sheet:Add("HNS.Options.Interface")
-    --tabInterface.Paint = function(this)
-    --    surface.SetDrawColor(50, 50, 50, 255)
-    --    surface.DrawRect(0, 0, this:GetWide(), this:GetTall())
-    --end
-
-    local tabPlayer = sheet:Add("HNS.Options.Player")
-    local tabWorld = sheet:Add("HNS.Options.World")
+    local tabs = {}
+    hook.Run("HASOptionsTabs", tabs)
 
 
-    sheet:AddSheet("Interface", tabInterface, "icon16/application_edit.png")
-    sheet:AddSheet("Player", tabPlayer, "icon16/user.png")
-    sheet:AddSheet("World", tabWorld, "icon16/world.png")
+    local cvarsToSave = {}
+
+    for _, tab in ipairs(tabs) do
+
+        local panel = self:Add("DPanel")
+
+        panel:SetBackgroundColor( Color(50, 50, 50) )
+        panel:DockPadding(4, 4, 4, 4)
+        panel:Dock(FILL)
+
+
+        hook.Run("HASOptions_" .. tab.name, panel, cvarsToSave)
+
+
+        sheet:AddSheet(tab.name, panel, tab.icon)
+    end
+
+
+    local ogCVars = {}
+    for _, cvar in ipairs(cvarsToSave) do
+        ogCVars[cvar] = GetConVar(cvar):GetString()
+    end
+
 
 
 
@@ -57,18 +71,6 @@ function PANEL:Init()
     buttonConfirm:Dock(LEFT)
     buttonConfirm:SetText("Confirm")
     buttonConfirm.DoClick = function()
-        -- With most of the other options, we change the CVar while the user
-        -- is in the menu, keeping the changes if they click Confirm and resetting them
-        -- if they click Cancel. We don't do that with these options because
-        -- you can't really see changes to them while you're still in the menu
-        --
-        -- (Gender only updates on player respawn)
-
-        -- Player
-        GAMEMODE.CVars.Gender:SetBool(tabPlayer.female)
-
-        -- World
-        GAMEMODE.CVars.CarryAngles:SetBool(tabWorld.carry)
 
         self:Close()
         surface.PlaySound("garrysmod/save_load3.wav")
@@ -82,30 +84,9 @@ function PANEL:Init()
     buttonCancel.DoClick = function()
         -- Reset CVars
 
-        -- Interface
-        GAMEMODE.CVars.ThirdpersonMode:SetInt(tabInterface.ogSelected3p)
-
-        GAMEMODE.CVars.HUD:SetInt(tabInterface.ogHUD)
-        GAMEMODE.CVars.HUDScale:SetFloat(tabInterface.ogHUDScale)
-
-        GAMEMODE.CVars.ScoreboardClassic:SetBool(tabInterface.ogScoreboard)
-        GAMEMODE.CVars.ShowOnTop:SetBool(tabInterface.ogOnTop)
-
-        GAMEMODE.CVars.ShowSpeed:SetBool(tabInterface.ogShowSpeed)
-        GAMEMODE.CVars.SpeedX:SetInt(tabInterface.ogSpeedX)
-        GAMEMODE.CVars.SpeedY:SetInt(tabInterface.ogSpeedY)
-
-
-
-
-        GAMEMODE.CVars.SpecCams:SetBool(tabInterface.ogSpecCams)
-        GAMEMODE.CVars.ShowID:SetBool(tabInterface.ogShowIDs)
-
-
-        -- Player
-        GAMEMODE.CVars.HiderColor:SetString(tabPlayer.ogColorHider)
-        GAMEMODE.CVars.SeekerColor:SetString(tabPlayer.ogColorSeeker)
-
+        for cvar, og in pairs(ogCVars) do
+            GetConVar(cvar):SetString(og)
+        end
 
         self:Close()
         surface.PlaySound("garrysmod/ui_return.wav")
