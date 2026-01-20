@@ -144,7 +144,7 @@ local function BuildGraphs(gm)
 
         -- Connect nodes
         for id, hook in ipairs(list) do
-            local hookNode = graphs[event][hook.id]
+            local hookNode = graphs[event][id]
 
             -- runMeAfter
             for _, otherHook in ipairs(gm:QueryHooks(hook.constraints.runMeAfter)) do
@@ -154,10 +154,10 @@ local function BuildGraphs(gm)
                 local otherHookNode = graphs[event][otherHook.id]
 
                 -- Don't do anything if the connection already exists for some reason
-                if otherHookNode.andThen[id] then continue end
+                if table.HasValue(otherHookNode.andThen, id) then continue end
 
                 hookNode.indegree = hookNode.indegree + 1
-                otherHookNode.andThen[id] = true
+                table.insert(otherHookNode.andThen, id)
             end
 
 
@@ -168,10 +168,10 @@ local function BuildGraphs(gm)
 
                 local otherHookNode = graphs[event][otherHook.id]
 
-                if hookNode.andThen[jd] then continue end
+                if table.HasValue(hookNode.andThen, jd) then continue end
 
                 otherHookNode.indegree = otherHookNode.indegree + 1
-                hookNode.andThen[jd] = true
+                table.insert(hookNode.andThen, jd)
             end
 
         end
@@ -198,14 +198,14 @@ local function SolveGraph(event, graph)
 
     for id, node in ipairs(graph) do
         if node.indegree ~= 0 then continue end
-        sourceNodeIds[id] = true
+        table.insert(sourceNodeIds, id)
     end
 
 
     while not table.IsEmpty(sourceNodeIds) do
-        -- Remove an arbitrary node and get its ID
-        local id = next(sourceNodeIds)
-        sourceNodeIds[id] = nil
+        -- Remove an arbitrary node from sourceNodeIds and get its ID
+        local id = sourceNodeIds[1]
+        table.remove(sourceNodeIds, 1)
 
 
         local node = graph[id]
@@ -214,14 +214,14 @@ local function SolveGraph(event, graph)
         table.insert(sequences[event], node.func)
         --table.ForceInsert(sequences[event], node.func)
 
-        for jd, _ in pairs(node.andThen) do
-            node.andThen[jd] = nil
+        for _, jd in ipairs(node.andThen) do
+            table.RemoveByValue(node.andThen, jd)
 
             local otherNode = graph[jd]
             otherNode.indegree = otherNode.indegree - 1
 
             if otherNode.indegree == 0 then
-                sourceNodeIds[jd] = true
+                table.insert(sourceNodeIds, jd)
             end
         end
 
