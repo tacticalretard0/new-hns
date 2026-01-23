@@ -235,6 +235,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
             -- So that we don't end up in a state where both are on simultaneously
             self.NightVisionIsOn = false
 
+
             self.FlashlightIsOn = not self.FlashlightIsOn
 
             if self.FlashlightIsOn then
@@ -246,6 +247,8 @@ function GM:PlayerBindPress(ply, bind, pressed)
 
         if ply:Team() == TEAM_HIDE and which == "nv" then
             self.FlashlightIsOn = false
+            ply:RemoveEffects(EF_DIMLIGHT)
+
 
             self.NightVisionIsOn = not self.NightVisionIsOn
 
