@@ -62,7 +62,14 @@ GM.CVars.AvatarFrames = CreateClientConVar("has_avatarframes", 1, true, false)
 GM.CVars.SpecCams = CreateClientConVar("has_spec_cams", 1, true, false)
 GM.CVars.ThirdpersonMode = CreateClientConVar("has_thirdperson_mode", 2, true, false, "1 = Left; 2 = Center; 3 = Right", 1, 3)
 GM.CVars.CarryAngles = CreateClientConVar("has_carryangles", 0, true, true, "Should props rotate with your view angle when you're holding them?", 0, 1)
-GM.CVars.PreferNV = CreateClientConVar("has_prefer_nightvis", 1, true, false, "If set, pressing your flashlight button will toggle night vision instead (but only if has_hider_nightvis_allowed is set)")
+
+GM.CVars.NVPreferred = CreateClientConVar("has_nightvis_preferred", 1, true, false, "If set, pressing your flashlight button will toggle night vision instead (but only if has_hider_nightvis_allowed is set)")
+GM.CVars.NVContrast = CreateClientConVar("has_nightvis_contrast", 1.5, true, false, "Night vision contrast", 0.1, 5)
+GM.CVars.NVDynLight = CreateClientConVar("has_nightvis_dynlight", 1, true, false, "Whether to emit a dynamic light when night vision is on")
+GM.CVars.NVDynLightSize = CreateClientConVar("has_nightvis_dynlight_size", 750, true, false, "The size of the dynamic light emitted by night vision", 0, 750)
+GM.CVars.NVColorR = CreateClientConVar("has_nightvis_r", 120, true, false, "Night vision color, red component", 0, 255)
+GM.CVars.NVColorG = CreateClientConVar("has_nightvis_g", 255, true, false, "Night vision color, green component", 0, 255)
+GM.CVars.NVColorB = CreateClientConVar("has_nightvis_b", 120, true, false, "Night vision color, blue component", 0, 255)
 
 -- For voice derma
 GM.CVars.VoiceLoopback = GetConVar("voice_loopback")

@@ -365,16 +365,15 @@ function GM:RenderScreenspaceEffects()
             ["$pp_colour_mulg"] = 0,
             ["$pp_colour_mulb"] = 0,
 
-            ["$pp_colour_contrast"] = 1.5,
-            ["$pp_colour_addr"] = 120 / 2550,
-            ["$pp_colour_addg"] = 255 / 2550,
-            ["$pp_colour_addb"] = 120 / 2550
+            ["$pp_colour_contrast"] = self.CVars.NVContrast:GetFloat(),
+            ["$pp_colour_addr"] = self.CVars.NVColorR:GetInt() / 2550,
+            ["$pp_colour_addg"] = self.CVars.NVColorG:GetInt() / 2550,
+            ["$pp_colour_addb"] = self.CVars.NVColorB:GetInt() / 2550
 
         })
     end
 
     if self.SeekerBlinded and LocalPlayer():Team() == TEAM_SEEK then
-        -- TODO: fix
         DrawColorModify({
             ["$pp_colour_addr"] = 0,
             ["$pp_colour_addg"] = 0,

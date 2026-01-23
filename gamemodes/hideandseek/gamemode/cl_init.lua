@@ -149,17 +149,18 @@ end
 
 function GM:Think()
     if not self.NightVisionIsOn then return end
+    if not self.CVars.NVDynLight:GetBool() then return end
 
     local nvLight = DynamicLight( LocalPlayer():EntIndex() )
 
     if nvLight then
         nvLight.pos = LocalPlayer():GetPos() + Vector(0, 0, 30)
-        nvLight.r = 120
-        nvLight.g = 255
-        nvLight.b = 120
+        nvLight.r = self.CVars.NVColorR:GetInt()
+        nvLight.g = self.CVars.NVColorG:GetInt()
+        nvLight.b = self.CVars.NVColorB:GetInt()
         nvLight.brightness = 1
-        nvLight.size = 750
-        nvLight.decay = 750 * 5
+        nvLight.size = self.CVars.NVDynLightSize:GetFloat()
+        --nvLight.decay = 750 * 5
         nvLight.dietime = CurTime() + 1
         nvLight.style = 0
     end
@@ -222,7 +223,7 @@ function GM:PlayerBindPress(ply, bind, pressed)
         if #options == 1 then
             which = options[1]
         elseif #options == 2 then
-            which = options[self.CVars.PreferNV:GetBool() and 2 or 1]
+            which = options[self.CVars.NVPreferred:GetBool() and 2 or 1]
         end
 
 

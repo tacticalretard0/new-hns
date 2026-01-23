@@ -12,6 +12,7 @@ function PANEL:Init()
 
     --self:SetSize(300,300)
     self:SetSize(350,400)
+    --self:SetSize(350,450)
     self:SetPos(45,ScrH()/2.5)
     self:SetTitle("Hide and Seek - Options")
     self:SetScreenLock(true)
