@@ -1,5 +1,11 @@
 include("sh_init.lua")
 
+
+
+-- NOTE: GM:SolveHooks() is called at the end of this file
+
+
+
 function GM:PlayerStartVoice(ply)
     if not IsValid(ply) then return end
 
@@ -76,7 +82,7 @@ net.Receive("HNS.PlayerEvent", function()
     end
 end)
 
-function GM:InitPostEntity()
+GM:AddHook(function(gm)
     -- Notify the server that we are ready to receive net messages
     net.Start("HNS.PlayerNetReady")
     net.SendToServer()
@@ -84,13 +90,13 @@ function GM:InitPostEntity()
     vgui.Create("HNS.Help")
     LocalPlayer().Stamina = 100
     -- Voice derma
-    self.VoiceContainer = vgui.Create("HNS.VoiceContainer")
+    gm.VoiceContainer = vgui.Create("HNS.VoiceContainer")
 
-    self.BlurMaterial = Material("pp/blurscreen")
+    gm.BlurMaterial = Material("pp/blurscreen")
 
     -- From TTT cl_init.lua
     timer.Create("tbutton_cache_ents", 1, 0, function() TBHUD:CacheEnts() end)
-end
+end, "InitPostEntity", {"HNS", "NetReady"})
 
 local specCams = {}
 function GM:Tick()
@@ -324,4 +330,9 @@ hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
         return true
     end
 end)
+
+
+
+
+GM:SolveHooks()
 

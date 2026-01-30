@@ -1,12 +1,9 @@
-DeriveGamemode("base")
+DeriveGamemode("sandbox")
 
 GM.Name = "New Hide and Seek"
 GM.Author = "Fafy"
 GM.Email = ""
 
-
-
--- NOTE: GM:SolveHooks() is called at the end of this file
 
 
 
@@ -46,6 +43,7 @@ AddCSLuaFile("ttt/cl_tbuttons.lua")
 AddCSLuaFile("sh_hooksystem.lua")
 AddCSLuaFile("sh_cvars.lua")
 AddCSLuaFile("sh_colors.lua")
+AddCSLuaFile("sh_sandbox.lua")
 AddCSLuaFile("sh_roundmanager.lua")
 AddCSLuaFile("sh_winner.lua")
 AddCSLuaFile("ttt/sh_util.lua")
@@ -58,6 +56,7 @@ AddCSLuaFile("ttt/sh_config.lua")
 include("sh_hooksystem.lua")
 include("sh_cvars.lua")
 include("sh_colors.lua")
+include("sh_sandbox.lua")
 include("sh_roundmanager.lua")
 include("sh_winner.lua")
 include("ttt/sh_util.lua")
@@ -286,9 +285,4 @@ function PLAYER:GetStamina()
 
     return self.Stamina
 end
-
-
-
-
-GM:SolveHooks()
 

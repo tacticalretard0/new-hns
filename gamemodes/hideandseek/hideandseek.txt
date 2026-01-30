@@ -1,6 +1,6 @@
 "New Hide and Seek"
 {
-	"base"			"base"
+	"base"			"sandbox"
 	"title"			"New Hide and Seek"
 	"maps"			"^hns_"
 	"menusystem"	"1"

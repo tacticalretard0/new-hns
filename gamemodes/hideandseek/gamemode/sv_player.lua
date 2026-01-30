@@ -48,8 +48,16 @@ GM:AddHook(function(gm, data, ply)
         return
     end
 
+
     -- Calling base spawn for stuff fixing
-    gm.BaseClass.PlayerSpawn(gm, ply)
+    --
+    -- Call the base gamemode's PlayerSpawn instead of sandbox's.
+    -- Sandbox runs player_manager.SetPlayerClass which messes with movement
+    DEFINE_BASECLASS("gamemode_base")
+    BaseClass.PlayerSpawn(gm, ply)
+    --gm.BaseClass.BaseClass.PlayerSpawn(gm, ply) -- equally valid
+
+
     -- Set current gender
     ply.Gender = ply:GetInfoNum("has_gender", 0) == 1
 
@@ -93,14 +101,25 @@ GM:AddHook(function(gm, data, ply)
 end, "PlayerSpawn", {"HNS", "PlayerSpawn"})
 
 function GM:PlayerLoadout(ply)
-    if ply:Team() ~= TEAM_SPECTATOR then
-        ply:Give("has_hands")
-    end
+    if ply:Team() == TEAM_SPECTATOR then return end
+
+    ply:Give("has_hands")
+
+
+    if not hook.Run("CanPlayerSandbox", ply) then return end
+    ply:Give("gmod_tool")
+    ply:Give("weapon_physgun")
 end
 
 function GM:PlayerCanPickupWeapon(ply, weapon)
+    if ply:Team() == TEAM_SPECTATOR then return false end
+
+
+    if hook.Run("CanPlayerSandbox", ply) then return true end
+
+
     -- Allow pickup after round
-    return ply:Team() ~= TEAM_SPECTATOR and (weapon:GetClass() == "has_hands" or self.RoundState ~= ROUND_ACTIVE)
+    return weapon:GetClass() == "has_hands" or self.RoundState ~= ROUND_ACTIVE
 end
 
 function GM:PlayerDisconnected(ply)

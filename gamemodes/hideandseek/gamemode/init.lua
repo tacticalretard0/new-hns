@@ -1,5 +1,11 @@
 include("sh_init.lua")
 
+
+
+-- NOTE: GM:SolveHooks() is called at the end of this file
+
+
+
 util.AddNetworkString("HNS.Say")
 util.AddNetworkString("HNS.PlaySound")
 util.AddNetworkString("HNS.JoinPlaying")
@@ -56,4 +62,9 @@ function GM:BroadcastEvent(ply, event)
     net.WriteEntity(ply)
     net.Broadcast()
 end
+
+
+
+
+GM:SolveHooks()
 

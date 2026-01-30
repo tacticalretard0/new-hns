@@ -343,7 +343,7 @@ end
 -- Hook will run first, so other addons paint ON TOP of the black screen, thus being visible
 -- Hide elements
 local hide = {
-    ["CHudWeaponSelection"] = true,
+--    ["CHudWeaponSelection"] = true,
     ["CHudHealth"] = true,
     ["CHudBattery"] = true,
     ["CHudPoisonDamageIndicator"] = true,
