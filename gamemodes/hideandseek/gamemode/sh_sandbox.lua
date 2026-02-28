@@ -45,8 +45,20 @@ if CLIENT then
 
 
 
+    local function SuppressSandboxStuff()
+        -- Don't open the spawn menu when F1 is pressed
+        -- Run in a timer because sandbox uses a 0 second timer to add the hook for some reason
+        --
+        -- Stack trace from where the hook is added:
+        -- https://github.com/Facepunch/garrysmod/blob/a2ef0633fa8635e42481a33de6c3add17de859ce/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu/content/contentsearch.lua#L78
+        -- https://github.com/Facepunch/garrysmod/blob/a2ef0633fa8635e42481a33de6c3add17de859ce/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu/content/contentsidebar.lua#L22
+        -- https://github.com/Facepunch/garrysmod/blob/a2ef0633fa8635e42481a33de6c3add17de859ce/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu/content/content.lua#L53
+        -- https://github.com/Facepunch/garrysmod/blob/a2ef0633fa8635e42481a33de6c3add17de859ce/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu/content/contenttypes/vehicles.lua#L83
+        -- https://github.com/Facepunch/garrysmod/blob/a2ef0633fa8635e42481a33de6c3add17de859ce/garrysmod/gamemodes/sandbox/gamemode/spawnmenu/creationmenu.lua#L48
+        timer.Simple(0.1, function() hook.Remove("StartSearch", "StartSearch") end)
 
-    local function SuppressHints()
+
+
         if hook.Run("CanPlayerSandbox", LocalPlayer()) then return end
 
         GAMEMODE:SuppressHint("Annoy1")
@@ -55,8 +67,8 @@ if CLIENT then
     end
 
     -- Needs to be on InitPostEntity because SuppressHints calls LocalPlayer
-    GM:AddHook(SuppressHints, "InitPostEntity", {"HNS", "SuppressHints"})
-    function GM:OnReloaded() SuppressHints() end
+    GM:AddHook(SuppressSandboxStuff, "InitPostEntity", {"HNS", "SuppressHints"})
+    function GM:OnReloaded() SuppressSandboxStuff() end
 end
 
 
