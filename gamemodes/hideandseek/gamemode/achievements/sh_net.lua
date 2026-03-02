@@ -27,14 +27,18 @@ if CLIENT then
 
 
         if tab["AC"] and not table.IsEmpty(tab["AC"]) then
-            GAMEMODE:AchievementCongrats(ply, achID)
+            GAMEMODE:AchCongrats(ply, achID)
 
-            for achID, _ in pairs(tab["AC"]) do GAMEMODE:AchievementMessage(ply, achID) end
+            for achID, _ in pairs(tab["AC"]) do GAMEMODE:AchMessage(ply, achID) end
         end
 
 
-        -- Everybody has a party
-        if tab["AM"] then RunConsoleCommand("act", "dance") end
+        if tab["AM"] then
+            GAMEMODE:AchMasterMessage(ply)
+
+            -- Everybody has a party
+            RunConsoleCommand("act", "dance")
+        end
 
 
     end)
@@ -42,12 +46,16 @@ if CLIENT then
 
 
     -- NOTE: should this message be sent from the server with GM:BroadcastChatWithTag?
-    function GM:AchievementMessage(ply, achID)
+    function GM:AchMessage(ply, achID)
         chat.AddText(COLOR_WHITE, "[", COLOR_HNS_TAG_ACH, "HNS", COLOR_WHITE, "] ", ply, COLOR_WHITE, " has earned ", COLOR_HNS_TAG_ACH, GAMEMODE.Achievements[achID].Name, COLOR_WHITE, ".")
     end
 
+    function GM:AchMasterMessage(ply)
+        chat.AddText(COLOR_WHITE, "[", COLOR_HNS_TAG_ACH, "HNS", COLOR_WHITE, "] ", ply, COLOR_WHITE, " has earned ", COLOR_HNS_TAG_ACH, "all", COLOR_WHITE, " of the achievements!")
+    end
 
-    function GM:AchievementCongrats(ply)
+
+    function GM:AchCongrats(ply)
         ply:EmitSound("misc/achievement_earned.wav")
 
 
