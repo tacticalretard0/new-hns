@@ -17,7 +17,7 @@ if CLIENT then
         local tab = util.JSONToTable(util.Decompress(data))
 
 
-        ply.achMaster = tab["AM"]
+        ply.achMaster = tab["AM"] or ply.achMaster
         ply.achsCompleted = table.Merge(ply.achsCompleted or {}, tab["AC"] or {})
         ply.achProgress   = table.Merge(ply.achProgress   or {}, tab["AP"] or {})
         ply.achReqs       = table.Merge(ply.achReqs       or {}, tab["AR"] or {})
