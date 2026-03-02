@@ -13,10 +13,13 @@ end
 
 concommand.Add("thirdperson_toggle", function() GAMEMODE:ToggleThirdperson() end)
 
-local view = {}
-function GM:CalcView(ply, pos, ang, fov)
-    local allowed = self.CVars.ThirdpersonAllowed:GetBool()
 
+DEFINE_BASECLASS("gamemode_base")
+function GM:CalcView(ply, pos, ang, fov)
+    local view = BaseClass.CalcView(self, ply, pos, ang, fov)
+
+
+    local allowed = self.CVars.ThirdpersonAllowed:GetBool()
     if not allowed then self.Thirdperson = false end
 
     if allowed and self.Thirdperson and ply:Alive() then
@@ -31,7 +34,8 @@ function GM:CalcView(ply, pos, ang, fov)
         end
 
         view.drawviewer = true
-        return view
     end
+
+    return view
 end
 
