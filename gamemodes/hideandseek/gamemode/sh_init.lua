@@ -50,7 +50,8 @@ AddCSLuaFile("ttt/sh_util.lua")
 AddCSLuaFile("ttt/sh_extensions.lua")
 AddCSLuaFile("_config.lua")
 AddCSLuaFile("ttt/sh_config.lua")
-
+AddCSLuaFile("achievements/sh_net.lua")
+AddCSLuaFile("achievements/sh_table.lua")
 
 -- Shared
 include("sh_hooksystem.lua")
@@ -61,9 +62,13 @@ include("sh_roundmanager.lua")
 include("sh_winner.lua")
 include("ttt/sh_util.lua")
 include("ttt/sh_extensions.lua")
+include("achievements/sh_net.lua")
+include("achievements/sh_table.lua")
 
 if SERVER then
     include("sv_player.lua")
+    include("achievements/sv_storage.lua")
+    include("achievements/sv_logic.lua")
 else
     -- Client
     include("cl_fonts.lua")

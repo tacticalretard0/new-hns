@@ -1,7 +1,7 @@
 -- Global players tab to use in has_hands (to not call player.GetAll)
 GM.PlayersCache = GAMEMODE and table.Copy(player.GetAll()) or {}
 
-function GM:PlayerInitialSpawn(ply)
+GM:AddHook(function(gm, data, ply)
     -- Don't set bots as spectators
     if ply:IsBot() then
         ply:SetTeam(TEAM_SEEK)
@@ -10,18 +10,18 @@ function GM:PlayerInitialSpawn(ply)
     end
 
     ply:SetTeam(TEAM_SPECTATOR)
-end
+end, "PlayerInitialSpawn", {"HNS", "SpectateOnSpawn"})
 
-function GM:HASPlayerNetReady(ply)
+GM:AddHook(function(gm, data, ply)
     -- Send round info
     net.Start("HNS.RoundInfo")
     net.WriteDouble(CurTime())
-    net.WriteDouble(math.abs(timer.TimeLeft("HNS.RoundTimer") or (self.CVars.TimeLimit:GetInt() + self.CVars.BlindTime:GetInt())))
-    net.WriteDouble(self.RoundLength or 0)
-    net.WriteInt(self.RoundCount, 8)
-    net.WriteUInt(self.RoundState, 3)
+    net.WriteDouble(math.abs(timer.TimeLeft("HNS.RoundTimer") or (gm.CVars.TimeLimit:GetInt() + gm.CVars.BlindTime:GetInt())))
+    net.WriteDouble(gm.RoundLength or 0)
+    net.WriteInt(gm.RoundCount, 8)
+    net.WriteUInt(gm.RoundState, 3)
     net.Send(ply)
-end
+end, "HASPlayerNetReady", {"HNS", "RoundInfo"})
 
 GM:AddHook(function(gm, data, ply)
     -- Refresh cache

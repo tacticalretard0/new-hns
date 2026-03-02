@@ -1,8 +1,12 @@
 COLOR_WHITE = Color(255, 255, 255)
+
 COLOR_HNS_TAG = Color(150, 100, 200)
 COLOR_HNS_TAG_SEEKER = Color(255, 155, 155)
 COLOR_HNS_TAG_HIDER = Color(155, 155, 255)
 COLOR_HNS_TAG_AVOID = Color(220, 20, 60)
+
+COLOR_HNS_TAG_ACH = Color(125, 255, 125)
+--COLOR_HNS_TAG_ACH = Color(220, 20, 80)
 
 GM.HiderColors = {
     ["Default"] = Color(0, 50, 175),

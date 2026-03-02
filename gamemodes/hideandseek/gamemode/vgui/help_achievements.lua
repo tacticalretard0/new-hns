@@ -35,7 +35,7 @@ function PANEL:Init()
     end
 
     --local achtotal = self.firstHelp and "?" or 0
-    local achtotal = true and "?" or 0
+    local achtotal = LocalPlayer().achsCompleted and table.Count(LocalPlayer().achsCompleted) or "?"
     --if not self.firstHelp then
     --    for k,v in pairs(AchievementList) do
     --        if LocalPlayer():GetPData("HAS_ACH_EARNED_"..k) == "true" then
@@ -49,7 +49,7 @@ function PANEL:Init()
     label4:SetColor(Color(255,255,255,255))
     label4:SetFont("DermaDefault")
     --label4:SetText("Achievements earned: "..achtotal.."/"..table.Count(AchievementList))
-    label4:SetText("Achievements earned: "..achtotal.."/".."?")
+    label4:SetText("Achievements earned: "..achtotal.."/"..GAMEMODE.AchievementsCount)
     label4:SizeToContents()
 
     local label5 = self:Add("DImage")

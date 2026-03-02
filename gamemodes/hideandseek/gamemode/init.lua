@@ -16,6 +16,8 @@ util.AddNetworkString("HNS.PlayerNetReady")
 util.AddNetworkString("HNS.RoundInfo")
 util.AddNetworkString("HNS.Winner")
 
+util.AddNetworkString("HNS.PlayerAchData")
+
 -- From TTT init.lua
 util.AddNetworkString("TTT_ConfirmUseTButton")
 

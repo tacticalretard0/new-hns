@@ -13,7 +13,12 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
 
 ## TO DO
 
-- Achievements (storage, networking, logic, achievements menu)
+- Achievements
+    - Implement logic for the achievements `topplayer`, `healthy`, `rooted`, `friendsnatcher`
+    - Rewrite the achievements menu
+    - Let players see eachother's achievements (accessed through the scoreboard)
+    - Add at least one requirements achievement, and make sure the code for req achievements works properly
+    - Add achievement master stars in the scoreboard
 - Infinite stamina in noclip
 - Infinite stamina for the map winner
 - Fix chat commands (again)
