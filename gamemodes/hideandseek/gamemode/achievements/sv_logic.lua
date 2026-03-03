@@ -125,6 +125,8 @@ GM:AddHook(function(gm, data, ply, text)
     if txt == "tickle fight" or txt == "ticklefight" then
         ply:AchComplete("ticklefight")
     end
+
+    data.ret = text
 end, "PlayerSay", {"HNS", "Achievements"})
 
 
