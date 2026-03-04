@@ -34,26 +34,20 @@ function PANEL:Init()
         surface.PlaySound("garrysmod/content_downloaded.wav")
     end
 
-    --local achtotal = self.firstHelp and "?" or 0
-    local achtotal = LocalPlayer().achsCompleted and table.Count(LocalPlayer().achsCompleted) or "?"
-    --if not self.firstHelp then
-    --    for k,v in pairs(AchievementList) do
-    --        if LocalPlayer():GetPData("HAS_ACH_EARNED_"..k) == "true" then
-    --            achtotal = achtotal+1
-    --        end
-    --    end
-    --end
+
+    -- TODO: create the help menu after the achievement data has been received, so we can know the count
+    local numAchsCompleted = LocalPlayer().achsCompleted and table.Count(LocalPlayer().achsCompleted) or "?"
+
 
     local label4 = self:Add("DLabel")
-    label4:SetPos(28,245)
-    label4:SetColor(Color(255,255,255,255))
+    label4:SetPos(28, 245)
+    label4:SetColor(COLOR_WHITE)
     label4:SetFont("DermaDefault")
-    --label4:SetText("Achievements earned: "..achtotal.."/"..table.Count(AchievementList))
-    label4:SetText("Achievements earned: "..achtotal.."/"..GAMEMODE.AchievementsCount)
+    label4:SetText("Achievements earned: " .. numAchsCompleted .. "/" .. GAMEMODE.AchievementsCount)
     label4:SizeToContents()
 
     local label5 = self:Add("DImage")
-    label5:SetPos(10,244)
+    label5:SetPos(10, 244)
     label5:SetImage("icon16/medal_gold_2.png")
     label5:SizeToContents()
 end
