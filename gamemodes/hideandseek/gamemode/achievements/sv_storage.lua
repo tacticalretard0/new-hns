@@ -241,20 +241,10 @@ GM:AddHook(function(gm, data, ply)
 end, "PlayerDisconnected", {"HNS", "WriteAchs"})
 
 
-
--- This is here because PlayerDisconnected won't always work
---
--- https://wiki.facepunch.com/gmod/GM:PlayerDisconnected
--- "BUG: This is not called in single-player or listen servers for the host."
 GM:AddHook(function(gm, data)
-
     for _, ply in ipairs(player.GetAll()) do
-        if not ply:IsListenServerHost() then continue end
-
         ply:WriteAchs()
-        break
     end
-
 end, "ShutDown", {"HNS", "WriteAchs"})
 
 
