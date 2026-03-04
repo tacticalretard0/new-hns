@@ -1,38 +1,68 @@
+--[[
+
+Classic scoreboard methods:
+    RefreshPlayers: updates and sorts the scoreboard by seamlessly destroying and recreating the scoreboard
+
+Modern scoreboard methods:
+    ArrowIcon: flip the sort arrow icon upside-down if sorting is reversed and scale it to the HUDScale preference
+    UpdateDimensions: update the sizes of elements in the scoreboard according to HUDScale, and call :ArrowIcon and :SortPlayers
+    SortPlayers: sort the player GUI elements in the scoreboard
+    RefreshPlayers: add players that are missing from the scoreboard, and call :SortPlayers
+
+
+The classic scoreboard is created when Tab is pressed and destroyed when Tab is released. It's updated by calling :RefreshPlayers which destroys and recreates it every 0.5 seconds. The classic scoreboard currently doesn't scale with HUDScale.
+
+
+The modern scoreboard has :Show and :Hide called when Tab is pressed and released. It's only created if it doesn't exist already. It's updated by calling RefreshPlayers every 0.5 seconds which simply adds new elements to the existing scoreboard and then calls :SortPlayers
+]]
+
+
+
 function GM:KeyPress(ply, key)
     if key == IN_ATTACK2 and ply:KeyDown(IN_SCORE) and IsValid(self.Scoreboard) and self.Scoreboard:IsVisible() then
         gui.EnableScreenClicker(true)
     end
 end
 
-function GM:ScoreboardShow()
-    local classic = GAMEMODE.CVars.ScoreboardClassic:GetBool()
 
+
+local function Classic()
+    return GAMEMODE.CVars.ScoreboardClassic:GetBool()
+end
+
+function GM:ScoreboardShow()
 
     if not IsValid(self.Scoreboard) then
-        self.Scoreboard = vgui.Create(classic and "HNS.ScoreboardClassic" or "HNS.Scoreboard")
+        self.Scoreboard = vgui.Create(Classic() and "HNS.ScoreboardClassic" or "HNS.Scoreboard")
     end
 
 
-    timer.Create("HNS.ScoreboardRefresh", 0.8, 0, function()
+    timer.Create("HNS.ScoreboardRefresh", 0.5, 0, function()
         self.Scoreboard:RefreshPlayers()
     end)
 
 
+    if Classic() then return end
+
     self.Scoreboard:Show()
-
-    if not classic then self.Scoreboard:UpdateDimentions() end
-
+    self.Scoreboard:UpdateDimensions()
 end
 
 function GM:ScoreboardHide()
-    if IsValid(self.Scoreboard) then
-        -- Don't bother refreshing if the scoreboard isn't visible
-        timer.Remove("HNS.ScoreboardRefresh")
+    if not IsValid(self.Scoreboard) then return end
 
+    -- Don't bother refreshing if the scoreboard isn't visible
+    timer.Remove("HNS.ScoreboardRefresh")
+
+
+    if Classic() then
+        self.Scoreboard:Remove()
+    else
         self.Scoreboard:Hide()
-
-        gui.EnableScreenClicker(false)
     end
+
+
+    gui.EnableScreenClicker(false)
 end
 
 cvars.AddChangeCallback("has_scob_classic", function()
@@ -46,16 +76,25 @@ end)
 local function ScoreboardReSort()
     if not IsValid(GAMEMODE.Scoreboard) or not GAMEMODE.Scoreboard:IsVisible() then return end
 
-    if GAMEMODE.CVars.ScoreboardClassic:GetBool() then
+    if Classic() then
         GAMEMODE.Scoreboard:RefreshPlayers()
     else
         GAMEMODE.Scoreboard:SortPlayers()
+        GAMEMODE.Scoreboard:ArrowIcon()
     end
 end
 
 cvars.AddChangeCallback("has_scob_sort_reversed", ScoreboardReSort, "HNS.ScoreboardUpdate")
 cvars.AddChangeCallback("has_scob_sort", ScoreboardReSort, "HNS.ScoreboardUpdate")
 cvars.AddChangeCallback("has_scob_ontop", ScoreboardReSort, "HNS.ScoreboardUpdate")
+
+cvars.AddChangeCallback("has_hud_scale", function()
+    if not IsValid(GAMEMODE.Scoreboard) then return end
+    if Classic() then return end
+
+    GAMEMODE.Scoreboard:UpdateDimensions()
+end, "HNS.ScoreboardUpdate")
+
 
 
 function GM:HASScoreboardMenu(menu, ply)

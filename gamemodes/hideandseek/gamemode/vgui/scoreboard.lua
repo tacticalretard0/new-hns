@@ -136,7 +136,7 @@ function PANEL:Init()
     end
 
     -- We do this last so everything is sized
-    self:UpdateDimentions()
+    self:UpdateDimensions()
 end
 
 function PANEL:Paint(w, h)
@@ -186,23 +186,8 @@ function PANEL:Paint(w, h)
     self:ShadowedText("Spectators: " .. team.NumPlayers(TEAM_SPECTATOR), "HNSHUD.RobotoThin", w - 4 * scale, 40 * scale, Color(0, 175, 100), TEXT_ALIGN_RIGHT, TEXT_ALIGN_CENTER)
 end
 
--- Resize when HUD scale is changed
-function PANEL:UpdateDimentions()
+function PANEL:ArrowIcon()
     local scale = GAMEMODE.CVars.HUDScale:GetFloat()
-    -- Padding
-    self:DockPadding(0, 48 * scale, 0, 0)
-    -- Makes the width smaller than ScrW at all times
-    self:SetSize(math.min(scale * 250, ScrW() - 50), ScrH() - 100)
-    self:Center()
-    -- Github/server button
-    self.BigButton:SetSize(110 * scale, 32 * scale)
-    -- VBar
-    self.SP.VBar:SetWide(10 * scale)
-    -- Sort modes
-    self.Sort:SetSize(40 * scale, 10 * scale)
-    self.Sort:SetPos(self:GetWide() - 50 * scale, 22 * scale)
-    self.SortVertical:SetSize(10 * scale, 10 * scale)
-    self.SortVertical:SetPos(self:GetWide() - 10 * scale, 22 * scale)
 
     -- Define sort arrow polygons
     if GAMEMODE.CVars.SortReversed:GetBool() then
@@ -251,6 +236,29 @@ function PANEL:UpdateDimentions()
             y = self.SortVertical.Shape[3].y + 1
         },
     }
+end
+
+-- Resize when HUD scale is changed
+function PANEL:UpdateDimensions()
+    local scale = GAMEMODE.CVars.HUDScale:GetFloat()
+    -- Padding
+    self:DockPadding(0, 48 * scale, 0, 0)
+    -- Makes the width smaller than ScrW at all times
+    self:SetSize(math.min(scale * 250, ScrW() - 50), ScrH() - 100)
+    self:Center()
+    -- Github/server button
+    self.BigButton:SetSize(110 * scale, 32 * scale)
+    -- VBar
+    self.SP.VBar:SetWide(10 * scale)
+    -- Sort modes
+    self.Sort:SetSize(40 * scale, 10 * scale)
+    self.Sort:SetPos(self:GetWide() - 50 * scale, 22 * scale)
+    self.SortVertical:SetSize(10 * scale, 10 * scale)
+    self.SortVertical:SetPos(self:GetWide() - 10 * scale, 22 * scale)
+
+
+    self:ArrowIcon()
+
 
     -- Players
     self:SortPlayers()
@@ -324,8 +332,7 @@ end
 
 -- Add missing players
 function PANEL:RefreshPlayers()
-    -- Fix players being able to see through scoreboard on seeker blind
- 
+
     -- Loop through players
     for _, ply in ipairs(player.GetAll()) do
         if not IsValid(ply) or ply:Team() == 0 then continue end
@@ -415,7 +422,7 @@ function PANEL:Paint(w, h)
     self:ShadowedText(self.Player:Frags(), "HNSHUD.RobotoThin", w - 44 * scale, h / 2 + 4 * scale, Color(255, 255, 255), TEXT_ALIGN_CENTER, TEXT_ALIGN_CENTER)
 
     -- Achievements master stars
-    if self.Player.AchMaster then
+    if self.Player.achMaster then
         surface.SetDrawColor(255, 255, 255, 255)
         surface.SetMaterial(self.Star)
         surface.DrawTexturedRect(w / 2 - 8, h / 2 - 16, 16, 16)
@@ -444,7 +451,7 @@ function PANEL:BackgroundOverlayColor(w, h)
     if self.Player == LocalPlayer() then
         surface.SetDrawColor(255, 255, 255, math.sin(CurTime() * 4) * 20 + 25)
         surface.DrawRect(0, 0, w, h)
-    elseif self.Player.AchMaster then
+    elseif self.Player.achMaster then
         surface.SetDrawColor(255, 255, 0, math.sin(CurTime() * 4) * 20 + 25)
         surface.DrawRect(0, 0, w, h)
     end
@@ -509,11 +516,4 @@ function PANEL:DoClick()
 end
 
 vgui.Register("HNS.ScoreboardPlayer", PANEL, "DButton")
-
-
-cvars.AddChangeCallback("has_hud_scale", function()
-    if not IsValid(GAMEMODE.Scoreboard) then return end
-
-    GAMEMODE.Scoreboard:UpdateDimensions()
-end, "HNS.ScoreboardUpdate")
 

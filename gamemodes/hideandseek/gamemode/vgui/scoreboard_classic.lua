@@ -145,22 +145,20 @@ function PANEL:Init()
 
 
 
+        framePly.Paint = function()
+            local flash = math.sin(CurTime() * 2.5) * 12 + 55
+            local col = ply.achMaster and Color(flash, flash * 0.8, 0, 200) or Color(0, 0, 0, 200)
 
-
-        -- TODO: Make achievements stuff work
-        framePly.Think = function()
-            local achflash = (math.sin(CurTime()*2.5)*12)+55
-            local acol = (ply.IsAchMaster == true) and Color(achflash,achflash*0.8,0,200) or Color(0,0,0,200)
-            framePly.Paint = function()
-                draw.RoundedBox(4,0,0,framePly:GetWide(),framePly:GetTall(),acol)
-            end
+            draw.RoundedBox(4, 0, 0, framePly:GetWide(), framePly:GetTall(), col)
         end
-        if ply.IsAchMaster == true then
-            for i=0,2 do
-                local q = (i == 1) and 113 or 111
+
+        if ply.achMaster then
+            for i=0, 2 do
+                local q = i == 1 and 113 or 111
                 local imageStars = self:Add("DImage")
-                imageStars:SetPos(ScrW()/2-352+(i*15),q+(38*n))
-                imageStars:SetSize(9,9)
+
+                imageStars:SetPos(ScrW()/2 - 352 + i*15, q + 38*n)
+                imageStars:SetSize(9, 9)
                 imageStars:SetImage("icon16/star.png")
             end
         end

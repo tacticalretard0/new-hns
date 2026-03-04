@@ -118,7 +118,7 @@ function PANEL:Init()
     AchieveLInfo1:SetFont("Trebuchet24")
     AchieveLInfo1:SetText(achtotal.."/"..table.Count(GAMEMODE.Achievements))
     AchieveLInfo1:SizeToContents()
-    local cmbar = (LocalPlayer().IsAchMaster == true) and Color(240,240,190,255) or Color(200,240,200,255)
+    local cmbar = LocalPlayer().achMaster and Color(240,240,190,255) or Color(200,240,200,255)
     local AchieveLInfo2 = self:Add("DPanel")
     AchieveLInfo2:SetPos(306,self:GetTall()-30)
     AchieveLInfo2:SetSize(self:GetWide()-316,15)
@@ -126,7 +126,7 @@ function PANEL:Init()
         draw.RoundedBox(0,0,0,AchieveLInfo2:GetWide(),AchieveLInfo2:GetTall(),Color(50,50,50,255))
         draw.RoundedBox(0,0,0,(achtotal/table.Count(GAMEMODE.Achievements)*100)*(AchieveLInfo2:GetWide()/100),AchieveLInfo2:GetTall(),cmbar)
     end
-    if LocalPlayer().IsAchMaster == true then
+    if LocalPlayer().achMaster then
         local AchieveLGoodie1 = self:Add("DImage")
         AchieveLGoodie1:SetPos(AchieveLInfo2:GetPos()-6,self:GetTall()-25)
         AchieveLGoodie1:SetImage("icon16/star.png")
