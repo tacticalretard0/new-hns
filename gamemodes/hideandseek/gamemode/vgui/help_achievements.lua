@@ -9,28 +9,27 @@ function PANEL:Init()
     end
 
     local label1 = self:Add("DLabel")
-    label1:SetPos(10,10)
-    label1:SetColor(Color(255,255,255,255))
+    label1:SetPos(10, 10)
+    label1:SetColor(COLOR_WHITE)
     label1:SetFont("DermaLarge")
     label1:SetText("Achievements!")
     label1:SizeToContents()
 
     local label2 = self:Add("DLabel")
-    label2:SetPos(10,50)
-    label2:SetColor(Color(255,255,255,255))
+    label2:SetPos(10, 50)
+    label2:SetColor(COLOR_WHITE)
     label2:SetFont("DermaDefault")
     label2:SetText("Hide and Seek now has its own achievements!\nMore achievements are bound to be added at some point, so be prepared.\n\nNow this is where things can get interesting. As you play, you're able to earn achievements!\nThese achievements can give you personal goals and make rounds more exciting.\nWhy not try to get all of the achievements? It's possible, especially when\nyour achievements are saved cross-server! This means you don't need to stay on the\nsame server to earn all of the achievements!\n\nYou can see the achievement list by typing 'has_achievements' in the console.\nOr you can press the button below to view the list.")
     label2:SizeToContents()
 
     local label3 = self:Add("DButton")
-    label3:SetSize(142,25)
-    label3:SetPos(10,205)
+    label3:SetSize(142, 25)
+    label3:SetPos(10, 205)
     label3:SetText("View Achievements")
     label3.DoClick = function()
-        local derm = AchieveLBase or NULL
-        if derm:IsValid() then return end
-        vgui.Create("HNS.Achievements")
-        --OpenAchievementsList()
+        local frameAchs = vgui.Create("HNS.Achievements")
+        frameAchs:SetPlayer(LocalPlayer())
+
         surface.PlaySound("garrysmod/content_downloaded.wav")
     end
 

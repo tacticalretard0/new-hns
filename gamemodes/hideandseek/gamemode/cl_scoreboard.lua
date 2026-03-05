@@ -140,6 +140,11 @@ function GM:HASScoreboardMenu(menu, ply)
     end):SetIcon("icon16/user.png")
 
 
+    menu:AddOption("See Achievements", function()
+        local frameAchs = vgui.Create("HNS.Achievements")
+        frameAchs:SetPlayer(ply)
+    end):SetIcon("icon16/star.png")
+
 
     menu:AddSpacer()
 

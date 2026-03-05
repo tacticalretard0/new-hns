@@ -1,6 +1,5 @@
 local PANEL = {}
 
--- TODO: Only allow one of these open at once, like with options
 
 local achsOpen = false
 
@@ -20,27 +19,47 @@ function PANEL:Init()
     self:MakePopup()
 
 
-    local scroll = self:Add("DScrollPanel")
-    scroll:SetPos(10, 33)
-    scroll:SetSize(self:GetWide() - 20, self:GetTall() - 74)
-    scroll.Paint = function()
-        draw.RoundedBox(0, 0, 0, scroll:GetWide(), scroll:GetTall(), Color(50, 50, 50))
+    self.scroll = self:Add("DScrollPanel")
+    self.scroll:SetPos(10, 33)
+    self.scroll:SetSize(self:GetWide() - 20, self:GetTall() - 74)
+    self.scroll.Paint = function()
+        draw.RoundedBox(0, 0, 0, self.scroll:GetWide(), self.scroll:GetTall(), Color(50, 50, 50))
     end
 
-    scroll:GetCanvas():DockPadding(8, 8, 8, 8)
+    self.scroll:GetCanvas():DockPadding(8, 8, 8, 8)
+
+
+    local buttonExit = self:Add("DButton")
+    buttonExit:SetPos(8, self:GetTall() - 34)
+    buttonExit:SetSize(200, 26)
+    buttonExit:SetText("Close")
+    buttonExit.DoClick = function()
+        self:Close()
+        surface.PlaySound("garrysmod/ui_click.wav")
+    end
+
+
+
+end
+
+function PANEL:SetPlayer(ply)
+    if ply ~= LocalPlayer() then
+        self:SetTitle("Hide and Seek - Achievements for " .. ply:Nick())
+    end
 
 
     for achID, ach in pairs(GAMEMODE.Achievements) do
-        local panelAch = scroll:Add("DPanel")
+        local panelAch = self.scroll:Add("DPanel")
         panelAch:Dock(TOP)
 
-        -- Note: the bottom margin doesn't seem to add any space under the last panelAch element, the top margin does though
+        -- Note: the bottom margin doesn't seem to add any space under the last panelAch element, the top margin adds space at the top though
+        -- The space we want at the bottom is added by setting the padding on the scroll canvas
         panelAch:DockMargin(0, 0, 0, 8)
-        panelAch:SetSize(scroll:GetWide() - 74, 80)
+        panelAch:SetSize(self.scroll:GetWide() - 74, 80)
 
 
         panelAch.Paint = function()
-            if LocalPlayer().achsCompleted[achID] then
+            if ply.achsCompleted[achID] then
                 draw.RoundedBox(4, 0, 0, panelAch:GetWide(), panelAch:GetTall(), Color(120, 180, 120))
             else
                 draw.RoundedBox(4, 0, 0, panelAch:GetWide(), panelAch:GetTall(), Color(140, 140, 140))
@@ -82,7 +101,7 @@ function PANEL:Init()
             labelProg:SetColor(COLOR_WHITE)
             labelProg:SetFont("DermaDefault")
 
-            local progress = ( LocalPlayer().achProgress[achID] or { ["progress"] = 0 } )["progress"]
+            local progress = ( ply.achProgress[achID] or { ["progress"] = 0 } )["progress"]
 
 
 
@@ -99,18 +118,11 @@ function PANEL:Init()
         end
     end
 
-    local buttonExit = self:Add("DButton")
-    buttonExit:SetPos(8, self:GetTall() - 34)
-    buttonExit:SetSize(200, 26)
-    buttonExit:SetText("Close")
-    buttonExit.DoClick = function()
-        self:Close()
-        surface.PlaySound("garrysmod/ui_click.wav")
-    end
 
 
 
-    local numAchsCompleted = table.Count(LocalPlayer().achsCompleted)
+
+    local numAchsCompleted = table.Count(ply.achsCompleted)
 
     local labelInfo1 = self:Add("DLabel")
     labelInfo1:SetPos(218, self:GetTall() - 34)
@@ -121,7 +133,7 @@ function PANEL:Init()
 
 
 
-    local colorProgBar = LocalPlayer().achMaster and Color(240, 240, 190) or Color(200, 240, 200)
+    local colorProgBar = ply.achMaster and Color(240, 240, 190) or Color(200, 240, 200)
 
     local panelProgBar = self:Add("DPanel")
     panelProgBar:SetPos(306, self:GetTall() - 30)
@@ -132,7 +144,7 @@ function PANEL:Init()
     end
 
 
-    if LocalPlayer().achMaster then
+    if ply.achMaster then
         -- Yay
         local imageStar1 = self:Add("DImage")
         imageStar1:SetPos(labelInfo2:GetPos() - 6, self:GetTall() - 25)
@@ -144,6 +156,7 @@ function PANEL:Init()
         imageStar2:SetImage("icon16/star.png")
         imageStar2:SizeToContents()
     end
+
 
 
 end

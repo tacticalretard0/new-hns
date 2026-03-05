@@ -122,7 +122,7 @@ function GM:PlayerCanPickupWeapon(ply, weapon)
     return weapon:GetClass() == "has_hands" or self.RoundState ~= ROUND_ACTIVE
 end
 
-function GM:PlayerDisconnected(ply)
+GM:AddHook(function(gm, data, ply)
     -- Remove from players table
     table.RemoveByValue(self.PlayersCache, ply)
 
@@ -132,7 +132,7 @@ function GM:PlayerDisconnected(ply)
     end
 
     self:RoundCheck()
-end
+end, "PlayerDisconnected", {"HNS", "SeekerAvoid"})
 
 function GM:DoPlayerDeath(ply, attacker, info)
     ply.DieFrags = ply:Frags()
