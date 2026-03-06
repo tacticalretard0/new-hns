@@ -1,11 +1,38 @@
+GM:AddHook(function(gm, data, ply)
+    -- Setup
+    ply.tranquility = 0
+    ply.conversationalist = 0
+end, "PlayerSpawn", {"HNS", "Achievements"})
 
-timer.Create("HNS.Tranquility", 5, 0, function()
+
+timer.Create("HNS.Tranquility", 1, 0, function()
     if GAMEMODE.RoundState ~= ROUND_ACTIVE then return end
 
     for _, ply in ipairs(team.GetPlayers(TEAM_HIDE)) do
-        ply:AchAddProgress("tranquility", 5)
+        ply.tranquility = ply.tranquility + 1
     end
 end)
+
+
+GM:AddHook(function(gm, data, ply)
+    if gm.RoundState ~= ROUND_ACTIVE or ply:Team() ~= TEAM_HIDE then return end
+
+    ply.conversationalist = ply.conversationalist + 1
+
+    if ply.conversationalist >= 30 then
+        ply:AchComplete("conversationalist")
+    end
+end, "HASPlayerTaunted", {"HNS", "Achievements"})
+
+
+GM:AddHook(function(gm, data)
+    for _, ply in ipairs(player.GetAll()) do
+        if ply.tranquility == nil then continue end
+        if ply.tranquility == 0 then continue end
+
+        ply:AchAddProgress("tranquility", ply.tranquility)
+    end
+end, "HASRoundEnded", {"HNS", "Achievements"})
 
 
 GM:AddHook(function(gm, data, ply, ent)
@@ -27,6 +54,7 @@ GM:AddHook(function(gm, data, ply, ent)
     end)
 end, "HASHitBreakable", {"HNS", "Achievements"})
 
+
 GM:AddHook(function(gm, data, ply, water, _, speed)
     -- Mario
     local ent = ply:GetGroundEntity()
@@ -38,26 +66,11 @@ GM:AddHook(function(gm, data, ply, water, _, speed)
     end)
 end, "OnPlayerHitGround", {"HNS", "Achievements"})
 
+
 GM:AddHook(function(gm, data, ply)
     -- Rubber legs
     ply:AchAddProgress("rubberlegs", 1)
 end, "HASPlayerFallDamage", {"HNS", "Achievements"})
-
-
-GM:AddHook(function(gm, data, ply)
-    -- Setup
-    ply.TauntsSingle = 0
-end, "PlayerSpawn", {"HNS", "Achievements"})
-
-GM:AddHook(function(gm, data, ply)
-    if gm.RoundState ~= ROUND_ACTIVE or ply:Team() ~= TEAM_HIDE then return end
-    -- Conversationalist
-    ply.TauntsSingle = ply.TauntsSingle + 1
-
-    if ply.TauntsSingle >= 30 then
-        ply:AchComplete("conversationalist")
-    end
-end, "HASPlayerTaunted", {"HNS", "Achievements"})
 
 
 GM:AddHook(function(gm, data, ply, victim)
@@ -74,6 +87,7 @@ GM:AddHook(function(gm, data, ply, victim)
         ply:AchComplete("anotherway")
     end
 end, "HASPlayerCaught", {"HNS", "Achievements"})
+
 
 GM:AddHook(function(gm, data, ply, victim)
     -- Submission
@@ -94,6 +108,7 @@ GM:AddHook(function(gm, data, ply, victim)
         ply:AchComplete("mario")
     end
 end, "HASPlayerCaughtArea", {"HNS", "Achievements"})
+
 
 GM:AddHook(function(gm, data)
     -- Crowd
