@@ -1,20 +1,28 @@
-if CLIENT then
+-- https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/net.lua#L77
+-- The number of bits needed to transmit a player's ent index
+local maxplayers_bits = math.ceil( math.log(1 + game.MaxPlayers()) / math.log(2) )
 
-    -- https://github.com/Facepunch/garrysmod/blob/master/garrysmod/lua/includes/extensions/net.lua#L77
-    -- The number of bits that's used to transmit a player's ent index
-    local maxplayers_bits = math.ceil( math.log(1 + game.MaxPlayers()) / math.log(2) )
+if CLIENT then
+    local connectingPlayers = {}
 
     net.Receive("HNS.PlayerAchData", function(len)
         local dataLenBits = len - maxplayers_bits
         local dataLenBytes = dataLenBits / 8
 
-        local ply = net.ReadPlayer()
+        local entIndex = net.ReadUInt(maxplayers_bits)
         local data = net.ReadData(dataLenBytes)
 
-        if not IsValid(ply) then return end                
-
-
         local tab = util.JSONToTable(util.Decompress(data))
+
+
+        if tab["INIT"] then
+            connectingPlayers[entIndex] = tab
+            return
+        end
+
+
+        local ply = Entity(entIndex)
+        if not IsValid(ply) then return end
 
 
         ply.achMaster = tab["AM"] or ply.achMaster
@@ -22,8 +30,6 @@ if CLIENT then
         ply.achProgress   = table.Merge(ply.achProgress   or {}, tab["AP"] or {})
         ply.achReqs       = table.Merge(ply.achReqs       or {}, tab["AR"] or {})
 
-
-        if tab["INIT"] then return end
 
 
         if tab["AC"] and not table.IsEmpty(tab["AC"]) then
@@ -42,6 +48,22 @@ if CLIENT then
 
 
     end)
+
+
+    GM:AddHook(function(gm, data)
+        for entIndex, tab in pairs(connectingPlayers) do
+            local ply = Entity(entIndex)
+            if not IsValid(ply) then continue end
+
+            ply.achMaster = tab["AM"] or ply.achMaster
+            ply.achsCompleted = table.Merge(ply.achsCompleted or {}, tab["AC"] or {})
+            ply.achProgress   = table.Merge(ply.achProgress   or {}, tab["AP"] or {})
+            ply.achReqs       = table.Merge(ply.achReqs       or {}, tab["AR"] or {})
+
+
+            connectingPlayers[entIndex] = nil
+        end
+    end, "Tick", {"HNS", "InvalidPlayerAchs"})
 
 
 
@@ -90,7 +112,6 @@ if CLIENT then
     end
 
 
-
 end
 
 if CLIENT then return end
@@ -108,7 +129,7 @@ function PLAYER:NetworkAchData(tab, init)
     local data = util.Compress(util.TableToJSON(tab))
 
     net.Start("HNS.PlayerAchData")
-        net.WritePlayer(self)
+        net.WriteUInt(self:EntIndex(), maxplayers_bits)
         net.WriteData(data)
 end
 
@@ -163,11 +184,7 @@ end, "HASAchFulfilled", {"HNS", "NetworkAchUpdate"})
 
 
 
-
-
--- A player just joined
-GM:AddHook(function(gm, data, ply)
-
+local function OnJoin(ply)
     -- Send everyone else's achievement data to the new player
     for _, ply2 in ipairs(player.GetAll()) do
         local tab = {
@@ -184,10 +201,21 @@ GM:AddHook(function(gm, data, ply)
 
         net.Send(ply)
     end
+end
 
 
-
+GM:AddHook(function(gm, data, ply)
+    OnJoin(ply)
 end, "HASPlayerNetReady", {"HNS", "NetworkAchievements"})
 
+
+-- Because HASPlayerNetReady isn't run for bots
+GM:AddHook(function(gm, data, ply)
+    if not ply:IsBot() then return end
+
+    OnJoin(ply)
+end, "PlayerInitialSpawn", {"HNS", "NetworkAchievements"}, {
+    runMeAfter = "HNS InitPlayerAchievements &"
+})
 
 
