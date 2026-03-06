@@ -33,7 +33,7 @@ if CLIENT then
 
 
         if tab["AC"] and not table.IsEmpty(tab["AC"]) then
-            GAMEMODE:AchCongrats(ply, achID)
+            GAMEMODE:AchCongrats(ply)
 
             for achID, _ in pairs(tab["AC"]) do GAMEMODE:AchMessage(ply, achID) end
         end

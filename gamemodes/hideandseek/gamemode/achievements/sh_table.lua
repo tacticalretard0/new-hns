@@ -94,11 +94,11 @@ GM.Achievements["rooted"] = {
     ImageName = "ROOTED"
 }
 
-GM.Achievements["friendsnatcher"] = {
-    Name = "Friend Snatcher",
-    Desc = "As a seeker, catch 3 friends in a single round.",
-    ImageName = "FRNDSCHR"
-}
+--GM.Achievements["friendsnatcher"] = {
+--    Name = "Friend Snatcher",
+--    Desc = "As a seeker, catch 3 friends in a single round.",
+--    ImageName = "FRNDSCHR"
+--}
 
 -- Cache count, to not call table.Count again
 GM.AchievementsCount = table.Count(GM.Achievements)

@@ -14,7 +14,7 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
 ## TO DO
 
 - Achievements
-    - Implement logic for the achievements `topplayer`, `healthy`, `rooted`, `friendsnatcher`
+    - Implement logic for the achievements `topplayer`, `rooted`, `friendsnatcher`
     - Add at least one requirements achievement, and make sure the code for req achievements works properly
 - Infinite stamina in noclip
 - Infinite stamina for the map winner

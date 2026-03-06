@@ -1,8 +1,28 @@
+local PLAYER = FindMetaTable("Player")
+
+function PLAYER:AchRoundInit()
+    -- Round-specific achievement data
+    self.tranquility = 0
+    self.conversationalist = 0
+
+    self.bike = 0
+    self.healthy = {
+        melon = false,
+        orange = false,
+        banana = false
+    }
+end
+
+GM:AddHook(function(gm, data)
+    for _, ply in ipairs(player.GetAll()) do
+        ply:AchRoundInit()
+    end
+end, "HASRoundStarted", {"HNS", "Achievements"})
+
+
 GM:AddHook(function(gm, data, ply)
-    -- Setup
-    ply.tranquility = 0
-    ply.conversationalist = 0
-end, "PlayerSpawn", {"HNS", "Achievements"})
+    ply:AchRoundInit()
+end, "PlayerInitialSpawn", {"HNS", "Achievements"})
 
 
 timer.Create("HNS.Tranquility", 1, 0, function()
@@ -146,11 +166,37 @@ end, "PlayerSay", {"HNS", "Achievements"})
 
 
 GM:AddHook(function(gm, data, ply, ent)
-    if not string.match(ent:GetClass(), "^prop_physics") then return end
+    -- NOTE: maybe only make these achievements possible during ROUND_ACTIVE?
 
-    ply.PickupTime = CurTime() + 1
-    if CurTime() >= ply.PickupTime and ent:GetModel() == "models/props_junk/bicycle01a.mdl" then
+    if not string.match(ent:GetClass(), "^prop_physics") then return end
+    local model = ent:GetModel()
+
+
+    -- Bike
+    if model == "models/props_junk/bicycle01a.mdl" then
+        -- This increases while the user is holding e
+        ply.bike = ply.bike + 1
+    end
+
+    if ply.bike >= 100 then
         ply:AchComplete("bike")
     end
+
+
+    -- Healthy
+    if model == "models/props_junk/watermelon01.mdl" then
+        ply.healthy.melon = true
+    end
+    if model == "models/props/cs_italy/orange.mdl" then
+        ply.healthy.orange = true
+    end
+    if model == "models/props/cs_italy/bananna_bunch.mdl" then
+        ply.healthy.banana = true
+    end
+
+    if ply.healthy.melon and ply.healthy.orange and ply.healthy.banana then
+        ply:AchComplete("healthy")
+    end
+
 end, "PlayerUse", {"HNS", "Achievements"})
 

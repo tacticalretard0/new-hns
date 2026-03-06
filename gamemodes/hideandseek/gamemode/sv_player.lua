@@ -157,23 +157,32 @@ local doors = {
     ["prop_door_rotating"] = true,
 }
 
-function GM:PlayerUse(ply, ent)
+GM:AddHook(function(gm, data, ply, ent)
     -- Stop spectators
-    if ply:Team() == TEAM_SPECTATOR then return false end
+    if ply:Team() == TEAM_SPECTATOR then
+        data.ret = false
+        return
+    end
 
     -- Anti door spam
     if doors[ent:GetClass()] then
         -- Stop with 1 sec delay
-        if ent.LastDoorToggle and CurTime() <= ent.LastDoorToggle + 1 then return false end
+        if ent.LastDoorToggle and CurTime() <= ent.LastDoorToggle + 1 then
+            data.ret = false
+            return
+        end
         -- Register last time
         ent.LastDoorToggle = CurTime()
     end
 
     -- Prevent use when running
-    if ply:IsSprinting() and (ent:GetClass() == "prop_physics" or ent:GetClass() == "prop_physics_multiplayer") then return false end
+    if ply:IsSprinting() and (ent:GetClass() == "prop_physics" or ent:GetClass() == "prop_physics_multiplayer") then
+        data.ret = false
+        return
+    end
 
-    return true
-end
+    data.ret = true
+end, "PlayerUse", {"HNS", "MainPlayerUse"})
 
 -- I think a GMod update messed up prop carrying at one point.
 -- This recreates it, but it still might be kinda weird
