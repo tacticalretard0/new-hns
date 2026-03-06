@@ -88,11 +88,11 @@ GM.Achievements["healthy"] = {
     ImageName = "HEALTHY"
 }
 
-GM.Achievements["rooted"] = {
-    Name = "Rooted",
-    Desc = "As a hider, survive a round by not setting foot out of your hiding spot.",
-    ImageName = "ROOTED"
-}
+--GM.Achievements["rooted"] = {
+--    Name = "Rooted",
+--    Desc = "As a hider, survive a round by not setting foot out of your hiding spot.",
+--    ImageName = "ROOTED"
+--}
 
 --GM.Achievements["friendsnatcher"] = {
 --    Name = "Friend Snatcher",

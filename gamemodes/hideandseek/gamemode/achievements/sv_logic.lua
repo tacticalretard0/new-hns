@@ -200,3 +200,8 @@ GM:AddHook(function(gm, data, ply, ent)
 
 end, "PlayerUse", {"HNS", "Achievements"})
 
+
+GM:AddHook(function(gm, data, ply)
+    ply:AchAddProgress("topplayer", 1)
+end, "HASPlayerWon", {"HNS", "Achievements"})
+
