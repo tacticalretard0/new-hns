@@ -26,12 +26,10 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
     - Don't let blind seekers press traitor buttons. Could also prevent traitor buttons from being used at all during blind time
     - A configuration system located in a text file instead of a Lua file, which would be easier for people to edit
 - GUI / HUD
-    - Options menu toggle for the CVar `has_avatarframes`
     - Bhop counter and options for its position
     - Buttons in the options menu to reset CVars to their default values
     - Use radio buttons for gender selection in the options menu
     - Option to use GMod's default voice indicators
     - Server-side CVar for allowing / disallowing team indicators, and client-side preference CVar for whether or not to draw them
-    - Improve scoreboard refreshing, showing, and hiding
     - Update some of the text in the help menu
 

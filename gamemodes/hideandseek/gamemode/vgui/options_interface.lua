@@ -6,11 +6,11 @@ end, "HASOptionsTabs", {"HNS", "AddInterfaceTab"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
-    if not GAMEMODE.CVars.ThirdpersonAllowed:GetBool() then return end
+GM:AddHook(function(gm, _, panel, cvars)
+    if not gm.CVars.ThirdpersonAllowed:GetBool() then return end
 
     table.insert(cvars, "has_thirdperson_mode")
-    local og = GAMEMODE.CVars.ThirdpersonMode:GetInt()
+    local og = gm.CVars.ThirdpersonMode:GetInt()
 
 
     local label3p = panel:Add("DLabel")
@@ -37,7 +37,7 @@ GM:AddHook(function(_, _, panel, cvars)
         button3p.DoClick = function(this)
             button3pSelected:SetToggle(false)
             button3pSelected = this
-            GAMEMODE.CVars.ThirdpersonMode:SetInt(i)
+            gm.CVars.ThirdpersonMode:SetInt(i)
 
             this:SetToggle(true)
         end
@@ -50,11 +50,11 @@ end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "ThirdpersonMode"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(gm, _, panel, cvars)
     table.insert(cvars, "has_hud")
     table.insert(cvars, "has_hud_scale")
 
-    local ogHUD = GAMEMODE.CVars.HUD:GetInt()
+    local ogHUD = gm.CVars.HUD:GetInt()
 
 
     local labelHUD = panel:Add("DLabel")
@@ -65,7 +65,7 @@ GM:AddHook(function(_, _, panel, cvars)
     local listHUD = panel:Add("DComboBox")
     listHUD:Dock(TOP)
 
-    for i, hud in ipairs(GAMEMODE.HUDs) do
+    for i, hud in ipairs(gm.HUDs) do
         listHUD:AddChoice(hud.Name, i, i == ogHUD)
     end
 
@@ -79,7 +79,7 @@ GM:AddHook(function(_, _, panel, cvars)
         surface.PlaySound("garrysmod/ui_hover.wav")
     end
     listHUD.OnSelect = function(this, _, _, data)
-        GAMEMODE.CVars.HUD:SetInt(data)
+        gm.CVars.HUD:SetInt(data)
         surface.PlaySound("garrysmod/ui_click.wav")
     end
 
@@ -87,7 +87,7 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    local ogScale = GAMEMODE.CVars.HUDScale:GetFloat()
+    local ogScale = gm.CVars.HUDScale:GetFloat()
 
 
     local labelHUDScale = panel:Add("DLabel")
@@ -106,7 +106,7 @@ GM:AddHook(function(_, _, panel, cvars)
         newVal = 0.25 * math.Round(newVal / 0.25)
         this:SetValue(newVal)
 
-        GAMEMODE.CVars.HUDScale:SetFloat(newVal)
+        gm.CVars.HUDScale:SetFloat(newVal)
     end
 
 
@@ -116,8 +116,8 @@ end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "HUD"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
-    --local og = GAMEMODE.CVars.ShowSpeed:GetBool()
+GM:AddHook(function(gm, _, panel, cvars)
+    --local og = gm.CVars.ShowSpeed:GetBool()
     table.insert(cvars, "has_showspeed")
     table.insert(cvars, "has_speedx")
     table.insert(cvars, "has_speedy")
@@ -134,8 +134,8 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    local ogX = GAMEMODE.CVars.SpeedX:GetInt()
-    local ogY = GAMEMODE.CVars.SpeedY:GetInt()
+    local ogX = gm.CVars.SpeedX:GetInt()
+    local ogY = gm.CVars.SpeedY:GetInt()
 
 
 
@@ -177,8 +177,8 @@ end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Speed"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
-    --local og = GAMEMODE.CVars.ScoreboardClassic:GetBool()
+GM:AddHook(function(gm, _, panel, cvars)
+    --local og = gm.CVars.ScoreboardClassic:GetBool()
     table.insert(cvars, "has_scob_classic")
 
     local boxScoreboard = panel:Add("DCheckBoxLabel")
@@ -189,7 +189,7 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    --local og = GAMEMODE.CVars.ShowOnTop:GetBool()
+    --local og = gm.CVars.ShowOnTop:GetBool()
     table.insert(cvars, "has_scob_ontop")
 
     local boxOnTop = panel:Add("DCheckBoxLabel")
@@ -199,6 +199,17 @@ GM:AddHook(function(_, _, panel, cvars)
     boxOnTop:SetConVar("has_scob_ontop")
 
 
+
+
+    table.insert(cvars, "has_avatarframes")
+
+    local boxFrames = panel:Add("DCheckBoxLabel")
+    boxFrames:Dock(TOP)
+
+    boxFrames:SetText("Show Steam avatar frames?")
+    boxFrames:SetConVar("has_avatarframes")
+
+
     panel:Add("HNS.Hr")
 end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Scoreboard"})
 
@@ -206,8 +217,8 @@ end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Scoreboard"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
-    --local og = GAMEMODE.CVars.SpecCams:GetBool()
+GM:AddHook(function(gm, _, panel, cvars)
+    --local og = gm.CVars.SpecCams:GetBool()
     table.insert(cvars, "has_spec_cams")
 
     local boxSpecCams = panel:Add("DCheckBoxLabel")
@@ -224,8 +235,8 @@ end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "SpecCams"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
-    --local og = GAMEMODE.CVars.ShowID:GetBool()
+GM:AddHook(function(gm, _, panel, cvars)
+    --local og = gm.CVars.ShowID:GetBool()
     table.insert(cvars, "has_showid")
 
     local boxShowIDs = panel:Add("DCheckBoxLabel")
