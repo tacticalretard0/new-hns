@@ -99,7 +99,7 @@ GM:AddHook(function(gm)
 end, "InitPostEntity", {"HNS", "NetReady"})
 
 local specCams = {}
-function GM:Tick()
+GM:AddHook(function(gm)
     local ply = LocalPlayer()
     if not IsValid(ply) or not ply.KeyDown then return end
 
@@ -108,21 +108,21 @@ function GM:Tick()
     local hider = ply:Team() == TEAM_HIDE
 
     -- Don't want it to stay on if they become a seeker or if it's suddenly disallowed
-    if self.FlashlightIsOn and (hider and not self.CVars.HiderFlash:GetBool() or not hider) then
+    if gm.FlashlightIsOn and (hider and not gm.CVars.HiderFlash:GetBool() or not hider) then
         ply:RemoveEffects(EF_DIMLIGHT)
-        self.FlashlightIsOn = false
+        gm.FlashlightIsOn = false
     end
 
-    if not hider or not self.CVars.HiderNV:GetBool() then
-        self.NightVisionIsOn = false
+    if not hider or not gm.CVars.HiderNV:GetBool() then
+        gm.NightVisionIsOn = false
     end
 
 
-    self:StaminaPrediction(ply, ply:KeyDown(IN_SPEED))
+    gm:StaminaPrediction(ply, ply:KeyDown(IN_SPEED))
 
 
     -- Spectator camera models
-    local show = self.CVars.SpecCams:GetBool()
+    local show = gm.CVars.SpecCams:GetBool()
     for i, cam in ipairs(specCams) do
         local shouldHave = show and IsValid(cam.player) and cam.player:Team() == TEAM_SPECTATOR
 
@@ -151,7 +151,7 @@ function GM:Tick()
         ply.SpecCamera:SetPos(ply:EyePos())
         ply.SpecCamera:SetAngles(ply:EyeAngles())
     end
-end
+end, "Tick", {"HNS", "MainTick"})
 
 function GM:Think()
     if not self.NightVisionIsOn then return end
