@@ -11,7 +11,7 @@ function PANEL:Init()
 
 
     --self:SetSize(300,300)
-    self:SetSize(350,400)
+    self:SetSize(400,425)
     --self:SetSize(350,450)
     self:SetPos(45,ScrH()/2.5)
     self:SetTitle("Hide and Seek - Options")
@@ -37,17 +37,20 @@ function PANEL:Init()
 
     for _, tab in ipairs(tabs) do
 
-        local panel = self:Add("DPanel")
+        local scroll = self:Add("DScrollPanel")
 
-        panel:SetBackgroundColor( Color(50, 50, 50) )
-        panel:DockPadding(4, 4, 4, 4)
-        panel:Dock(FILL)
+        scroll.ApplySchemeSettings = function(this)
+            this:SetPaintBackgroundEnabled(true)
+            this:SetBGColor( Color(50, 50, 50) )
+        end
+        scroll:GetCanvas():DockPadding(4, 4, 4, 4)
+        scroll:Dock(FILL)
 
 
-        hook.Run("HASOptions_" .. tab.name, panel, cvarsToSave)
+        hook.Run("HASOptions_" .. tab.name, scroll, cvarsToSave)
 
 
-        sheet:AddSheet(tab.name, panel, tab.icon)
+        sheet:AddSheet(tab.name, scroll, tab.icon)
     end
 
 

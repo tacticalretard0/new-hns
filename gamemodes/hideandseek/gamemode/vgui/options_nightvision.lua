@@ -12,10 +12,10 @@ end, "HASOptionsTabs", {"HNS", "AddWorldTab"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_nightvis_preferred")
 
-    local boxNV = panel:Add("DCheckBoxLabel")
+    local boxNV = scroll:Add("DCheckBoxLabel")
 
     boxNV:SetText("Use night vision instead of flashlight?")
     boxNV:SetConVar("has_nightvis_preferred")
@@ -23,7 +23,7 @@ GM:AddHook(function(_, _, panel, cvars)
     boxNV:Dock(TOP)
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 
 end, "HASOptions_Night Vision", {"HNS", "FillNVTab", "NVPreferred"})
 
@@ -31,11 +31,11 @@ end, "HASOptions_Night Vision", {"HNS", "FillNVTab", "NVPreferred"})
 
 
 -- TODO: make the slider snap like the HUD scale slider
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_nightvis_contrast")
 
 
-    local sliderContrast = panel:Add("DNumSlider")
+    local sliderContrast = scroll:Add("DNumSlider")
     sliderContrast:SetText("Contrast")
 
     sliderContrast:SetConVar("has_nightvis_contrast")
@@ -48,20 +48,20 @@ GM:AddHook(function(_, _, panel, cvars)
     sliderContrast:Dock(TOP)
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 
 end, "HASOptions_Night Vision", {"HNS", "FillNVTab", "NVContrast"})
 
 
 
 -- Whether or not to emit dynamic light, and its radius
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_nightvis_dynlight")
     table.insert(cvars, "has_nightvis_dynlight_size")
 
     --table.insert(cvars, "has_")
 
-    local boxDynLight = panel:Add("DCheckBoxLabel")
+    local boxDynLight = scroll:Add("DCheckBoxLabel")
     boxDynLight:SetText("Use dynamic light?")
 
     boxDynLight:SetConVar("has_nightvis_dynlight")
@@ -72,7 +72,7 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    local sliderSize = panel:Add("DNumSlider")
+    local sliderSize = scroll:Add("DNumSlider")
     sliderSize:SetText("Light size")
 
     sliderSize:SetConVar("has_nightvis_dynlight_size")
@@ -85,24 +85,24 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 
 end, "HASOptions_Night Vision", {"HNS", "FillNVTab", "NVDynamicLight"})
 
 
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_nightvis_r")
     table.insert(cvars, "has_nightvis_g")
     table.insert(cvars, "has_nightvis_b")
 
 
-    local labelColor = panel:Add("DLabel")
+    local labelColor = scroll:Add("DLabel")
     labelColor:SetText("Color")
 
     labelColor:Dock(TOP)
 
 
-    local mixerColor = panel:Add("DColorMixer")
+    local mixerColor = scroll:Add("DColorMixer")
     mixerColor:SetAlphaBar(false)
 
     mixerColor:SetConVarR("has_nightvis_r")

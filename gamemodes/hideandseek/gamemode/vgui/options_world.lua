@@ -6,10 +6,10 @@ end, "HASOptionsTabs", {"HNS", "AddWorldTab"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_carryangles")
 
-    local boxCarry = panel:Add("DCheckBoxLabel")
+    local boxCarry = scroll:Add("DCheckBoxLabel")
 
     boxCarry:SetText("Rotate props while carrying them?")
     boxCarry:SetConVar("has_carryangles")

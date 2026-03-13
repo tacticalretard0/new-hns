@@ -6,18 +6,18 @@ end, "HASOptionsTabs", {"HNS", "AddInterfaceTab"})
 
 
 
-GM:AddHook(function(gm, _, panel, cvars)
+GM:AddHook(function(gm, _, scroll, cvars)
     if not gm.CVars.ThirdpersonAllowed:GetBool() then return end
 
     table.insert(cvars, "has_thirdperson_mode")
     local og = gm.CVars.ThirdpersonMode:GetInt()
 
 
-    local label3p = panel:Add("DLabel")
+    local label3p = scroll:Add("DLabel")
     label3p:SetText("Third person mode")
     label3p:Dock(TOP)
 
-    local panel3p = panel:Add("DPanel")
+    local panel3p = scroll:Add("DPanel")
     panel3p:SetPaintBackground(false)
     panel3p:Dock(TOP)
 
@@ -44,25 +44,25 @@ GM:AddHook(function(gm, _, panel, cvars)
     end
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "ThirdpersonMode"})
 
 
 
 
-GM:AddHook(function(gm, _, panel, cvars)
+GM:AddHook(function(gm, _, scroll, cvars)
     table.insert(cvars, "has_hud")
     table.insert(cvars, "has_hud_scale")
 
     local ogHUD = gm.CVars.HUD:GetInt()
 
 
-    local labelHUD = panel:Add("DLabel")
+    local labelHUD = scroll:Add("DLabel")
     labelHUD:SetText("HUD style")
     labelHUD:Dock(TOP)
 
 
-    local listHUD = panel:Add("DComboBox")
+    local listHUD = scroll:Add("DComboBox")
     listHUD:Dock(TOP)
 
     for i, hud in ipairs(gm.HUDs) do
@@ -90,11 +90,11 @@ GM:AddHook(function(gm, _, panel, cvars)
     local ogScale = gm.CVars.HUDScale:GetFloat()
 
 
-    local labelHUDScale = panel:Add("DLabel")
+    local labelHUDScale = scroll:Add("DLabel")
     labelHUDScale:SetText("HUD scale")
     labelHUDScale:Dock(TOP)
     
-    local sliderHUDScale = panel:Add("DNumSlider")
+    local sliderHUDScale = scroll:Add("DNumSlider")
     sliderHUDScale.Label:Hide()
     sliderHUDScale:SetMinMax(1, 6)
     sliderHUDScale:SetDecimals(2)
@@ -110,20 +110,20 @@ GM:AddHook(function(gm, _, panel, cvars)
     end
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "HUD"})
 
 
 
 
-GM:AddHook(function(gm, _, panel, cvars)
+GM:AddHook(function(gm, _, scroll, cvars)
     --local og = gm.CVars.ShowSpeed:GetBool()
     table.insert(cvars, "has_showspeed")
     table.insert(cvars, "has_speedx")
     table.insert(cvars, "has_speedy")
 
 
-    local boxShowSpeed = panel:Add("DCheckBoxLabel")
+    local boxShowSpeed = scroll:Add("DCheckBoxLabel")
     boxShowSpeed:SetConVar("has_showspeed")
 
     boxShowSpeed:SetText("Show movement speed?")
@@ -139,12 +139,12 @@ GM:AddHook(function(gm, _, panel, cvars)
 
 
 
-    local labelSpeedPos = panel:Add("DLabel")
+    local labelSpeedPos = scroll:Add("DLabel")
     labelSpeedPos:SetText("Speed position (X, Y)")
     labelSpeedPos:Dock(TOP)
 
 
-    local panelSpeedPos = panel:Add("DPanel")
+    local panelSpeedPos = scroll:Add("DPanel")
     panelSpeedPos:SetPaintBackground(false)
     panelSpeedPos:Dock(TOP)
 
@@ -171,17 +171,17 @@ GM:AddHook(function(gm, _, panel, cvars)
     wangSpeedY:SetConVar("has_speedy")
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Speed"})
 
 
 
 
-GM:AddHook(function(gm, _, panel, cvars)
+GM:AddHook(function(gm, _, scroll, cvars)
     --local og = gm.CVars.ScoreboardClassic:GetBool()
     table.insert(cvars, "has_scob_classic")
 
-    local boxScoreboard = panel:Add("DCheckBoxLabel")
+    local boxScoreboard = scroll:Add("DCheckBoxLabel")
     boxScoreboard:Dock(TOP)
 
     boxScoreboard:SetText("Use classic scoreboard style?")
@@ -192,7 +192,7 @@ GM:AddHook(function(gm, _, panel, cvars)
     --local og = gm.CVars.ShowOnTop:GetBool()
     table.insert(cvars, "has_scob_ontop")
 
-    local boxOnTop = panel:Add("DCheckBoxLabel")
+    local boxOnTop = scroll:Add("DCheckBoxLabel")
     boxOnTop:Dock(TOP)
 
     boxOnTop:SetText("Put yourself first on the scoreboard?")
@@ -203,43 +203,43 @@ GM:AddHook(function(gm, _, panel, cvars)
 
     table.insert(cvars, "has_avatarframes")
 
-    local boxFrames = panel:Add("DCheckBoxLabel")
+    local boxFrames = scroll:Add("DCheckBoxLabel")
     boxFrames:Dock(TOP)
 
     boxFrames:SetText("Show Steam avatar frames?")
     boxFrames:SetConVar("has_avatarframes")
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "Scoreboard"})
 
 
 
 
 
-GM:AddHook(function(gm, _, panel, cvars)
+GM:AddHook(function(gm, _, scroll, cvars)
     --local og = gm.CVars.SpecCams:GetBool()
     table.insert(cvars, "has_spec_cams")
 
-    local boxSpecCams = panel:Add("DCheckBoxLabel")
+    local boxSpecCams = scroll:Add("DCheckBoxLabel")
     boxSpecCams:Dock(TOP)
 
     boxSpecCams:SetText("Show spectator cameras?")
     boxSpecCams:SetConVar("has_spec_cams")
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 end, "HASOptions_Interface", {"HNS", "FillInterfaceTab", "SpecCams"})
 
 
 
 
 
-GM:AddHook(function(gm, _, panel, cvars)
+GM:AddHook(function(gm, _, scroll, cvars)
     --local og = gm.CVars.ShowID:GetBool()
     table.insert(cvars, "has_showid")
 
-    local boxShowIDs = panel:Add("DCheckBoxLabel")
+    local boxShowIDs = scroll:Add("DCheckBoxLabel")
     boxShowIDs:Dock(TOP)
 
     boxShowIDs:SetText("Show other players' Steam IDs?")

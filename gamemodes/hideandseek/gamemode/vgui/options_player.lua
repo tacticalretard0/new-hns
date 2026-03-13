@@ -6,12 +6,12 @@ end, "HASOptionsTabs", {"HNS", "AddPlayerTab"})
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_gender")
     local og = GAMEMODE.CVars.Gender:GetBool()
 
 
-    local labelGender = panel:Add("DLabel")
+    local labelGender = scroll:Add("DLabel")
     labelGender:SetText("Gender (updates on respawn)")
     labelGender:Dock(TOP)
 
@@ -19,7 +19,7 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
     -- TODO: Make this be radio buttons like the thirdperson option in the Interface tab
-    local listGender = panel:Add("DComboBox")
+    local listGender = scroll:Add("DComboBox")
     listGender:Dock(TOP)
 
     -- We need to wrap the bool in a table because there's a bug on this line:
@@ -46,13 +46,13 @@ GM:AddHook(function(_, _, panel, cvars)
     end
 
 
-    panel:Add("HNS.Hr")
+    scroll:Add("HNS.Hr")
 end, "HASOptions_Player", {"HNS", "FillPlayerTab", "Gender"})
 
 
 
 
-GM:AddHook(function(_, _, panel, cvars)
+GM:AddHook(function(_, _, scroll, cvars)
     table.insert(cvars, "has_hidercolor")
     table.insert(cvars, "has_seekercolor")
 
@@ -71,12 +71,12 @@ GM:AddHook(function(_, _, panel, cvars)
         return buttonColor
     end
 
-    local labelHider = panel:Add("DLabel")
+    local labelHider = scroll:Add("DLabel")
     labelHider:SetText("Hider color (" .. ogColorHider .. ")")
     labelHider:Dock(TOP)
 
 
-    local panelHider = panel:Add("DPanel")
+    local panelHider = scroll:Add("DPanel")
     panelHider:SetPaintBackground(false)
     panelHider:Dock(TOP)
 
@@ -96,11 +96,11 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    local labelSeeker = panel:Add("DLabel")
+    local labelSeeker = scroll:Add("DLabel")
     labelSeeker:SetText("Seeker color (" .. ogColorSeeker .. ")")
     labelSeeker:Dock(TOP)
 
-    local panelSeeker = panel:Add("DPanel")
+    local panelSeeker = scroll:Add("DPanel")
     panelSeeker:SetPaintBackground(false)
     panelSeeker:Dock(TOP)
 
@@ -120,7 +120,7 @@ GM:AddHook(function(_, _, panel, cvars)
 
 
 
-    local labelPreview = panel:Add("DLabel")
+    local labelPreview = scroll:Add("DLabel")
     labelPreview:SetText("Selected:")
     labelPreview:Dock(TOP)
 
