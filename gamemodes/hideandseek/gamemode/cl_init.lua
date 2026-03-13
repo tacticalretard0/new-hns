@@ -332,6 +332,14 @@ hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
 end)
 
 
+concommand.Add("has_help", function() vgui.Create("HNS.Help") end)
+concommand.Add("has_options", function() vgui.Create("HNS.Options") end)
+
+concommand.Add("has_achievements", function()
+    local frameAchs = vgui.Create("HNS.Achievements")
+    frameAchs:SetPlayer( LocalPlayer() )
+end)
+
 
 
 GM:SolveHooks()
