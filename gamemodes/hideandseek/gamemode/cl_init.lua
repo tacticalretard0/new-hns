@@ -159,14 +159,15 @@ function GM:Think()
 
     local nvLight = DynamicLight( LocalPlayer():EntIndex() )
 
+    local size = self.CVars.NVDynLightSize:GetFloat()
     if nvLight then
         nvLight.pos = LocalPlayer():GetPos() + Vector(0, 0, 30)
         nvLight.r = self.CVars.NVColorR:GetInt()
         nvLight.g = self.CVars.NVColorG:GetInt()
         nvLight.b = self.CVars.NVColorB:GetInt()
         nvLight.brightness = 1
-        nvLight.size = self.CVars.NVDynLightSize:GetFloat()
-        --nvLight.decay = 750 * 5
+        nvLight.size = size
+        nvLight.decay = size * 5
         nvLight.dietime = CurTime() + 1
         nvLight.style = 0
     end
