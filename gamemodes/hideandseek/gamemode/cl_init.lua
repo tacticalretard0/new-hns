@@ -303,27 +303,29 @@ cvars.AddChangeCallback("has_hidercolor", PlayerColorUpdate)
 cvars.AddChangeCallback("has_seekercolor", PlayerColorUpdate)
 
 hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
+    if ply ~= LocalPlayer() then return end
+
     -- Using hooks instead of a function in case there's an addon overriting the gamemode function
     text = string.lower(text)
 
-    -- HUD - Interface section
-    if text == "!hnshud" or text == "!hnsmenu" then
-        if ply == LocalPlayer() then
-            vgui.Create("HNS.Preferences")
-        end
+    ---- HUD - Interface section
+    --if text == "!hnshud" or text == "!hnsmenu" then
+    --    if ply == LocalPlayer() then
+    --        vgui.Create("HNS.Preferences")
+    --    end
 
-        return true
-    end
+    --    return true
+    --end
 
-    -- Playercolors
-    if text == "!hnscolors" or text == "!hnscolours" then
-        if ply == LocalPlayer() then
-            local panel = vgui.Create("HNS.Preferences")
-            panel.TabsP:GetChildren()[2]:DoClick()
-        end
+    ---- Playercolors
+    --if text == "!hnscolors" or text == "!hnscolours" then
+    --    if ply == LocalPlayer() then
+    --        local panel = vgui.Create("HNS.Preferences")
+    --        panel.TabsP:GetChildren()[2]:DoClick()
+    --    end
 
-        return true
-    end
+    --    return true
+    --end
 
     if text == "!3p" or text == "!3pv" then
         GAMEMODE:ToggleThirdperson()
