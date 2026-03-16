@@ -197,10 +197,11 @@ end
 
 function GM:PlayerBindPress(ply, bind, pressed)
     -- Safe check
+    if not pressed then return end
     if ply ~= LocalPlayer() then return end
 
     -- From TTT cl_keys.lua
-    if bind == "+use" and pressed and TBHUD:PlayerIsFocused() then
+    if bind == "+use" and TBHUD:PlayerIsFocused() then
         return TBHUD:UseFocused()
     end
 
