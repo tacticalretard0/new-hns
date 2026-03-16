@@ -124,14 +124,14 @@ end
 
 GM:AddHook(function(gm, data, ply)
     -- Remove from players table
-    table.RemoveByValue(self.PlayersCache, ply)
+    table.RemoveByValue(gm.PlayersCache, ply)
 
     -- Check for seeker avoider
     if ply:Team() == TEAM_SEEK and team.NumPlayers(TEAM_SEEK) <= 1 then
-        self:BroadcastChatWithTag(COLOR_HNS_TAG_AVOID, ply:Name(), " avoided seeker! (", COLOR_HNS_TAG_AVOID, ply:SteamID(), COLOR_WHITE, ")")
+        gm:BroadcastChatWithTag(COLOR_HNS_TAG_AVOID, ply:Name(), " avoided seeker! (", COLOR_HNS_TAG_AVOID, ply:SteamID(), COLOR_WHITE, ")")
     end
 
-    self:RoundCheck()
+    gm:RoundCheck()
 end, "PlayerDisconnected", {"HNS", "SeekerAvoid"})
 
 function GM:DoPlayerDeath(ply, attacker, info)
