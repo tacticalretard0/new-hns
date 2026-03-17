@@ -304,10 +304,8 @@ end
 cvars.AddChangeCallback("has_hidercolor", PlayerColorUpdate)
 cvars.AddChangeCallback("has_seekercolor", PlayerColorUpdate)
 
+-- Using hooks instead of a function in case there's an addon overriting the gamemode function
 hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
-    if ply ~= LocalPlayer() then return end
-
-    -- Using hooks instead of a function in case there's an addon overriting the gamemode function
     text = string.lower(text)
 
     ---- HUD - Interface section
@@ -330,7 +328,7 @@ hook.Add("OnPlayerChat", "HNS.Commands", function(ply, text)
     --end
 
     if text == "!3p" or text == "!3pv" then
-        GAMEMODE:ToggleThirdperson()
+        if ply == LocalPlayer() then GAMEMODE:ToggleThirdperson() end
         return true
     end
 end)
