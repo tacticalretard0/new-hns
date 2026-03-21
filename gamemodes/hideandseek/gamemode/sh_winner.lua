@@ -19,7 +19,7 @@ if CLIENT then return end
 
 
 
-function GM:HASVotemapStart()
+function GM:HASMapEnd()
     local winner
     --for _, ply in player.Iterator() do
     for _, ply in ipairs(player.GetAll()) do

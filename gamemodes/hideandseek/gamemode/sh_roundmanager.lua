@@ -238,8 +238,10 @@ function GM:RoundEnd(ending, winningTeam)
 
     self:BroadcastSound("misc/happy_birthday.wav")
     if self.RoundCount >= self.CVars.MaxRounds:GetInt() then
-        -- Start votemap
-        hook.Run("HASVotemapStart")
+        hook.Run("HASMapEnd") -- Use this hook for end-of-map stuff (for example sh_winner.lua)
+        hook.Run("HASVotemapStart") -- Use this hook to start a mapvote
+        -- (we run two different hooks so that HASVotemapStart hooks can return without interfering with HASMapEnd hooks)
+
         -- Remove timer
         timer.Remove("HNS.RoundTimer")
     end
