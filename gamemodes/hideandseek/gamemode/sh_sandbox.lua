@@ -66,7 +66,7 @@ if CLIENT then
         GAMEMODE:SuppressHint("OpeningMenu")
     end
 
-    -- Needs to be on InitPostEntity because SuppressHints calls LocalPlayer
+    -- Needs to be on InitPostEntity because SuppressSandboxStuff calls LocalPlayer
     GM:AddHook(SuppressSandboxStuff, "InitPostEntity", {"HNS", "SuppressHints"})
     function GM:OnReloaded() SuppressSandboxStuff() end
 end

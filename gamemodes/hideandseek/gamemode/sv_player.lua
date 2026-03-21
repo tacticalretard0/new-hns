@@ -302,8 +302,7 @@ function GM:CanPlayerDamage(ply, ent)
     return ent:GetClass() == "func_breakable" or ent:GetClass() == "func_breakable_surf"
 end
 
-local using = nil
-
+local using
 hook.Add("Move", "HNS.SprintPrevention", function(ply, data)
     using = ply:GetEntityInUse()
 
