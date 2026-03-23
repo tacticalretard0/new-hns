@@ -11,6 +11,9 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
 - Night vision for hiders
 - System for adding hooks which allows for order constraints
 
+## Bugs
+- Sometimes when you join a server, other players' achievement data won't be sent to you
+
 ## TO DO
 
 - Achievements
@@ -22,7 +25,7 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
     - Left 4 Dead sound effect when landing, as mentioned in the help menu
 - TTT
     - A CVar to disable TTT entities entirely
-    - Support for ttt_filter_role and ttt_game_text entities
+    - Support for `ttt_filter_role` and `ttt_game_text` entities
     - Don't let blind seekers press traitor buttons. Could also prevent traitor buttons from being used at all during blind time
     - A configuration system located in a text file instead of a Lua file, which would be easier for people to edit. This would require networking the config to clients on join
 - GUI / HUD
@@ -36,4 +39,5 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
     - Infinite stamina in noclip
     - Fix chat commands (again)
     - Some default method of changing the map once all of the rounds are over. Could be a really basic mapvote, or something as simple as `game.LoadNextMap()`. Could also list all of the available maps and ask the host to choose one
+    - Come up with a consistent convention for tagging hooks added with `GM:AddHook`
 
