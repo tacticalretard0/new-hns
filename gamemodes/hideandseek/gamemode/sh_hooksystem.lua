@@ -119,10 +119,7 @@ function GM:AddHook(func, event, tags, constraints)
 end
 
 
-local graphs = {}
-
-
-
+local graphs
 
 local function BuildGraphs(gm)
     for event, list in pairs(hooks) do
@@ -181,7 +178,7 @@ end
 
 
 
-local sequences = {}
+local sequences
 
 local function CheckForEdges(graph)
     for _, node in ipairs(graph) do
@@ -239,6 +236,9 @@ end
 
 
 function GM:SolveHooks()
+    graphs = {}
+    sequences = {}
+
     -- GM:SolveHooks could end up being called from within the gamemode, in which case GM is set and GAMEMODE is nil,
     -- or it could be called from an addon after the gamemode is loaded, when GM is nil and GAMEMODE is set
     --
@@ -255,19 +255,9 @@ function GM:SolveHooks()
         self[event] = function(gm, ...)
             local data = {}
 
-            for _, func in ipairs(seq) do
-
-                --local newData = func(gm, data, ...)
-                func(gm, data, ...)
-
-                --if newData ~= nil then data = newData end
-
-            end
-
+            for _, func in ipairs(seq) do func(gm, data, ...) end
 
             return data.ret
-
-
         end
 
     end
