@@ -152,10 +152,10 @@ end
 
 
 
-function GM:PostCleanupMap()
+GM:AddHook(function(gm, data)
     local filename = GetConVar("sbox_persist"):GetString():Trim()
     if filename == "" then return end
 
     hook.Run("PersistenceLoad", filename)
-end
+end, "PostCleanupMap", {"HNS", "Persistence"})
 

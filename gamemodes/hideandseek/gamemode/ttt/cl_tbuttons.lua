@@ -1,8 +1,8 @@
 
 -- From TTT cl_init.lua (in GM:HUDClear)
-function GM:PostCleanupMap()
+GM:AddHook(function(gm, data)
     TBHUD:Clear()
-end
+end, "PostCleanupMap", {"HNS", "TTT"})
 
 
 -- From TTT cl_tbuttons.lua
