@@ -29,13 +29,13 @@ function GM:PlayerEndVoice(ply)
 end
 
 -- Clean avatar frame cache
-function GM:ShutDown()
+GM:AddHook(function(gm, data)
     if not file.Exists("hns_avatarframes_cache", "DATA") then return end
 
     for _, filename in ipairs(file.Find("hns_avatarframes_cache/*", "DATA")) do
         file.Delete("hns_avatarframes_cache/" .. filename)
     end
-end
+end, "ShutDown", {"HNS", "ClearAvatarFrameCache"})
 
 GM.AvatarFrames = GM.AvatarFrames or {}
 
