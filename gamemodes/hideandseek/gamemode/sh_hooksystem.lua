@@ -159,16 +159,16 @@ local function BuildGraphs(gm)
 
 
             -- runMeBefore
-            for jd, otherHook in ipairs(gm:QueryHooks(hook.constraints.runMeBefore)) do
+            for _, otherHook in ipairs(gm:QueryHooks(hook.constraints.runMeBefore)) do
                 if otherHook.event ~= event then error(err) end
 
 
                 local otherHookNode = graphs[event][otherHook.id]
 
-                if table.HasValue(hookNode.andThen, jd) then continue end
+                if table.HasValue(hookNode.andThen, otherHook.id) then continue end
 
                 otherHookNode.indegree = otherHookNode.indegree + 1
-                table.insert(hookNode.andThen, jd)
+                table.insert(hookNode.andThen, otherHook.id)
             end
 
         end
