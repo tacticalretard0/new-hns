@@ -39,6 +39,8 @@ GM.CVars.StaminaWait = CreateConVar("has_staminawait", 2, {FCVAR_ARCHIVE, FCVAR_
 
 GM.CVars.MinPlayers = CreateConVar("has_minplayers", 2, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Minimum players required to start a round.")
 
+GM.CVars.RemoveVehicles = CreateConVar("has_removevehicles", 0, {FCVAR_ARCHIVE, FCVAR_NOTIFY, FCVAR_REPLICATED, FCVAR_SERVER_CAN_EXECUTE}, "Whether to remove vehicles from the map at the start of every round")
+
 
 
 -- Create local cvars for customization

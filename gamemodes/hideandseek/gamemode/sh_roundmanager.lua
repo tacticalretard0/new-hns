@@ -109,12 +109,13 @@ function GM:RoundRestart()
     -- Restart map
     game.CleanUpMap()
 
-    -- Remove vehicles
-    for _, ent in ipairs(ents.GetAll()) do
-        if ent:IsVehicle() then
-            ent:Remove()
+
+    if self.CVars.RemoveVehicles:GetBool() then
+        for _, ent in ipairs(ents.GetAll()) do
+            if ent:IsVehicle() then ent:Remove() end
         end
     end
+
 
     -- Turn seekers into hiders
     for _, ply in ipairs(team.GetPlayers(TEAM_SEEK)) do
