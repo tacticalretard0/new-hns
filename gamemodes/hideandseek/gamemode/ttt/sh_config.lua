@@ -63,7 +63,7 @@ local lookup = {
 -- Targetnames are needed to figure out an entity's config
 --
 -- They're not available on the client, so we transmit them
-function GM:OnEntityCreated(ent)
+GM:AddHook(function(gm, data, ent)
     -- Need to use a timer because the entity isn't fully initialized yet,
     -- and we won't get anything from ent:GetName()
     timer.Simple(0, function()
@@ -77,7 +77,7 @@ function GM:OnEntityCreated(ent)
         ent:SetNWString("targetname", ent:GetName())
     end)
 
-end
+end, "OnEntityCreated", {"HNS", "TTT", "SetTargetNames"})
 
 
 

@@ -67,6 +67,7 @@ include("achievements/sh_table.lua")
 
 if SERVER then
     include("sv_player.lua")
+    include("sv_vehicles.lua")
     include("achievements/sv_storage.lua")
     include("achievements/sv_logic.lua")
 else

@@ -410,10 +410,22 @@ end)
 net.Receive("HNS.PlayerColorUpdate", function(_, ply)
     local hidercolor = ply:GetInfo("has_hidercolor", "Default")
     local seekercolor = ply:GetInfo("has_seekercolor", "Default")
+
     ply:SetNWString("has_hidercolor", hidercolor)
     ply:SetNWString("has_seekercolor", seekercolor)
+
     if ply:Team() == TEAM_SPECTATOR then return end
-    ply:SetPlayerColor(GAMEMODE:GetPlayerTeamColor(ply):ToVector())
+
+    local color = GAMEMODE:GetPlayerTeamColor(ply)
+    ply:SetPlayerColor(color:ToVector())
+
+
+    -- Update vehicle color if applicable
+    local veh = ply:GetVehicle()
+    if veh:IsValid() then
+        veh:SetToPlayerColor(ply)
+    end
+
 
     -- Update hider trail if applicable
     if IsValid(ply.HiderTrail) then
