@@ -345,6 +345,10 @@ function PLAYER:Caught(ply)
     GAMEMODE:RoundCheck()
 end
 
+function PLAYER:IsPlaying()
+    return self:Team() == TEAM_HIDE or self:Team() == TEAM_SEEK
+end
+
 -- Receive player changing teams
 net.Receive("HNS.JoinPlaying", function(_, ply)
     -- Ignore players
