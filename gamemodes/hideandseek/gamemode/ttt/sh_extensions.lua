@@ -31,9 +31,6 @@ ROLE_NONE = ROLE_INNOCENT
 
 -- From TTT player_ext_shd.lua
 
-function PLAYER:IsPlaying()
-    return self:IsValid() and (self:Team() == TEAM_HIDE or self:Team() == TEAM_SEEK)
-end
 PLAYER.IsTerror = PLAYER.IsPlaying
 
 function PLAYER:IsSpec() return self:Team() == TEAM_SPECTATOR end

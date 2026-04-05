@@ -267,6 +267,10 @@ end)
 
 local PLAYER = FindMetaTable("Player")
 
+function PLAYER:IsPlaying()
+    return self:IsValid() and (self:Team() == TEAM_HIDE or self:Team() == TEAM_SEEK)
+end
+
 -- This function will always be unpredicted
 if SERVER then
     function PLAYER:SetStamina(sta)
