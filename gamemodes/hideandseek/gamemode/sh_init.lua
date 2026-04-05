@@ -286,7 +286,8 @@ if SERVER then
 end
 
 function PLAYER:GetStamina()
-    if GAMEMODE.CVars.InfiniteStamina:GetBool() then return GAMEMODE.CVars.MaxStamina:GetInt() end
+    local inf = GAMEMODE.CVars.InfiniteStamina:GetBool() or self:GetMoveType() == MOVETYPE_NOCLIP or self.winner
+    if inf then return GAMEMODE.CVars.MaxStamina:GetInt() end
 
     -- We want to get the stamina of another player
     if CLIENT and self ~= LocalPlayer() then

@@ -8,6 +8,8 @@ if CLIENT then
             name = net.ReadString()
         }
 
+        winner.winner = true
+
         if winner == LocalPlayer() then
             GAMEMODE.winner.name = GAMEMODE.winner.name .. " (You!)"
         end
@@ -27,6 +29,8 @@ function GM:HASMapEnd()
             winner = ply
         end
     end
+
+    self.winner = winner
     winner.winner = true
 
     winner:SetPlayerColor( Vector(1, 1, 0) )

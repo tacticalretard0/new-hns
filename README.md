@@ -20,7 +20,6 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
     - Implement logic for the achievements `rooted`, `friendsnatcher`
     - Add at least one requirements achievement, and make sure the code for req achievements works properly
 - Features missing from the original gamemode
-    - Infinite stamina for the map winner
     - Temporary slowdown after jumping. This feature should be implemented differently to how the original gamemode implements it, to reduce prediction errors. It should be toggleable with a server CVar
     - Left 4 Dead sound effect when landing, as mentioned in the help menu
 - TTT
@@ -36,7 +35,6 @@ Fork of [Light Hide and Seek](https://github.com/fgrg2801/light-hns)
     - Server-side CVar for allowing / disallowing team indicators, and client-side preference CVar for whether or not to draw them
     - Update some of the text in the help menu
 - Misc
-    - Infinite stamina in noclip
     - Fix chat commands (again)
     - Some default method of changing the map once all of the rounds are over. Could be a really basic mapvote, or something as simple as `game.LoadNextMap()`. Could also list all of the available maps and ask the host to choose one
     - Come up with a consistent convention for tagging hooks added with `GM:AddHook`
