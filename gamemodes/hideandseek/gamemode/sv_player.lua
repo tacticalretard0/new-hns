@@ -489,45 +489,60 @@ end)
 hook.Add("Tick", "HNS.PlayerStuckPrevention", function()
     -- Stuck prevention
     for _, ply in ipairs(GAMEMODE.PlayersCache) do
-        if not IsValid(ply) or not ply:IsPlayer() or ply:Team() == TEAM_SPECTATOR or ply:GetObserverMode() ~= OBS_MODE_NONE then continue end
+
+        if not ply:IsPlaying() then continue end
+        if ply:GetObserverMode() ~= OBS_MODE_NONE then continue end
+
+
         roof = (ply:Crouching() or ply:KeyDown(IN_DUCK)) and 58 or 70
-        shouldCalculate = false
+
+
+        local shouldCalculate = false
 
         -- Check for near players
         for _, ply2 in ipairs(GAMEMODE.PlayersCache) do
-            if not IsValid(ply2) or not ply2:IsPlayer() or ply2:Team() == TEAM_SPECTATOR or ply == ply2 or ply2:GetObserverMode() ~= OBS_MODE_NONE then continue end
+
+            if ply == ply2 then continue end
+
+            if not ply2:IsPlaying() then continue end
+            if ply2:GetObserverMode() ~= OBS_MODE_NONE then continue end
+
 
             if (ply:GetPos() + Vector(0, 0, 30)):DistToSqr(ply2:GetPos() + Vector(0, 0, 30)) <= 6400 then
                 shouldCalculate = true
                 break
             end
+
         end
+
 
         -- If another player is closeby, start checking
-        if shouldCalculate then
-            if ply:Crouching() or ply:KeyDown(IN_DUCK) then
-                hulla, hullb = ply:GetHullDuck()
-                hullb = hullb + Vector(0, 0, 4)
-            else
-                hulla, hullb = ply:GetHull()
-            end
+        if not shouldCalculate then continue end
 
-            hulla = hulla + Vector(2, 2, 2)
-            hullb = hullb - Vector(2, 2, 2)
 
-            for _, ent in ipairs(ents.FindInBox(ply:GetPos() + hulla, ply:GetPos() + hullb)) do
-                if ent == ply or not ent:IsPlayer() or ply:Team() == TEAM_SPECTATOR or ent:GetObserverMode() ~= OBS_MODE_NONE then continue end
-                ent:SetCollisionGroup(COLLISION_GROUP_WEAPON)
-                ent:SetRenderMode(RENDERMODE_TRANSCOLOR)
-                ent:SetColor(ColorAlpha(ply:GetColor(), 235))
-
-                -- Un unstuck
-                timer.Create("HAS_AntiStuck_" .. ent:EntIndex(), 0.25, 1, function()
-                    ent:SetCollisionGroup(COLLISION_GROUP_PLAYER)
-                    ent:SetRenderMode(RENDERMODE_NORMAL)
-                    ent:SetColor(ColorAlpha(ply:GetColor(), 255))
-                end)
-            end
+        if ply:Crouching() or ply:KeyDown(IN_DUCK) then
+            hulla, hullb = ply:GetHullDuck()
+            hullb = hullb + Vector(0, 0, 4)
+        else
+            hulla, hullb = ply:GetHull()
         end
+
+        hulla = hulla + Vector(2, 2, 2)
+        hullb = hullb - Vector(2, 2, 2)
+
+        for _, ent in ipairs(ents.FindInBox(ply:GetPos() + hulla, ply:GetPos() + hullb)) do
+            if ent == ply or not ent:IsPlayer() or ply:Team() == TEAM_SPECTATOR or ent:GetObserverMode() ~= OBS_MODE_NONE then continue end
+            ent:SetCollisionGroup(COLLISION_GROUP_WEAPON)
+            ent:SetRenderMode(RENDERMODE_TRANSCOLOR)
+            ent:SetColor(ColorAlpha(ply:GetColor(), 235))
+
+            -- Un unstuck
+            timer.Create("HAS_AntiStuck_" .. ent:EntIndex(), 0.25, 1, function()
+                ent:SetCollisionGroup(COLLISION_GROUP_PLAYER)
+                ent:SetRenderMode(RENDERMODE_NORMAL)
+                ent:SetColor(ColorAlpha(ply:GetColor(), 255))
+            end)
+        end
+
     end
 end)
