@@ -260,8 +260,6 @@ function PANEL:UpdateDimensions()
     self:ArrowIcon()
 
 
-    -- Players
-    self:SortPlayers()
     -- Server name
     surface.SetFont("HNSHUD.RobotoThin")
     self.ServerName.HostNameWide, self.HostNameTall = surface.GetTextSize(GetHostName())

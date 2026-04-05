@@ -5,7 +5,7 @@ Classic scoreboard methods:
 
 Modern scoreboard methods:
     ArrowIcon: flip the sort arrow icon upside-down if sorting is reversed and scale it to the HUDScale preference
-    UpdateDimensions: update the sizes of elements in the scoreboard according to HUDScale, and call :ArrowIcon and :SortPlayers
+    UpdateDimensions: update the sizes of elements in the scoreboard according to HUDScale, and call :ArrowIcon
     SortPlayers: sort the player GUI elements in the scoreboard
     RefreshPlayers: add players that are missing from the scoreboard, and call :SortPlayers
 
@@ -46,6 +46,7 @@ function GM:ScoreboardShow()
 
     self.Scoreboard:Show()
     self.Scoreboard:UpdateDimensions()
+    self.Scoreboard:RefreshPlayers()
 end
 
 function GM:ScoreboardHide()
